@@ -170,6 +170,7 @@ void gameStep(float deltaTime)
 				int movementsRemaining = p.wheelLevel;
 				int miningRemaining = p.drilLevel;
 				bool didAction = 0;
+				bool didMine = 0;
 
 				int phaze = 0;
 				while (f >> c)
@@ -291,11 +292,14 @@ void gameStep(float deltaTime)
 
 					case 'M':
 					//mine
-					if ((phaze == 0 || phaze == 1) && !didAction)
+					if ((phaze == 0 || phaze == 1) && 
+						(!didAction || didMine))
 					{
 						phaze = 1;
 						didAction = 1;
+						didMine = 1;
 
+						if(miningRemaining>0)
 						if (f >> c)
 						{
 							auto playerPos = gameplayState.players[gameplayState.waitingForPlayerIndex].position;
@@ -345,6 +349,7 @@ void gameStep(float deltaTime)
 								}
 							}
 						}
+						miningRemaining--;
 					}
 					break;
 
