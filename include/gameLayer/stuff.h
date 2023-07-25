@@ -22,6 +22,8 @@ struct Player
 	int gunLevel = 1;
 	int drilLevel = 1;
 
+	int scannedThisTurn = 0;//up down left right
+
 	int stones = 0;
 	int iron = 0;
 	int osmium = 0;

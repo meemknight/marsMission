@@ -83,11 +83,37 @@ void gameStep(float deltaTime)
 
 						if (!calculateView(p.position, {i,j}, p.cameraLevel))
 						{
-							c = '?';
+							if (p.scannedThisTurn)
+							{
+								int size = 4;
+
+								if (p.cameraLevel == 2) { size = 5; }
+								if (p.cameraLevel == 3) { size = 6; }
+
+								glm::ivec2 scanPos = p.position;
+								if (p.scannedThisTurn == 1) { scanPos += glm::ivec2{0,-1} *size; }
+								if (p.scannedThisTurn == 2) { scanPos += glm::ivec2{0,1} *size; }
+								if (p.scannedThisTurn == 3) { scanPos += glm::ivec2{-1,0} *size; }
+								if (p.scannedThisTurn == 4) { scanPos += glm::ivec2{1,0} *size; }
+
+								if (glm::distance(glm::vec2(scanPos), glm::vec2(i, j))
+									< std::sqrt(2.f) + 0.1)
+								{
+									//good
+								}
+								else
+								{
+									c = '?';
+								}
+							}
+							else
+							{
+								c = '?';
+							}
 						}
 						else
 						{
-							for (auto p : gameplayState.players)
+							for (auto &p : gameplayState.players)
 							{
 								if (p.position == glm::ivec2{i, j})
 								{
@@ -116,6 +142,8 @@ void gameStep(float deltaTime)
 
 				gameplayState.waitCulldown = 0.5;
 				f.close();
+
+				p.scannedThisTurn = false;
 			}
 		};
 
@@ -299,6 +327,31 @@ void gameStep(float deltaTime)
 						phaze = 1;
 						didAction = 1;
 						//scan
+
+						if (f >> c)
+						{
+							if (p.hasAntena)
+							{
+								switch (std::toupper(c))
+								{
+								case 'U':
+								p.scannedThisTurn = 1;
+								break;
+
+								case 'D':
+								p.scannedThisTurn = 2;
+								break;
+
+								case 'L':
+								p.scannedThisTurn = 3;
+								break;
+
+								case 'R':
+								p.scannedThisTurn = 4;
+								break;
+								}
+							}
+						}
 					}
 					break;
 
