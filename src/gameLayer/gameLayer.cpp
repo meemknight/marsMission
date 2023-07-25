@@ -13,6 +13,7 @@
 #include <adons.h>
 #include <fstream>
 #include <filesystem>
+#include <mapGenerator.h>
 #undef min
 
 gl2d::Renderer2D renderer;
@@ -665,6 +666,45 @@ void gameStep(float deltaTime)
 				}
 
 				sendNextMessage();
+
+				for (int i = 0; i < gameplayState.players.size(); i++)
+				{
+					if (gameplayState.map.unsafeGet(gameplayState
+						.players[i].position) == Tiles::Acid)
+					{
+						gameplayState.players[i].life--;
+					}
+
+				}
+
+				//kill players
+				for (int i = 0; i < gameplayState.players.size(); i++)
+				{
+					if (gameplayState.players[i].life <= 0)
+					{
+						if (gameplayState.waitingForPlayerIndex == i)
+						{
+							gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+							i--;
+							if (gameplayState.players.size())
+								gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
+							gameplayState.currentWaitingTime = 5;
+
+							sendNextMessage();
+						}
+						else if (gameplayState.waitingForPlayerIndex > i)
+						{
+							gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+							i--;
+							gameplayState.waitingForPlayerIndex--;
+						}
+						else
+						{
+							gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+							i--;
+						}
+					}
+				}
 			}else
 			if (gameplayState.evictUnresponsivePlayers)
 			{
@@ -678,34 +718,7 @@ void gameStep(float deltaTime)
 
 		}
 
-		//kill players
-		for (int i = 0; i < gameplayState.players.size(); i++)
-		{
-			if (gameplayState.players[i].life <= 0)
-			{
-				if (gameplayState.waitingForPlayerIndex == i)
-				{
-					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-					i--;
-					if(gameplayState.players.size())
-						gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
-					gameplayState.currentWaitingTime = 5;
-
-					sendNextMessage();
-				}
-				else if (gameplayState.waitingForPlayerIndex > i)
-				{
-					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-					i--;
-					gameplayState.waitingForPlayerIndex--;
-				}
-				else
-				{
-					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-					i--;
-				}
-			}
-		}
+		
 
 	}
 
@@ -1066,8 +1079,9 @@ void mainMenuScreen()
 	{
 		gameplayState = {};
 
-		gameplayState.map.create({50, 50});
-		
+		//gameplayState.map.create({50, 50});
+		gameplayState.map = generate_world({40,40}, 69);
+
 		//todo shuffle and shit
 		glm::vec2 playerSpawnPositions[] = {
 			{1,1},

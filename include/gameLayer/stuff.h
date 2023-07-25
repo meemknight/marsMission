@@ -31,6 +31,8 @@ struct Player
 	int currentRound = 0;
 	int id = 0;
 
+	glm::ivec2 spawnPoint = {};
+
 	glm::vec3 color = Colors_White;
 };
 
@@ -61,10 +63,10 @@ struct Map
 	void create(glm::ivec2 size)
 	{
 		this->size = size;
-
+	
 		mapData.clear();
 		mapData.resize(size.x * size.y, Air);
-
+	
 		for (int i = 0; i < size.x; i++)
 		{
 			unsafeGet(i, 0) = Bedrock;
@@ -84,6 +86,78 @@ struct Map
 	{
 		return mapData[x + y * size.x];
 	}
+
+	void safeSet(int x, int y, char c)
+	{
+		if (x >= 0 && y >= 0 && x < size.x && y < size.y)
+		{
+			unsafeGet(x, y) = c;
+		}
+	}
+
+	char getValue(glm::ivec2 pos)
+	{
+		return getValue(pos.x, pos.y);
+	}
+
+	char getValue(int x, int y)
+	{
+		return mapData[x + y * size.x];
+	}
+
+	std::string toString()
+	{
+		std::string result;
+		for (int y = 0; y < this->size.y; y++)
+		{
+			for (int x = 0; x < this->size.x; x++)
+			{
+				result += this->unsafeGet(x, y);
+			}
+			result += "\n";
+		}
+		return result;
+	}
+
+	void blank(glm::ivec2 size, char element)
+	{
+		this->size = size;
+		this->mapData.clear();
+		this->mapData.resize(size.x * size.y, element);
+	}
+
+	struct Map clone()
+	{
+		struct Map c;
+		c.blank(this->size, ' ');
+		for (int y = 0; y < this->size.y; y++)
+		{
+			for (int x = 0; x < this->size.x; x++)
+			{
+				c.unsafeGet(x, y) = this->getValue(x, y);
+			}
+		}
+		return c;
+	}
+
+	struct Map splat(glm::ivec2 size);
+
+	void write_map(const char *path, struct Map *map)
+	{
+		auto file = fopen(path, "w");
+		if (file != NULL)
+		{
+			auto s = map->toString();
+			fputs(s.data(), file);
+			fclose(file);
+		}
+		else
+		{
+			// big poo poo
+		}
+	}
+
+
 
 	void render(gl2d::Renderer2D &renderer, gl2d::Texture &tiles,
 		gl2d::TextureAtlasPadding &tilesAtlas, bool simulateFog,

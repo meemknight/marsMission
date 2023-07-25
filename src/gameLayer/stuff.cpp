@@ -66,6 +66,13 @@ void renderRover(gl2d::Renderer2D &renderer, gl2d::Texture &roverTexture,
 }
 
 
+struct Map splat(glm::ivec2 size)
+{
+	struct Map map;
+	map.create(size);
+	return map;
+}
+
 void Map::render(gl2d::Renderer2D & renderer, gl2d::Texture & tiles,
 	gl2d::TextureAtlasPadding &tilesAtlas, bool simulateFog,
 	int viewLevel, glm::ivec2 playerPos)
