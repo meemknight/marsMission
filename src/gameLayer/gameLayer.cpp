@@ -1082,18 +1082,22 @@ void mainMenuScreen()
 		//gameplayState.map.create({50, 50});
 		gameplayState.map = generate_world({40,40}, 69);
 
-		//todo shuffle and shit
-		glm::vec2 playerSpawnPositions[] = {
-			{1,1},
-			{48,48},
-			{48,1},
-			{1,48},
-			{25,25}
-		};
+		std::vector<glm::vec2> spawnPoints;
+
+		for (int j = 0; j < gameplayState.map.size.y; j++)
+		{
+			for (int i = 0; i < gameplayState.map.size.x; i++)
+			{
+				if (gameplayState.map.unsafeGet(i, j) == Tiles::Base)
+				{
+					spawnPoints.push_back({i,j});
+				}
+			}
+		}
 
 		for (int i = 0; i < nrOfPlayers; i++)
 		{
-			gameplayState.players.push_back({playerSpawnPositions[i]});
+			gameplayState.players.push_back({spawnPoints[i]});
 			gameplayState.players.back().id = i;
 		}
 

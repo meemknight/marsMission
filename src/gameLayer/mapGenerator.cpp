@@ -289,6 +289,25 @@ struct Map generate_world(glm::ivec2 maze_size, int seed)
 	final_map = additive_mask(&final_map, &random_iron, glm::ivec2(0, 0), Air);
 	final_map = additive_mask(&final_map, &cobaltMap, glm::ivec2(0, 0), Air);
 
+	auto addSpawn = [&](int x, int y)
+	{
+		for (int j = -2; j < 2; j++)
+			for (int i = -2; i < 2; i++)
+			{
+				if (glm::distance(glm::vec2(0, 0), glm::vec2(i, j)) < sqrt(7.f) + 0.1)
+				{
+					final_map.safeSet(x + i, y + j, Air);
+				}
+			}
+
+		final_map.safeSet(x, y, Base);
+	};
+
+	addSpawn(7, 7);
+	addSpawn(7, final_map.size.y-7);
+	addSpawn(final_map.size.x - 7, 7);
+	addSpawn(final_map.size.x - 7, final_map.size.y - 7);
+	addSpawn(final_map.size.x/2, final_map.size.y/2);
 
 	for (int i = 0; i < final_map.size.x; i++)
 	{
