@@ -31,16 +31,23 @@ struct GameplayState
 	float waitCulldown = 0;
 	bool firstTime = 1;
 
-	int borderCulldown = 50;
+	int borderCulldown = 50; //acid
 	int currentBorderAdvance = 0;
+
+	bool closeGame = 0;
+	
+	bool evictUnresponsivePlayers = 0;
+	float currentWaitingTime = 5;
 
 }gameplayState;
 
 std::string panicError = "";
 std::string state = "";
 
+
 void gameStep(float deltaTime)
 {
+
 
 	if (gameplayState.waitCulldown > 0)
 	{
@@ -137,6 +144,7 @@ void gameStep(float deltaTime)
 			//server
 			if (f)
 			{
+				gameplayState.currentWaitingTime = 5.f;
 				//got the input
 
 				auto movePlayer = [&](int index, glm::ivec2 delta)
@@ -156,7 +164,9 @@ void gameStep(float deltaTime)
 					}
 
 					if (gameplayState.map.unsafeGet(newPos.x, newPos.y) == Tiles::Air
-						|| gameplayState.map.unsafeGet(newPos.x, newPos.y) == Tiles::Base)
+						|| gameplayState.map.unsafeGet(newPos.x, newPos.y) == Tiles::Base
+						|| gameplayState.map.unsafeGet(newPos.x, newPos.y) == Tiles::Acid
+						)
 					{
 						gameplayState.players[gameplayState.waitingForPlayerIndex].position =
 							newPos;
@@ -266,7 +276,9 @@ void gameStep(float deltaTime)
 									{
 										auto &b = gameplayState.map.unsafeGet(bulletPos.x, bulletPos.y);
 
-										if (b != Tiles::Air && b != Tiles::Base)
+										if (b != Tiles::Air && b != Tiles::Base &&
+											b!=Tiles::Acid
+											)
 										{
 											break; //bullet hit a wall
 										}
@@ -579,16 +591,49 @@ void gameStep(float deltaTime)
 					{
 						gameplayState.borderCulldown = 2;
 
-						//if(currentBorderAdvance < )
+						if (gameplayState.currentBorderAdvance <
+							std::min(gameplayState.map.size.x, gameplayState.map.size.y) / 2 - 2)
+						{
+							for (int i = 0; i < gameplayState.map.size.x; i++)
+							{
+								gameplayState.map.unsafeGet(i, gameplayState.currentBorderAdvance) = Tiles::Acid;
+								gameplayState.map.unsafeGet(i, gameplayState.map.size.y-1 - gameplayState.currentBorderAdvance) = Tiles::Acid;
+							}
+
+							for (int i = 0; i < gameplayState.map.size.y; i++)
+							{
+								gameplayState.map.unsafeGet(gameplayState.currentBorderAdvance, i) = Tiles::Acid;
+								gameplayState.map.unsafeGet(gameplayState.map.size.y - 1 - gameplayState.currentBorderAdvance, i) = Tiles::Acid;
+							}
+
+							gameplayState.currentBorderAdvance++;
+						}
 					}
 				}
 
 				sendNextMessage();
+			}else
+			{
+			if (gameplayState.evictUnresponsivePlayers)
+			{
+				gameplayState.currentWaitingTime -= deltaTime;
+				if (gameplayState.currentWaitingTime < 0)
+				{
+					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+
+					if (gameplayState.players.size() != 0)
+					{
+						gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
+						gameplayState.currentWaitingTime = 5;
+
+						sendNextMessage();
+					}
+				}
+			};
 			}
 
 
 		}
-
 
 		
 	}
@@ -839,6 +884,8 @@ void sideWindow()
 
 	ImGui::Checkbox("simulate fog", &simulateFog);
 
+	ImGui::Checkbox("Evict players after 5 secconds", &gameplayState.evictUnresponsivePlayers);
+
 	ImGui::Separator();
 
 	if (ImGui::Button("Set In center"))
@@ -863,7 +910,7 @@ void sideWindow()
 		if(colorControols)
 			palettePanel(colors, 6, {20,20}, &selected[p.id]);
 		
-		ImGui::Text("Player id: %d", i);
+		ImGui::Text("Player id: %d", p.id);
 
 		if (allowChangePlayerStats)
 		{
@@ -908,6 +955,18 @@ void sideWindow()
 
 		ImGui::Separator();
 		ImGui::PopID();
+	}
+
+	ImGui::Separator();
+		
+	ImGui::Checkbox("Close Game", &gameplayState.closeGame);
+
+	if (gameplayState.closeGame)
+	{
+		if (ImGui::Button("Are you sure: Yes"))
+		{
+			gameplayState = {};
+		}
 	}
 
 	ImGui::End();
@@ -1063,7 +1122,6 @@ bool gameLogic(float deltaTime)
 			sideWindow();
 
 			sendManualCommand();
-
 		}
 		else
 		{

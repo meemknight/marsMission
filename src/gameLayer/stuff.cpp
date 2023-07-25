@@ -95,6 +95,11 @@ void Map::render(gl2d::Renderer2D & renderer, gl2d::Texture & tiles,
 			tileType = 4; break;
 			case Iron:
 			tileType = 3; break;
+			case Base:
+			tileType = 6; break;
+			case Acid:
+			tileType = 7; break;
+
 
 			default: tileType = 9;
 			}
