@@ -613,29 +613,47 @@ void gameStep(float deltaTime)
 
 				sendNextMessage();
 			}else
-			{
 			if (gameplayState.evictUnresponsivePlayers)
 			{
 				gameplayState.currentWaitingTime -= deltaTime;
 				if (gameplayState.currentWaitingTime < 0)
 				{
-					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-
-					if (gameplayState.players.size() != 0)
-					{
-						gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
-						gameplayState.currentWaitingTime = 5;
-
-						sendNextMessage();
-					}
+					gameplayState.currentWaitingTime = 5;
+					gameplayState.players[gameplayState.waitingForPlayerIndex].life = 0;
 				}
 			};
-			}
-
 
 		}
 
-		
+		//kill players
+		for (int i = 0; i < gameplayState.players.size(); i++)
+		{
+			if (gameplayState.players[i].life <= 0)
+			{
+				if (gameplayState.waitingForPlayerIndex == i)
+				{
+					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+					i--;
+					if(gameplayState.players.size())
+						gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
+					gameplayState.currentWaitingTime = 5;
+
+					sendNextMessage();
+				}
+				else if (gameplayState.waitingForPlayerIndex > i)
+				{
+					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+					i--;
+					gameplayState.waitingForPlayerIndex--;
+				}
+				else
+				{
+					gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+					i--;
+				}
+			}
+		}
+
 	}
 
 }
@@ -914,7 +932,7 @@ void sideWindow()
 
 		if (allowChangePlayerStats)
 		{
-			ImGui::SliderInt("Player life: ", &p.life, 0, 10, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("Player life: ", &p.life, 0, MAX_ROVER_LIFE, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player wheel level: ", &p.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player drill level: ", &p.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player gun level: ", &p.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
@@ -929,7 +947,7 @@ void sideWindow()
 		else
 		{
 			auto p2 = p;
-			ImGui::SliderInt("Player life: ", &p2.life, 0, 10, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("Player life: ", &p2.life, 0, MAX_ROVER_LIFE, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player wheel level: ", &p2.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player drill level: ", &p2.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player gun level: ", &p2.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
