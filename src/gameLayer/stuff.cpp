@@ -1,10 +1,20 @@
 #include <stuff.h>
 
+bool calculateView(glm::ivec2 playerPos, glm::ivec2 blockPos, int level)
+{
+
+	if (level == 1) { return glm::distance(glm::vec2(playerPos), glm::vec2(blockPos)) < std::sqrt(5.f) + 0.1; }
+	if (level == 2) { return glm::distance(glm::vec2(playerPos), glm::vec2(blockPos)) < std::sqrt(12.f) + 0.1; }
+	if (level == 3) { return glm::distance(glm::vec2(playerPos), glm::vec2(blockPos)) < std::sqrt(20.f) + 0.1; }
+
+	return 0;
+}
 
 void renderRover(gl2d::Renderer2D &renderer, 
 	gl2d::Texture &roverTexture, gl2d::TextureAtlasPadding &roverAtlas,
 	glm::vec2 pos, glm::vec3 color,
-	bool hasAntena, int wheelLevel, int drilLevel, int gunLevel, int life, bool hasBatery)
+	bool hasAntena, int wheelLevel, int drilLevel, int gunLevel, int life, bool hasBatery,
+	int cameraLevel)
 {
 
 	glm::vec2 size(100, 100);
@@ -42,6 +52,9 @@ void renderRover(gl2d::Renderer2D &renderer,
 	renderer.renderRectangle({pos,size}, roverTexture,
 		glm::vec4(1, 1, 1, 1), {}, 0, roverAtlas.get(wheelLevel-1, 1));
 
+	renderer.renderRectangle({pos,size}, roverTexture,
+		glm::vec4(1, 1, 1, 1), {}, 0, roverAtlas.get(cameraLevel - 1, 4));
+
 }
 
 void renderRover(gl2d::Renderer2D &renderer, gl2d::Texture &roverTexture, 
@@ -49,12 +62,13 @@ void renderRover(gl2d::Renderer2D &renderer, gl2d::Texture &roverTexture,
 {
 	renderRover(renderer, roverTexture, roverAtlas, player.position * 100,
 		player.color, player.hasAntena, player.wheelLevel,
-		player.drilLevel, player.gunLevel, player.life, player.hasBatery);
+		player.drilLevel, player.gunLevel, player.life, player.hasBatery, player.cameraLevel);
 }
 
 
 void Map::render(gl2d::Renderer2D & renderer, gl2d::Texture & tiles,
-	gl2d::TextureAtlasPadding &tilesAtlas)
+	gl2d::TextureAtlasPadding &tilesAtlas, bool simulateFog,
+	int viewLevel, glm::ivec2 playerPos)
 {
 
 	glm::vec2 drawSize(100, 100);
@@ -85,8 +99,18 @@ void Map::render(gl2d::Renderer2D & renderer, gl2d::Texture & tiles,
 			default: tileType = 9;
 			}
 
+			glm::vec4 color = Colors_White;
+
+			if (simulateFog)
+			{
+				if (!calculateView(playerPos, {i,j}, viewLevel))
+				{
+					color = glm::vec4(0.2, 0.2, 0.2, 1.f);
+				}
+			}
+
 			renderer.renderRectangle({drawSize * glm::vec2(i,j), drawSize}, tiles,
-				Colors_White, {}, 0, tilesAtlas.get(tileType, 0));
+				color, {}, 0, tilesAtlas.get(tileType, 0));
 
 		}
 	}

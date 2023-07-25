@@ -6,7 +6,10 @@
 void renderRover(gl2d::Renderer2D &renderer,
 	gl2d::Texture &roverTexture, gl2d::TextureAtlasPadding &roverAtlas,
 	glm::vec2 pos, glm::vec3 color,
-	bool hasAntena, int wheelLevel, int drilLevel, int gunLevel, int life, bool hasBatery);
+	bool hasAntena, int wheelLevel, int drilLevel, int gunLevel, int life, bool hasBatery, 
+	int cameraLevel);
+
+bool calculateView(glm::ivec2 playerPos, glm::ivec2 blockPos, int level);
 
 struct Player
 {
@@ -81,7 +84,8 @@ struct Map
 	}
 
 	void render(gl2d::Renderer2D &renderer, gl2d::Texture &tiles,
-		gl2d::TextureAtlasPadding &tilesAtlas);
+		gl2d::TextureAtlasPadding &tilesAtlas, bool simulateFog,
+		int viewLevel, glm::ivec2 playerPos);
 
 
 };

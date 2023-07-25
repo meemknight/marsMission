@@ -61,19 +61,26 @@ void gameStep(float deltaTime)
 			}
 			else
 			{
-
 				f << gameplayState.map.size.x << ' ' << gameplayState.map.size.y << "\n";
+
+				auto &p = gameplayState.players[gameplayState.waitingForPlayerIndex];
 
 				for (int j = 0; j < gameplayState.map.size.y; j++)
 				{
 					for (int i = 0; i < gameplayState.map.size.x; i++)
 					{
-						f << gameplayState.map.unsafeGet({i,j}) << " ";
+						char c = gameplayState.map.unsafeGet({i,j});
+
+						if (!calculateView(p.position, {i,j}, p.cameraLevel))
+						{
+							c = '?';
+						}
+
+						f << c << " ";
 					}
 					f << "\n";
 				}
 				
-				auto &p = gameplayState.players[gameplayState.waitingForPlayerIndex];
 
 
 				f << p.position.x << " ";
@@ -97,7 +104,8 @@ void gameStep(float deltaTime)
 
 		if (gameplayState.firstTime)
 		{
-			std::filesystem::remove_all("game");
+			std::error_code error = {};
+			std::filesystem::remove_all("game", error);
 			std::filesystem::create_directory("game");
 			sendNextMessage();
 			gameplayState.firstTime = 0;
@@ -768,6 +776,7 @@ float cameraZoom = 1;
 
 //vector pos not id
 int currentFollow = -1;
+bool simulateFog = false;
 
 ImVec4 colors[] = {
 		ImVec4{1,0,0,1},
@@ -797,6 +806,8 @@ void sideWindow()
 	ImGui::Separator();
 
 	ImGui::SliderFloat("camera zoom", &cameraZoom, 0.05, 2);
+
+	ImGui::Checkbox("simulate fog", &simulateFog);
 
 	ImGui::Separator();
 
@@ -830,7 +841,7 @@ void sideWindow()
 			ImGui::SliderInt("Player wheel level: ", &p.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player drill level: ", &p.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player gun level: ", &p.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player camera level: ", &p.cameraLevel, 0, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("Player camera level: ", &p.cameraLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::Checkbox("Player has antena: ", &p.hasAntena);
 			ImGui::Checkbox("Player has batery: ", &p.hasBatery);
 
@@ -845,7 +856,7 @@ void sideWindow()
 			ImGui::SliderInt("Player wheel level: ", &p2.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player drill level: ", &p2.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::SliderInt("Player gun level: ", &p2.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player camera level: ", &p2.cameraLevel, 0, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("Player camera level: ", &p2.cameraLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
 			ImGui::Text("Player has antena: %s", p.hasAntena ? "Yes" : "No");
 			ImGui::Text("Player has batery: %s", p.hasBatery ? "Yes" : "No");
 
@@ -990,7 +1001,20 @@ bool gameLogic(float deltaTime)
 		#pragma endregion
 
 		#pragma region render stuff
-			gameplayState.map.render(renderer, spritesTexture, spritesAtlas);
+
+			if (currentFollow >= 0)
+			{
+				gameplayState.map.render(renderer, spritesTexture, spritesAtlas,
+					simulateFog, gameplayState.players[currentFollow].cameraLevel, 
+					gameplayState.players[currentFollow].position);
+			}
+			else
+			{
+				gameplayState.map.render(renderer, spritesTexture, spritesAtlas,
+					0, 0, {});
+			}
+
+			
 
 			for (int i = 0; i < gameplayState.players.size(); i++)
 			{
