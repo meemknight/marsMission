@@ -45,7 +45,7 @@ enum Tiles
 	Iron = 'C',
 	Osmium = 'D',
 	Base = 'E',
-
+	Acid = 'F',
 
 };
 

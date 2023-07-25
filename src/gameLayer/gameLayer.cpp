@@ -31,6 +31,9 @@ struct GameplayState
 	float waitCulldown = 0;
 	bool firstTime = 1;
 
+	int borderCulldown = 50;
+	int currentBorderAdvance = 0;
+
 }gameplayState;
 
 std::string panicError = "";
@@ -75,14 +78,22 @@ void gameStep(float deltaTime)
 						{
 							c = '?';
 						}
+						else
+						{
+							for (auto p : gameplayState.players)
+							{
+								if (p.position == glm::ivec2{i, j})
+								{
+									c = '0' + p.id;
+								}
+							}
+						}
 
 						f << c << " ";
 					}
 					f << "\n";
 				}
 				
-
-
 				f << p.position.x << " ";
 				f << p.position.y << "\n";
 				f << p.life << " ";
@@ -157,6 +168,7 @@ void gameStep(float deltaTime)
 				auto &p = gameplayState.players[gameplayState.waitingForPlayerIndex];
 
 				int movementsRemaining = p.wheelLevel;
+				int miningRemaining = p.drilLevel;
 				bool didAction = 0;
 
 				int phaze = 0;
@@ -553,6 +565,19 @@ void gameStep(float deltaTime)
 				//next player please
 				gameplayState.waitingForPlayerIndex++;
 				gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
+
+				if (gameplayState.waitingForPlayerIndex == 0)
+				{
+					gameplayState.borderCulldown--;
+
+					if (gameplayState.borderCulldown <= 0)
+					{
+						gameplayState.borderCulldown = 2;
+
+						//if(currentBorderAdvance < )
+					}
+				}
+
 				sendNextMessage();
 			}
 
@@ -864,8 +889,6 @@ void sideWindow()
 			ImGui::Text("Player iron %d", p.iron);
 			ImGui::Text("Player osmium %d", p.osmium);
 		}
-
-		
 
 
 		auto c = colors[selected[p.id]];
