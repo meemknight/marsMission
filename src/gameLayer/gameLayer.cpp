@@ -162,9 +162,7 @@ void gameStep(float deltaTime)
 
 		if (gameplayState.firstTime)
 		{
-			std::error_code error = {};
-			std::filesystem::remove_all("game", error);
-			std::filesystem::create_directory("game");
+		
 			sendNextMessage();
 			gameplayState.firstTime = 0;
 		}
@@ -1134,6 +1132,10 @@ void mainMenuScreen()
 
 	if (ImGui::Button("Start Game"))
 	{
+		std::error_code error = {};
+		std::filesystem::remove_all("game", error);
+		std::filesystem::create_directory("game");
+
 		winState = {};
 
 		int s = seed;
