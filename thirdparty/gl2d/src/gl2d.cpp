@@ -513,7 +513,7 @@ namespace gl2d
 
 		glViewport(0, 0, renderer.windowW, renderer.windowH);
 
-		glBindVertexArray(renderer.vao);
+		//glBindVertexArray(renderer.vao);
 
 		glUseProgram(renderer.currentShader.id);
 
@@ -552,7 +552,7 @@ namespace gl2d
 
 			glDrawArrays(GL_TRIANGLES, pos * 6, 6 * (size - pos));
 
-			glBindVertexArray(0);
+			//glBindVertexArray(0);
 		}
 
 		if (clearDrawData) 
@@ -1018,8 +1018,8 @@ namespace gl2d
 
 		this->resetCameraAndShader();
 
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
+		//glGenVertexArrays(1, &vao);
+		//glBindVertexArray(vao);
 
 		glGenBuffers(Renderer2DBufferType::bufferSize, buffers);
 
@@ -1035,7 +1035,7 @@ namespace gl2d
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-		glBindVertexArray(0);
+		//glBindVertexArray(0);
 	}
 
 	void Renderer2D::cleanup()
