@@ -22,7 +22,6 @@ add_subdirectory(thirdparty/glm)				#math
 add_subdirectory(thirdparty/imgui-docking)		#ui
 add_subdirectory(thirdparty/FastNoiseSIMD)		#noise
 #----------V-----------------------V------------#my libraries												
-add_subdirectory(thirdparty/safeSave)			#saving data, designed for gamedev. It also makes backups so the player won't loose saves.
 add_subdirectory(thirdparty/profilerLib)		#profiling, just a simpe library for measuring elapsed time
 add_subdirectory(thirdparty/gl2d)				#2D rendering library
 add_subdirectory(thirdparty/glui)				#ui library, usefull for making game menus
@@ -64,4 +63,4 @@ target_include_directories("${CMAKE_PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURC
 
 #enet not working yet on linux for some reason
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glm glfw 
-	glad stb_image stb_truetype gl2d imgui safeSave profilerLib glui fastNoiseSIMD)
+	glad stb_image stb_truetype gl2d imgui profilerLib glui fastNoiseSIMD)
