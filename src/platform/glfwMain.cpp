@@ -322,8 +322,8 @@ int main()
 	glfwSetCharCallback(wind, characterCallback);
 
 	//permaAssertComment(gladLoadGL(), "err initializing glad");
-	permaAssertComment(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "err initializing glad");
-
+	//permaAssertComment(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "err initializing glad");
+	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
 #pragma endregion
 
