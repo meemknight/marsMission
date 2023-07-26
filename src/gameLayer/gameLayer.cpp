@@ -1057,6 +1057,7 @@ void sideWindow()
 	ImGui::PopID();
 }
 
+int seed = 0;
 
 void mainMenuScreen()
 {
@@ -1075,12 +1076,21 @@ void mainMenuScreen()
 
 	ImGui::SliderInt("Nr of players", &nrOfPlayers, 1, 5);
 
+	ImGui::InputInt("Seed (0 for random): ", &seed);
+
 	if (ImGui::Button("Start Game"))
 	{
 		gameplayState = {};
 
 		//gameplayState.map.create({50, 50});
-		gameplayState.map = generate_world({40,40}, 69);
+		if(seed == 0)
+		{
+			gameplayState.map = generate_world({30,30}, time(0));
+		}
+		else
+		{
+			gameplayState.map = generate_world({30,30}, seed);
+		}
 
 		std::vector<glm::vec2> spawnPoints;
 

@@ -261,7 +261,7 @@ struct Map generate_world(glm::ivec2 maze_size, int seed)
 
 	maze_with_holes = additive_mask(&maze_with_holes, &extraRock, glm::ivec2(0, 0), Air);
 
-	auto random_iron = layered_simplex_map(s_size, fn, Iron, Air, 0.935, 0.975, 8, 2, 4, seed + 1);
+	auto random_iron = layered_simplex_map(s_size, fn, Iron, Air, 0.975, 0.975, 8, 2, 4, seed + 1);
 	
 	Map cobaltMap;
 	cobaltMap.blank(s_size, Air);
