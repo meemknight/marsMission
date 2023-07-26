@@ -27,6 +27,8 @@ gl2d::Texture spritesTexture;
 gl2d::TextureAtlasPadding spritesAtlas;
 gl2d::FrameBuffer fbo;
 
+static int acidStartTime = 100;
+
 struct GameplayState
 {
 	Map map;
@@ -36,7 +38,7 @@ struct GameplayState
 	float waitCulldown = 0;
 	bool firstTime = 1;
 
-	int borderCulldown = 50; //acid
+	int borderCulldown = acidStartTime; //acid
 	int currentBorderAdvance = 0;
 
 	bool closeGame = 0;
@@ -1019,6 +1021,7 @@ void sideWindow()
 	ImGui::SliderFloat("Simulation Delay", &culldownTime, 0.1, 2);
 
 
+
 	ImGui::Separator();
 
 	if (ImGui::Button("Set In center"))
@@ -1129,6 +1132,8 @@ void mainMenuScreen()
 
 	ImGui::InputInt("Seed (0 for random): ", &seed);
 	ImGui::Checkbox("Small map", &smallMap);
+
+	ImGui::InputInt("Acid start time", &acidStartTime);
 
 	if (ImGui::Button("Start Game"))
 	{
