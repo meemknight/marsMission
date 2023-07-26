@@ -89,9 +89,9 @@ namespace gl2d
 	static const char* defaultVertexShader =
 		GL2D_OPNEGL_SHADER_VERSION "\n"
 		GL2D_OPNEGL_SHADER_PRECISION "\n"
-		"in vec2 quad_positions;\n"
-		"in vec4 quad_colors;\n"
-		"in vec2 texturePositions;\n"
+		"attribute vec2 quad_positions;\n"
+		"attribute vec4 quad_colors;\n"
+		"attribute vec2 texturePositions;\n"
 		"varying vec4 v_color;\n"
 		"varying vec2 v_texture;\n"
 		"void main()\n"
