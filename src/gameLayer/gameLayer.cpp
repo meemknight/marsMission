@@ -658,7 +658,7 @@ void gameStep(float deltaTime)
 						gameplayState.borderCulldown = 2;
 
 						if (gameplayState.currentBorderAdvance <
-							std::min(gameplayState.map.size.x, gameplayState.map.size.y) / 2 - 2)
+							std::min(gameplayState.map.size.x, gameplayState.map.size.y) / 2 - 1)
 						{
 							for (int i = 0; i < gameplayState.map.size.x; i++)
 							{
@@ -987,7 +987,7 @@ void sideWindow()
 	ImGui::Text(state.c_str());
 	ImGui::Separator();
 
-	ImGui::SliderFloat("camera zoom", &cameraZoom, 0.05, 2);
+	ImGui::SliderFloat("camera zoom", &cameraZoom, 0.05, 3);
 
 	ImGui::Checkbox("simulate fog", &simulateFog);
 
