@@ -701,45 +701,7 @@ void gameStep(float deltaTime)
 					}
 
 				}
-
-				//kill players
-				bool killedAPlayer = 0;
-				for (int i = 0; i < gameplayState.players.size(); i++)
-				{
-					if (gameplayState.players[i].life <= 0)
-					{
-						winState.winMessage += std::to_string(gameplayState.players[i].id) +
-							" died ";
-						killedAPlayer = true;
-
-						if (gameplayState.waitingForPlayerIndex == i)
-						{
-							gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-							i--;
-							if (gameplayState.players.size())
-								gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
-							gameplayState.currentWaitingTime = 5;
-
-							sendNextMessage();
-						}
-						else if (gameplayState.waitingForPlayerIndex > i)
-						{
-							gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-							i--;
-							gameplayState.waitingForPlayerIndex--;
-						}
-						else
-						{
-							gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-							i--;
-						}
-					}
-				}
-
-				if (killedAPlayer)
-				{
-					winState.winMessage += "\n";
-				}
+				
 
 			}else
 			if (gameplayState.evictUnresponsivePlayers)
@@ -759,6 +721,46 @@ void gameStep(float deltaTime)
 
 				}
 			};
+
+			//kill players
+			bool killedAPlayer = 0;
+			for (int i = 0; i < gameplayState.players.size(); i++)
+			{
+				if (gameplayState.players[i].life <= 0)
+				{
+					winState.winMessage += std::to_string(gameplayState.players[i].id) +
+						" died ";
+					killedAPlayer = true;
+
+					if (gameplayState.waitingForPlayerIndex == i)
+					{
+						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+						i--;
+						if (gameplayState.players.size())
+							gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
+						gameplayState.currentWaitingTime = 5;
+
+						sendNextMessage();
+					}
+					else if (gameplayState.waitingForPlayerIndex > i)
+					{
+						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+						i--;
+						gameplayState.waitingForPlayerIndex--;
+					}
+					else
+					{
+						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+						i--;
+					}
+				}
+			}
+
+			if (killedAPlayer)
+			{
+				winState.winMessage += "\n";
+			}
+
 
 		}
 
