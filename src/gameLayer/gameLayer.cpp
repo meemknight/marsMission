@@ -51,6 +51,8 @@ struct WinState
 std::string panicError = "";
 std::string state = "";
 
+float culldownTime = 0.5;
+bool followCurrentTurn = 0;
 
 void gameStep(float deltaTime)
 {
@@ -146,7 +148,7 @@ void gameStep(float deltaTime)
 				f << p.iron << " ";
 				f << p.osmium << " ";
 
-				gameplayState.waitCulldown = 0.5;
+				gameplayState.waitCulldown = culldownTime;
 				f.close();
 
 				p.scannedThisTurn = false;
@@ -178,6 +180,11 @@ void gameStep(float deltaTime)
 			//server
 			if (f)
 			{
+				if (followCurrentTurn)
+				{
+					currentFollow = gameplayState.waitingForPlayerIndex;
+				}
+
 				gameplayState.currentWaitingTime = 5.f;
 				//got the input
 
@@ -995,6 +1002,11 @@ void sideWindow()
 
 	ImGui::Checkbox("Close Game When Someone Won", &gameplayState.closeGameWhenWinning);
 	
+	ImGui::Checkbox("Follow current player", &followCurrentTurn);
+
+
+	ImGui::SliderFloat("Simulation Delay", &culldownTime, 0.1, 2);
+
 
 	ImGui::Separator();
 

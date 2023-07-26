@@ -310,11 +310,26 @@ struct Map generate_world(glm::ivec2 maze_size, int seed, bool fewerResources)
 	final_map = additive_mask(&final_map, &random_iron, glm::ivec2(0, 0), Air);
 	final_map = additive_mask(&final_map, &cobaltMap, glm::ivec2(0, 0), Air);
 
-	addSpawn(7, 7, final_map);
-	addSpawn(7, final_map.size.y-7, final_map);
-	addSpawn(final_map.size.x - 7, 7, final_map);
-	addSpawn(final_map.size.x - 7, final_map.size.y - 7, final_map);
-	addSpawn(final_map.size.x/2, final_map.size.y/2, final_map);
+	std::vector<glm::vec2> positions;
+
+	float radians = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		glm::vec2 points(sin(radians), cos(radians));
+		
+		points *= (final_map.size.x / 2.f) - 7;
+
+		points += final_map.size / 2;
+
+		positions.push_back(points);
+
+		radians += (2 * 3.141592) / 5.f;
+	}
+
+	for (auto i : positions)
+	{
+		addSpawn(i.x, i.y, final_map);
+	}
 
 	for (int i = 0; i < final_map.size.x; i++)
 	{
