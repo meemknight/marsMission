@@ -745,7 +745,15 @@ void gameStep(float deltaTime)
 				if (gameplayState.currentWaitingTime < 0)
 				{
 					gameplayState.currentWaitingTime = 5;
-					gameplayState.players[gameplayState.waitingForPlayerIndex].life = 0;
+					
+					{
+						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+						if (gameplayState.players.size())
+							gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
+						gameplayState.currentWaitingTime = 5;
+						sendNextMessage();
+					}
+
 				}
 			};
 
