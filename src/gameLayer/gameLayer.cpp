@@ -14,6 +14,7 @@
 #include <fstream>
 #include <filesystem>
 #include <mapGenerator.h>
+#include <thread>
 #undef min
 
 int currentFollow = -1;
@@ -183,6 +184,8 @@ void gameStep(float deltaTime)
 			//server
 			if (f)
 			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
 				if (followCurrentTurn)
 				{
 					currentFollow = gameplayState.waitingForPlayerIndex;
