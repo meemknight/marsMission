@@ -39,8 +39,14 @@ struct GameplayState
 	
 	bool evictUnresponsivePlayers = 0;
 	float currentWaitingTime = 5;
+	bool closeGameWhenWinning = 0;
 
 }gameplayState;
+
+struct WinState
+{
+	std::string winMessage;
+}winState;
 
 std::string panicError = "";
 std::string state = "";
@@ -48,7 +54,6 @@ std::string state = "";
 
 void gameStep(float deltaTime)
 {
-
 
 	if (gameplayState.waitCulldown > 0)
 	{
@@ -685,10 +690,15 @@ void gameStep(float deltaTime)
 				}
 
 				//kill players
+				bool killedAPlayer = 0;
 				for (int i = 0; i < gameplayState.players.size(); i++)
 				{
 					if (gameplayState.players[i].life <= 0)
 					{
+						winState.winMessage += std::to_string(gameplayState.players[i].id) +
+							" died ";
+						killedAPlayer = true;
+
 						if (gameplayState.waitingForPlayerIndex == i)
 						{
 							gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
@@ -712,6 +722,12 @@ void gameStep(float deltaTime)
 						}
 					}
 				}
+
+				if (killedAPlayer)
+				{
+					winState.winMessage += "\n";
+				}
+
 			}else
 			if (gameplayState.evictUnresponsivePlayers)
 			{
@@ -977,6 +993,9 @@ void sideWindow()
 
 	ImGui::Checkbox("Evict players after 5 secconds", &gameplayState.evictUnresponsivePlayers);
 
+	ImGui::Checkbox("Close Game When Someone Won", &gameplayState.closeGameWhenWinning);
+	
+
 	ImGui::Separator();
 
 	if (ImGui::Button("Set In center"))
@@ -1090,18 +1109,17 @@ void mainMenuScreen()
 
 	if (ImGui::Button("Start Game"))
 	{
-		gameplayState = {};
-		glm::ivec2 size = {45,45};
-		if (smallMap) { size = {30,30}; }
+		winState = {};
 
-		//gameplayState.map.create({50, 50});
-		if(seed == 0)
+		int s = seed;
+		if (!s)s = time(0);
+		if (smallMap)
 		{
-			gameplayState.map = generate_world(size, time(0));
+			gameplayState.map = generate_world({30,30}, s, false);
 		}
 		else
 		{
-			gameplayState.map = generate_world(size, seed);
+			gameplayState.map = generate_world({45,45}, s, true);
 		}
 
 		std::vector<glm::vec2> spawnPoints;
@@ -1125,6 +1143,13 @@ void mainMenuScreen()
 			gameplayState.players.back().id = i;
 		}
 
+	}
+
+	if (!winState.winMessage.empty())
+	{
+		ImGui::Separator();
+		ImGui::Text("LAST GAME:");
+		ImGui::Text(winState.winMessage.c_str());
 	}
 
 	ImGui::End();
@@ -1235,6 +1260,19 @@ bool gameLogic(float deltaTime)
 			sideWindow();
 
 			sendManualCommand();
+
+			if (gameplayState.closeGameWhenWinning)
+			{
+				if (gameplayState.players.size() <= 1)
+				{
+					if (gameplayState.players.size())
+					{
+						winState.winMessage += 
+						 	std::to_string(gameplayState.players[0].id) + " Won\n";
+					}
+					gameplayState = {};
+				}
+			}
 		}
 		else
 		{

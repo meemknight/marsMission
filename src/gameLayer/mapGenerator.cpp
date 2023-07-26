@@ -243,7 +243,7 @@ struct Map layered_simplex_map(glm::ivec2 size, FastNoiseSIMD *fn, char fill_abo
 	return lsm;
 }
 
-struct Map generate_world(glm::ivec2 maze_size, int seed)
+struct Map generate_world(glm::ivec2 maze_size, int seed, bool fewerResources)
 {
 	auto addSpawn = [&](int x, int y, Map &m)
 	{
@@ -278,17 +278,20 @@ struct Map generate_world(glm::ivec2 maze_size, int seed)
 	maze_with_bedrock = additive_mask(&maze_with_bedrock, &extraRock, glm::ivec2(0, 0), Air);
 	maze_with_bedrock = additive_mask(&maze_with_holes, &maze_with_bedrock, {}, Air);
 
-
-	auto random_iron = layered_simplex_map(s_size, fn, Iron, Air, 0.975, 0.975, 8, 2, 4, seed + 1);
+	float baseIronTresshold = 0.975;
+	if (fewerResources) { baseIronTresshold = 1; }
+	auto random_iron = layered_simplex_map(s_size, fn, Iron, Air, baseIronTresshold, 0.975, 8, 2, 4, seed + 1);
 	
 	Map cobaltMap;
 	cobaltMap.blank(s_size, Air);
-	for (int j = 0; j < s_size.y; j+=10)
+	int advance = 10;
+	if (fewerResources) { advance = 15; }
+	for (int j = 0; j < s_size.y; j+=advance)
 	{
-		for (int i = 0; i < s_size.x; i+=10)
+		for (int i = 0; i < s_size.x; i+= advance)
 		{
-			int offsetX = rand() % 10;
-			int offsetY = rand() % 10;
+			int offsetX = rand() % advance;
+			int offsetY = rand() % advance;
 
 			cobaltMap.safeSet(i + offsetX, j + offsetY, Tiles::Osmium);
 

@@ -13,4 +13,4 @@ enum MazeTiles
 	Visited = 4,
 };
 
-struct Map generate_world(glm::ivec2 maze_size, int seed);
+struct Map generate_world(glm::ivec2 maze_size, int seed, bool fewerResources);
