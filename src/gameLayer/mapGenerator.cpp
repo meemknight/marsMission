@@ -245,6 +245,20 @@ struct Map layered_simplex_map(glm::ivec2 size, FastNoiseSIMD *fn, char fill_abo
 
 struct Map generate_world(glm::ivec2 maze_size, int seed)
 {
+	auto addSpawn = [&](int x, int y, Map &m)
+	{
+		for (int j = -2; j < 2; j++)
+			for (int i = -2; i < 2; i++)
+			{
+				if (glm::distance(glm::vec2(0, 0), glm::vec2(i, j)) < sqrt(7.f) + 0.1)
+				{
+					m.safeSet(x + i, y + j, Air);
+				}
+			}
+
+		m.safeSet(x, y, Base);
+	};
+
 	srand(seed);
 
 	auto fn = FastNoiseSIMD::NewFastNoiseSIMD();
@@ -254,12 +268,16 @@ struct Map generate_world(glm::ivec2 maze_size, int seed)
 	auto s_size = m1.size;
 
 	auto lab_holes = layered_simplex_map(s_size, fn, Stone, Air, 0.5, 0.95, 3, 2, 2, seed + 2);
+	auto lab_bedrock = layered_simplex_map(s_size, fn, Bedrock, Air, 0.75, 0.90, 3, 2, 2, seed + 7);
 
 	auto extraRock = layered_simplex_map(s_size, fn, Stone, Air, 0.6, 0.95, 3, 2, 2, seed + 3);
 
 	auto maze_with_holes = mask_map(&m1, &lab_holes, glm::ivec2(0, 0), Air);
+	auto maze_with_bedrock = mask_map(&lab_bedrock, &maze_with_holes, glm::ivec2(0, 0), Air);
 
-	maze_with_holes = additive_mask(&maze_with_holes, &extraRock, glm::ivec2(0, 0), Air);
+	maze_with_bedrock = additive_mask(&maze_with_bedrock, &extraRock, glm::ivec2(0, 0), Air);
+	maze_with_bedrock = additive_mask(&maze_with_holes, &maze_with_bedrock, {}, Air);
+
 
 	auto random_iron = layered_simplex_map(s_size, fn, Iron, Air, 0.975, 0.975, 8, 2, 4, seed + 1);
 	
@@ -285,29 +303,15 @@ struct Map generate_world(glm::ivec2 maze_size, int seed)
 	//auto random_cobalt = layered_simplex_map(s_size, fn, Tiles::Osmium, Air, 0.99, 0.993, 9, 2, 8);
 	//random_cobalt = additive_mask(&cobalt_stone, &random_cobalt, glm::ivec2(0, 0), Air);
 
-	auto final_map = additive_mask(&maze_with_holes, &random_iron, glm::ivec2(0, 0), Air);
+	auto final_map = additive_mask(&maze_with_bedrock, &random_iron, glm::ivec2(0, 0), Air);
 	final_map = additive_mask(&final_map, &random_iron, glm::ivec2(0, 0), Air);
 	final_map = additive_mask(&final_map, &cobaltMap, glm::ivec2(0, 0), Air);
 
-	auto addSpawn = [&](int x, int y)
-	{
-		for (int j = -2; j < 2; j++)
-			for (int i = -2; i < 2; i++)
-			{
-				if (glm::distance(glm::vec2(0, 0), glm::vec2(i, j)) < sqrt(7.f) + 0.1)
-				{
-					final_map.safeSet(x + i, y + j, Air);
-				}
-			}
-
-		final_map.safeSet(x, y, Base);
-	};
-
-	addSpawn(7, 7);
-	addSpawn(7, final_map.size.y-7);
-	addSpawn(final_map.size.x - 7, 7);
-	addSpawn(final_map.size.x - 7, final_map.size.y - 7);
-	addSpawn(final_map.size.x/2, final_map.size.y/2);
+	addSpawn(7, 7, final_map);
+	addSpawn(7, final_map.size.y-7, final_map);
+	addSpawn(final_map.size.x - 7, 7, final_map);
+	addSpawn(final_map.size.x - 7, final_map.size.y - 7, final_map);
+	addSpawn(final_map.size.x/2, final_map.size.y/2, final_map);
 
 	for (int i = 0; i < final_map.size.x; i++)
 	{

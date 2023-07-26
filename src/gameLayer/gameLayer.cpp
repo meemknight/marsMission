@@ -1081,22 +1081,27 @@ void mainMenuScreen()
 
 	static int nrOfPlayers = 1;
 
+	static bool smallMap = 0;
+
 	ImGui::SliderInt("Nr of players", &nrOfPlayers, 1, 5);
 
 	ImGui::InputInt("Seed (0 for random): ", &seed);
+	ImGui::Checkbox("Small map", &smallMap);
 
 	if (ImGui::Button("Start Game"))
 	{
 		gameplayState = {};
+		glm::ivec2 size = {45,45};
+		if (smallMap) { size = {30,30}; }
 
 		//gameplayState.map.create({50, 50});
 		if(seed == 0)
 		{
-			gameplayState.map = generate_world({30,30}, time(0));
+			gameplayState.map = generate_world(size, time(0));
 		}
 		else
 		{
-			gameplayState.map = generate_world({30,30}, seed);
+			gameplayState.map = generate_world(size, seed);
 		}
 
 		std::vector<glm::vec2> spawnPoints;
