@@ -41,7 +41,7 @@
 
 
 //version of the shading language. this is the minimum but you can go lower if you modify the shader code with minimal effort
-#define GL2D_OPNEGL_SHADER_VERSION "#version 120"
+#define GL2D_OPNEGL_SHADER_VERSION "#version 330"
 #define GL2D_OPNEGL_SHADER_PRECISION ""
 
 //this is the default capacity of the renderer

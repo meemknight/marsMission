@@ -89,11 +89,11 @@ namespace gl2d
 	static const char* defaultVertexShader =
 		GL2D_OPNEGL_SHADER_VERSION "\n"
 		GL2D_OPNEGL_SHADER_PRECISION "\n"
-		"attribute vec2 quad_positions;\n"
-		"attribute vec4 quad_colors;\n"
-		"attribute vec2 texturePositions;\n"
-		"varying vec4 v_color;\n"
-		"varying vec2 v_texture;\n"
+		"in vec2 quad_positions;\n"
+		"in vec4 quad_colors;\n"
+		"in vec2 texturePositions;\n"
+		"out vec4 v_color;\n"
+		"out vec2 v_texture;\n"
 		"void main()\n"
 		"{\n"
 		"	gl_Position = vec4(quad_positions, 0, 1);\n"
@@ -104,12 +104,13 @@ namespace gl2d
 	static const char* defaultFragmentShader =
 		GL2D_OPNEGL_SHADER_VERSION "\n"
 		GL2D_OPNEGL_SHADER_PRECISION "\n"
-		"varying vec4 v_color;\n"
-		"varying vec2 v_texture;\n"
+		"in vec4 v_color;\n"
+		"in vec2 v_texture;\n"
+		"out vec4 color;\n"
 		"uniform sampler2D u_sampler;\n"
 		"void main()\n"
 		"{\n"
-		"    gl_FragColor  = v_color * texture2D(u_sampler, v_texture);\n"
+		"    color  = v_color * texture2D(u_sampler, v_texture);\n"
 		"}\n";
 
 #pragma endregion
@@ -513,7 +514,7 @@ namespace gl2d
 
 		glViewport(0, 0, renderer.windowW, renderer.windowH);
 
-		//glBindVertexArray(renderer.vao);
+		glBindVertexArray(renderer.vao);
 
 		glUseProgram(renderer.currentShader.id);
 
@@ -552,7 +553,7 @@ namespace gl2d
 
 			glDrawArrays(GL_TRIANGLES, pos * 6, 6 * (size - pos));
 
-			//glBindVertexArray(0);
+			glBindVertexArray(0);
 		}
 
 		if (clearDrawData) 
@@ -1018,8 +1019,8 @@ namespace gl2d
 
 		this->resetCameraAndShader();
 
-		//glGenVertexArrays(1, &vao);
-		//glBindVertexArray(vao);
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
 
 		glGenBuffers(Renderer2DBufferType::bufferSize, buffers);
 
@@ -1035,7 +1036,7 @@ namespace gl2d
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-		//glBindVertexArray(0);
+		glBindVertexArray(0);
 	}
 
 	void Renderer2D::cleanup()
