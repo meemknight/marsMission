@@ -110,7 +110,7 @@ namespace gl2d
 		"uniform sampler2D u_sampler;\n"
 		"void main()\n"
 		"{\n"
-		"    color  = v_color * texture2D(u_sampler, v_texture);\n"
+		"    color  = v_color * texture(u_sampler, v_texture);\n"
 		"}\n";
 
 #pragma endregion
