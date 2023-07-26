@@ -195,9 +195,7 @@
 		
 		#define permaAssertComment(expression, comment) (void)(								\
 					(!!(expression)) ||														\
-					(assertFuncProduction(#expression, __FILE__, (unsigned)(__LINE__), comment), 1)	\
-
-				)
+					(assertFuncProduction(#expression, __FILE__, (unsigned)(__LINE__), comment), 1)	)
 		
 	#endif
 
