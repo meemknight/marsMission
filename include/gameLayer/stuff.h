@@ -13,6 +13,14 @@ bool calculateView(glm::ivec2 playerPos, glm::ivec2 blockPos, int level);
 
 struct Player
 {
+
+	Player() {};
+	Player(glm::ivec2 p)
+	{
+		position = p;
+		spawnPoint = p;
+	};
+
 	glm::ivec2 position = {1,1};
 	int life = MAX_ROVER_LIFE - 5;
 	bool hasAntena = 0;

@@ -488,10 +488,14 @@ void gameStep(float deltaTime)
 
 						if (f >> c)
 						{
-							switch (std::toupper(c))
+							if (p.hasAntena || p.position == p.spawnPoint)
 							{
-							case 'S':
-								if (p.cameraLevel < 3)
+
+
+								switch (std::toupper(c))
+								{
+								case 'S':
+									if (p.cameraLevel < 3)
 								{
 									if (p.cameraLevel == 1)
 									{
@@ -511,10 +515,10 @@ void gameStep(float deltaTime)
 										}
 									}
 								}
-							break;
+								break;
 
-							case 'A':
-							if (p.gunLevel < 3)
+								case 'A':
+								if (p.gunLevel < 3)
 							{
 								if (p.gunLevel == 1)
 								{
@@ -534,10 +538,10 @@ void gameStep(float deltaTime)
 									}
 								}
 							}
-							break;
+								break;
 
-							case 'D':
-							if (p.drilLevel < 3)
+								case 'D':
+								if (p.drilLevel < 3)
 							{
 								if (p.drilLevel == 1)
 								{
@@ -557,10 +561,10 @@ void gameStep(float deltaTime)
 									}
 								}
 							}
-							break;
+								break;
 
-							case 'M':
-							if (p.wheelLevel < 3)
+								case 'M':
+								if (p.wheelLevel < 3)
 							{
 								if (p.wheelLevel == 1)
 								{
@@ -580,10 +584,10 @@ void gameStep(float deltaTime)
 									}
 								}
 							}
-							break;
+								break;
 
-							case 'R':
-								if(!p.hasAntena)
+								case 'R':
+									if(!p.hasAntena)
 								{
 									if (p.iron >= 2 && p.osmium >= 1)
 									{
@@ -592,10 +596,10 @@ void gameStep(float deltaTime)
 										p.hasAntena = 1;
 									}
 								}
-							break;
+								break;
 
-							case 'B':
-							if (!p.hasBatery)
+								case 'B':
+								if (!p.hasBatery)
 							{
 								if (p.iron >= 1 && p.osmium >= 1)
 								{
@@ -604,10 +608,10 @@ void gameStep(float deltaTime)
 									p.hasBatery = 1;
 								}
 							}
-							break;
+								break;
 
-							case 'H':
-							if (p.life != MAX_ROVER_LIFE)
+								case 'H':
+								if (p.life != MAX_ROVER_LIFE)
 							{
 								if (p.osmium >= 1)
 								{
@@ -616,9 +620,12 @@ void gameStep(float deltaTime)
 									p.life = std::min(p.life, MAX_ROVER_LIFE);
 								}
 							}
-							break;
+								break;
 
-							}
+								}
+
+							};
+
 						}
 
 					}
@@ -1105,9 +1112,11 @@ void mainMenuScreen()
 			}
 		}
 
+		std::shuffle(spawnPoints.begin(), spawnPoints.end(), std::default_random_engine(seed));
+
 		for (int i = 0; i < nrOfPlayers; i++)
 		{
-			gameplayState.players.push_back({spawnPoints[i]});
+			gameplayState.players.push_back(Player(spawnPoints[i]));
 			gameplayState.players.back().id = i;
 		}
 
