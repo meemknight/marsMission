@@ -16,6 +16,9 @@
 #include <mapGenerator.h>
 #undef min
 
+int currentFollow = -1;
+
+
 gl2d::Renderer2D renderer;
 gl2d::Texture roverTexture;
 gl2d::TextureAtlasPadding roverAtlas;
@@ -964,7 +967,6 @@ void sendManualCommand()
 float cameraZoom = 1;
 
 //vector pos not id
-int currentFollow = -1;
 bool simulateFog = false;
 
 ImVec4 colors[] = {
