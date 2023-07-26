@@ -34,14 +34,14 @@
 //if you are not using visual studio make shure you link to "Opengl32.lib"
 
 //if this is true it will use opengl130. If not it will use fome functionality from opengl3.
-#define GL2D_USE_OPENGL_130 false
+#define GL2D_USE_OPENGL_130 true
 
 #define GL2D_DEFAULT_TEXTURE_LOAD_MODE_PIXELATED false
 #define GL2D_DEFAULT_TEXTURE_LOAD_MODE_USE_MIPMAPS true
 
 
 //version of the shading language. this is the minimum but you can go lower if you modify the shader code with minimal effort
-#define GL2D_OPNEGL_SHADER_VERSION "#version 130"
+#define GL2D_OPNEGL_SHADER_VERSION "#version 120"
 #define GL2D_OPNEGL_SHADER_PRECISION "precision highp float;"
 
 //this is the default capacity of the renderer

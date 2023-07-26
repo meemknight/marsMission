@@ -92,8 +92,8 @@ namespace gl2d
 		"in vec2 quad_positions;\n"
 		"in vec4 quad_colors;\n"
 		"in vec2 texturePositions;\n"
-		"out vec4 v_color;\n"
-		"out vec2 v_texture;\n"
+		"varying vec4 v_color;\n"
+		"varying vec2 v_texture;\n"
 		"void main()\n"
 		"{\n"
 		"	gl_Position = vec4(quad_positions, 0, 1);\n"
@@ -104,13 +104,12 @@ namespace gl2d
 	static const char* defaultFragmentShader =
 		GL2D_OPNEGL_SHADER_VERSION "\n"
 		GL2D_OPNEGL_SHADER_PRECISION "\n"
-		"out vec4 color;\n"
-		"in vec4 v_color;\n"
-		"in vec2 v_texture;\n"
+		"varying vec4 v_color;\n"
+		"varying vec2 v_texture;\n"
 		"uniform sampler2D u_sampler;\n"
 		"void main()\n"
 		"{\n"
-		"    color = v_color * texture2D(u_sampler, v_texture);\n"
+		"    gl_FragColor  = v_color * texture2D(u_sampler, v_texture);\n"
 		"}\n";
 
 #pragma endregion
