@@ -7,7 +7,6 @@
 #include <ctime>
 #include "platformTools.h"
 #include "config.h"
-#include <raudio.h>
 #include "platformInput.h"
 #include "otherPlatformFunctions.h"
 #include "gameLayer.h"

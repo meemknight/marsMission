@@ -266,7 +266,7 @@ namespace gl2d
 	//(you will do that for ui for example that you will want to draw with the camera at 0 0).
 	struct Camera
 	{
-		glm::vec2  position = {};
+		glm::vec2 position = glm::vec2(0,0);
 	
 		// Camera rotation in degrees
 		float rotation = 0.f;
