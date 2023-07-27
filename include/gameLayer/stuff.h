@@ -169,7 +169,7 @@ struct Map
 
 	void render(gl2d::Renderer2D &renderer, gl2d::Texture &tiles,
 		gl2d::TextureAtlasPadding &tilesAtlas, bool simulateFog,
-		int viewLevel, glm::ivec2 playerPos);
+		std::vector<int> viewLevel, std::vector<glm::ivec2> playerPos);
 
 
 };

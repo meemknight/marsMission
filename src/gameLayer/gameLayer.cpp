@@ -1264,13 +1264,22 @@ bool gameLogic(float deltaTime)
 			if (currentFollow >= 0)
 			{
 				gameplayState.map.render(renderer, spritesTexture, spritesAtlas,
-					simulateFog, gameplayState.players[currentFollow].cameraLevel, 
-					gameplayState.players[currentFollow].position);
+					simulateFog, {gameplayState.players[currentFollow].cameraLevel},
+					{gameplayState.players[currentFollow].position});
 			}
 			else
 			{
+				std::vector<int> view;
+				std::vector<glm::ivec2> pos;
+
+				for (auto &p : gameplayState.players)
+				{
+					view.push_back(p.cameraLevel);
+					pos.push_back(p.position);
+				}
+
 				gameplayState.map.render(renderer, spritesTexture, spritesAtlas,
-					0, 0, {});
+					simulateFog, view, pos);
 			}
 
 			

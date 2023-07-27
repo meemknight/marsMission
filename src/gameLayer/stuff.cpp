@@ -75,7 +75,7 @@ struct Map splat(glm::ivec2 size)
 
 void Map::render(gl2d::Renderer2D & renderer, gl2d::Texture & tiles,
 	gl2d::TextureAtlasPadding &tilesAtlas, bool simulateFog,
-	int viewLevel, glm::ivec2 playerPos)
+	std::vector<int> viewLevel, std::vector<glm::ivec2> playerPos)
 {
 
 	glm::vec2 drawSize(100, 100);
@@ -115,7 +115,16 @@ void Map::render(gl2d::Renderer2D & renderer, gl2d::Texture & tiles,
 
 			if (simulateFog)
 			{
-				if (!calculateView(playerPos, {i,j}, viewLevel))
+				bool yes = 0;
+				for (int p=0;p<playerPos.size();p++)
+				{
+					if (calculateView(playerPos[p], {i,j}, viewLevel[p]))
+					{
+						yes = 1;
+						break;
+					}
+				}
+				if (!yes)
 				{
 					color = glm::vec4(0.2, 0.2, 0.2, 1.f);
 				}
