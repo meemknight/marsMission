@@ -734,7 +734,7 @@ void gameStep(float deltaTime)
 
 					if (gameplayState.waitingForPlayerIndex == i)
 					{
-						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+						gameplayState.players.erase(gameplayState.players.begin() + i);
 						i--;
 						if (gameplayState.players.size())
 							gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
@@ -744,13 +744,13 @@ void gameStep(float deltaTime)
 					}
 					else if (gameplayState.waitingForPlayerIndex > i)
 					{
-						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+						gameplayState.players.erase(gameplayState.players.begin() + i);
 						i--;
 						gameplayState.waitingForPlayerIndex--;
 					}
 					else
 					{
-						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+						gameplayState.players.erase(gameplayState.players.begin() + i);
 						i--;
 					}
 				}
@@ -1020,7 +1020,7 @@ void sideWindow()
 	ImGui::Checkbox("Follow current player", &followCurrentTurn);
 
 
-	ImGui::SliderFloat("Simulation Delay", &culldownTime, 0.1, 2);
+	ImGui::SliderFloat("Simulation Delay", &culldownTime, 0, 2);
 
 
 
@@ -1137,6 +1137,7 @@ void mainMenuScreen()
 
 	ImGui::InputInt("Acid start time", &acidStartTime);
 
+	//todo sa afisez ca nu se poate
 	if (ImGui::Button("Start Game"))
 	{
 		std::error_code error = {};
@@ -1144,6 +1145,7 @@ void mainMenuScreen()
 		std::filesystem::create_directory("game");
 
 		winState = {};
+		gameplayState = {};
 
 		int s = seed;
 		if (!s)s = time(0);
