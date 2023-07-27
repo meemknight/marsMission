@@ -126,7 +126,7 @@ void Map::render(gl2d::Renderer2D & renderer, gl2d::Texture & tiles,
 				}
 				if (!yes)
 				{
-					color = glm::vec4(0.2, 0.2, 0.2, 1.f);
+					color = glm::vec4(0.5, 0.5, 0.5, 1.f);
 				}
 			}
 

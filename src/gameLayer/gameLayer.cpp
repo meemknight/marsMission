@@ -17,7 +17,7 @@
 #include <thread>
 #undef min
 
-int currentFollow = -1;
+int currentFollow = -2;
 
 
 gl2d::Renderer2D renderer;
@@ -26,8 +26,9 @@ gl2d::TextureAtlasPadding roverAtlas;
 gl2d::Texture spritesTexture;
 gl2d::TextureAtlasPadding spritesAtlas;
 gl2d::FrameBuffer fbo;
+gl2d::Font font;
 
-static int acidStartTime = 100;
+static int acidStartTime = 150;
 
 struct GameplayState
 {
@@ -58,10 +59,12 @@ std::string panicError = "";
 std::string state = "";
 
 float culldownTime = 0.5;
+bool pause = 0;
 bool followCurrentTurn = 0;
 
 void gameStep(float deltaTime)
 {
+	if (pause)return;
 
 	if (gameplayState.waitCulldown > 0)
 	{
@@ -776,6 +779,8 @@ bool initGame()
 	gl2d::init();
 
 	
+	font.createFromFile(RESOURCES_PATH "roboto_black.ttf");
+
 	fbo.create(500, 500);
 
 	renderer.create(fbo.fbo);
@@ -786,7 +791,10 @@ bool initGame()
 	spritesTexture.loadFromFileWithPixelPadding(RESOURCES_PATH "sprites.png", 128, true);
 	spritesAtlas = gl2d::TextureAtlasPadding(10, 1, spritesTexture.GetSize().x, spritesTexture.GetSize().y);
 
-	
+	std::error_code error = {};
+	std::filesystem::remove_all("game", error);
+	std::filesystem::create_directory("game");
+
 	return true;
 }
 
@@ -977,20 +985,20 @@ void sendManualCommand()
 }
 
 
-float cameraZoom = 1;
+float cameraZoom = 0.198;
 
 //vector pos not id
-bool simulateFog = false;
+bool simulateFog = true;
 
 ImVec4 colors[] = {
-		ImVec4{1,0,0,1},
+		ImVec4{0,0,1,1},
 		ImVec4{1,1,0,1},
 		ImVec4{1,0,1,1},
 		ImVec4{1,1,1,1},
 		ImVec4{0,1,1,1},
-		ImVec4{0,0,1,1},
+		ImVec4{1,0,0,1},
 };
-int selected[100] = {};
+int selected[100] = {0,1,2,3,4};
 
 
 void sideWindow()
@@ -1022,6 +1030,8 @@ void sideWindow()
 
 	ImGui::SliderFloat("Simulation Delay", &culldownTime, 0, 2);
 
+	ImGui::Checkbox("PAUSE", &pause);
+
 
 
 	ImGui::Separator();
@@ -1029,6 +1039,11 @@ void sideWindow()
 	if (ImGui::Button("Set In center"))
 	{
 		currentFollow = -1;
+	}
+
+	if (ImGui::Button("Set In baricenter"))
+	{
+		currentFollow = -2;
 	}
 
 	static bool colorControols = 1;
@@ -1252,8 +1267,18 @@ bool gameLogic(float deltaTime)
 				{
 					followPos = glm::vec2(gameplayState.players[currentFollow].position) * 100.f + glm::vec2(50, 50);
 				}
+				else if (currentFollow == -2)
+				{
+					followPos = {};
+					for (auto &i : gameplayState.players)
+					{
+						followPos += i.position;
+					}
+					followPos /= gameplayState.players.size();
+					followPos *= 100.f;
+				}
 
-				renderer.currentCamera.follow(followPos, 1, 0.1, 0.1, fboSize.x, fboSize.y);
+				renderer.currentCamera.follow(followPos, deltaTime*10000.f, 0.1, 100000000, fboSize.x, fboSize.y);
 
 
 			}
@@ -1291,6 +1316,18 @@ bool gameLogic(float deltaTime)
 				renderRover(renderer, roverTexture, roverAtlas, gameplayState.players[i]);
 			}
 
+			if (renderer.currentCamera.zoom < 0.5)
+			{
+				for (int i = 0; i < gameplayState.players.size();i++)
+				{
+					renderer.renderText(
+						glm::vec2{gameplayState.players[i].position * 100} + glm::vec2(100, -400),
+						std::to_string(gameplayState.players[i].id).c_str(), font,
+						glm::vec4(gameplayState.players[i].color, 0.3f), 8
+					);
+				}
+			}
+
 			glViewport(0, 0, fboSize.x, fboSize.y);
 			renderer.flush();
 
@@ -1325,9 +1362,31 @@ bool gameLogic(float deltaTime)
 		}
 	}
 
+	if (platform::isKeyReleased(platform::Button::Space))
+	{
+		pause = !pause;
+	}
+	for (int i = 0; i < gameplayState.players.size(); i++)
+	{
+		if (platform::isKeyReleased(platform::Button::NR1 + i))
+		{
+			currentFollow = i;
+		}
+	}
+	if (platform::isKeyReleased(platform::Button::C))
+	{
+		currentFollow = -2;
+	}
 
+	if (platform::isKeyHeld(platform::Button::Q))
+	{
+		cameraZoom -= 1.2*deltaTime;
+	}else if (platform::isKeyHeld(platform::Button::E))
+	{
+		cameraZoom += 1.2 * deltaTime;
+	}
 
-
+	cameraZoom = glm::clamp(cameraZoom, 0.05f, 3.f);
 
 	return true;
 #pragma endregion
