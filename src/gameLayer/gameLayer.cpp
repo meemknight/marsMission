@@ -506,7 +506,7 @@ void gameStep(float deltaTime)
 
 						if (f >> c)
 						{
-							if (p.hasAntena || p.position == p.spawnPoint)
+							if (p.hasBatery || p.position == p.spawnPoint)
 							{
 
 
