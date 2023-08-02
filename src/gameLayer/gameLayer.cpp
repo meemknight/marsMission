@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <mapGenerator.h>
 #include <thread>
+#include <raudio.h>
 #undef min
 
 int currentFollow = -2;
@@ -28,7 +29,13 @@ gl2d::TextureAtlasPadding spritesAtlas;
 gl2d::FrameBuffer fbo;
 gl2d::Font font;
 
+Sound killSound;
+Sound susSound;
+Sound meetingSound;
+Sound startSound;
+
 static int acidStartTime = 150;
+
 
 struct GameplayState
 {
@@ -40,13 +47,16 @@ struct GameplayState
 	bool firstTime = 1;
 
 	int borderCulldown = acidStartTime; //acid
+	bool firstTimeAcid = 1;
 	int currentBorderAdvance = 0;
 
 	bool closeGame = 0;
 	
-	bool evictUnresponsivePlayers = 0;
+	bool evictUnresponsivePlayers = 1;
 	float currentWaitingTime = 5;
 	bool closeGameWhenWinning = 0;
+	bool pause = 1;
+
 
 }gameplayState;
 
@@ -58,13 +68,12 @@ struct WinState
 std::string panicError = "";
 std::string state = "";
 
-float culldownTime = 0.5;
-bool pause = 0;
+float culldownTime = 0;
 bool followCurrentTurn = 0;
 
 void gameStep(float deltaTime)
 {
-	if (pause)return;
+	if (gameplayState.pause)return;
 
 	if (gameplayState.waitCulldown > 0)
 	{
@@ -170,6 +179,7 @@ void gameStep(float deltaTime)
 		
 			sendNextMessage();
 			gameplayState.firstTime = 0;
+			PlaySound(startSound);
 		}
 		else
 		{
@@ -187,7 +197,7 @@ void gameStep(float deltaTime)
 			//server
 			if (f)
 			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(5));
+				std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
 				if (followCurrentTurn)
 				{
@@ -671,6 +681,12 @@ void gameStep(float deltaTime)
 
 					if (gameplayState.borderCulldown <= 0)
 					{
+						if (gameplayState.firstTimeAcid)
+						{
+							PlaySound(meetingSound);
+							gameplayState.firstTimeAcid = 0;
+						}
+
 						gameplayState.borderCulldown = 2;
 
 						if (gameplayState.currentBorderAdvance <
@@ -733,6 +749,9 @@ void gameStep(float deltaTime)
 				{
 					winState.winMessage += std::to_string(gameplayState.players[i].id) +
 						" died ";
+
+					PlaySound(killSound);
+
 					killedAPlayer = true;
 
 					if (gameplayState.waitingForPlayerIndex == i)
@@ -773,12 +792,22 @@ void gameStep(float deltaTime)
 
 }
 
+
 bool initGame()
 {
 	//initializing stuff for the renderer
 	gl2d::init();
 
 	
+	killSound = LoadSound(RESOURCES_PATH "kill.ogg");
+	susSound = LoadSound(RESOURCES_PATH "sus.mp3");
+	meetingSound = LoadSound(RESOURCES_PATH "meeting.ogg");
+	startSound = LoadSound(RESOURCES_PATH "start.ogg");
+	SetSoundVolume(killSound, 0.2);
+	SetSoundVolume(susSound, 0.2);
+	SetSoundVolume(startSound, 0.2);
+	SetSoundVolume(meetingSound, 0.2);
+
 	font.createFromFile(RESOURCES_PATH "roboto_black.ttf");
 
 	fbo.create(500, 500);
@@ -853,6 +882,7 @@ void sendManualCommand()
 	}
 
 	ImGui::Text(lastErrState.c_str());
+
 	ImGui::Separator();
 
 	static int currentPlayerId = 0;
@@ -993,10 +1023,11 @@ bool simulateFog = true;
 ImVec4 colors[] = {
 		ImVec4{0,0,1,1},
 		ImVec4{1,1,0,1},
-		ImVec4{1,0,1,1},
+		ImVec4{0,1,0,1},
 		ImVec4{1,1,1,1},
-		ImVec4{0,1,1,1},
 		ImVec4{1,0,0,1},
+		ImVec4{1,0,1,1},
+
 };
 int selected[100] = {0,1,2,3,4};
 
@@ -1015,6 +1046,9 @@ void sideWindow()
 	}
 
 	ImGui::Text(state.c_str());
+	if (gameplayState.firstTimeAcid)
+		ImGui::Text("ACID: %d", gameplayState.borderCulldown);
+
 	ImGui::Separator();
 
 	ImGui::SliderFloat("camera zoom", &cameraZoom, 0.05, 3);
@@ -1030,7 +1064,7 @@ void sideWindow()
 
 	ImGui::SliderFloat("Simulation Delay", &culldownTime, 0, 2);
 
-	ImGui::Checkbox("PAUSE", &pause);
+	ImGui::Checkbox("PAUSE", &gameplayState.pause);
 
 
 
@@ -1067,32 +1101,32 @@ void sideWindow()
 
 		if (allowChangePlayerStats)
 		{
-			ImGui::SliderInt("Player life: ", &p.life, 0, MAX_ROVER_LIFE, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player wheel level: ", &p.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player drill level: ", &p.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player gun level: ", &p.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player camera level: ", &p.cameraLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::Checkbox("Player has antena: ", &p.hasAntena);
-			ImGui::Checkbox("Player has batery: ", &p.hasBatery);
+			ImGui::SliderInt("life: ", &p.life, 0, MAX_ROVER_LIFE, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("wheel level: ", &p.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("drill level: ", &p.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("gun level: ", &p.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("camera level: ", &p.cameraLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::Checkbox("antena: ", &p.hasAntena);
+			ImGui::Checkbox("batery: ", &p.hasBatery);
 
-			ImGui::InputInt("Player rock %d", &p.stones);
-			ImGui::InputInt("Player iron %d", &p.iron);
-			ImGui::InputInt("Player osmium %d", &p.osmium);
+			ImGui::InputInt("rock %d", &p.stones);
+			ImGui::InputInt("iron %d", &p.iron);
+			ImGui::InputInt("osmium %d", &p.osmium);
 		}
 		else
 		{
 			auto p2 = p;
-			ImGui::SliderInt("Player life: ", &p2.life, 0, MAX_ROVER_LIFE, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player wheel level: ", &p2.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player drill level: ", &p2.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player gun level: ", &p2.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::SliderInt("Player camera level: ", &p2.cameraLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
-			ImGui::Text("Player has antena: %s", p.hasAntena ? "Yes" : "No");
-			ImGui::Text("Player has batery: %s", p.hasBatery ? "Yes" : "No");
+			ImGui::SliderInt("life: ", &p2.life, 0, MAX_ROVER_LIFE, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("wheel level: ", &p2.wheelLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("drill level: ", &p2.drilLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("gun level: ", &p2.gunLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::SliderInt("camera level: ", &p2.cameraLevel, 1, 3, "%d", ImGuiSliderFlags_NoInput);
+			ImGui::Text("antena: %s", p.hasAntena ? "Yes" : "No");
+			ImGui::Text("batery: %s", p.hasBatery ? "Yes" : "No");
 
-			ImGui::Text("Player rock %d", p.stones);
-			ImGui::Text("Player iron %d", p.iron);
-			ImGui::Text("Player osmium %d", p.osmium);
+			ImGui::Text("rock %d", p.stones);
+			ImGui::Text("iron %d", p.iron);
+			ImGui::Text("osmium %d", p.osmium);
 		}
 
 
@@ -1173,6 +1207,10 @@ void mainMenuScreen()
 			gameplayState.map = generate_world({45,45}, s, true);
 		}
 
+		std::ofstream seedFile(RESOURCES_PATH "game/seed.txt");
+		seedFile << s;
+		seedFile.close();
+
 		std::vector<glm::vec2> spawnPoints;
 
 		for (int j = 0; j < gameplayState.map.size.y; j++)
@@ -1186,7 +1224,7 @@ void mainMenuScreen()
 			}
 		}
 
-		std::shuffle(spawnPoints.begin(), spawnPoints.end(), std::default_random_engine(seed));
+		std::shuffle(spawnPoints.begin(), spawnPoints.end(), std::default_random_engine(time(0)));
 
 		for (int i = 0; i < nrOfPlayers; i++)
 		{
@@ -1278,7 +1316,7 @@ bool gameLogic(float deltaTime)
 					followPos *= 100.f;
 				}
 
-				renderer.currentCamera.follow(followPos, deltaTime*10000.f, 0.1, 100000000, fboSize.x, fboSize.y);
+				renderer.currentCamera.follow(followPos, deltaTime*15000.f, 0.1, 100000000, fboSize.x, fboSize.y);
 
 
 			}
@@ -1323,7 +1361,7 @@ bool gameLogic(float deltaTime)
 					renderer.renderText(
 						glm::vec2{gameplayState.players[i].position * 100} + glm::vec2(100, -400),
 						std::to_string(gameplayState.players[i].id).c_str(), font,
-						glm::vec4(gameplayState.players[i].color, 0.3f), 8
+						glm::vec4(gameplayState.players[i].color, 0.3f), 8, 4, 3, true, {0,0,0,0.1}
 					);
 				}
 			}
@@ -1351,6 +1389,8 @@ bool gameLogic(float deltaTime)
 					{
 						winState.winMessage += 
 						 	std::to_string(gameplayState.players[0].id) + " Won\n";
+						PlaySound(susSound);
+
 					}
 					gameplayState = {};
 				}
@@ -1364,11 +1404,11 @@ bool gameLogic(float deltaTime)
 
 	if (platform::isKeyReleased(platform::Button::Space))
 	{
-		pause = !pause;
+		gameplayState.pause = !gameplayState.pause;
 	}
 	for (int i = 0; i < gameplayState.players.size(); i++)
 	{
-		if (platform::isKeyReleased(platform::Button::NR1 + i))
+		if (platform::isKeyReleased(platform::Button::NR0 + gameplayState.players[i].id))
 		{
 			currentFollow = i;
 		}

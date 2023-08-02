@@ -1,6 +1,7 @@
-#include<iostream> 
+#include <iostream> 
 #include <fstream>
 #include <string>
+#include <thread>
 using namespace std;
 
 int main()
@@ -20,7 +21,10 @@ int main()
 
 		if (input)
 		{
-			//yes our turn to move
+			//sleep a little to make sure that the file was written bt the server
+			std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+			//it is our turn to move
 			//read the file...
 
 			input.close();
@@ -30,6 +34,8 @@ int main()
 				".txt";
 			std::ofstream response(ourFileName);
 			//..
+			//response << "M U\n";
+
 			response.close();
 
 			//increment the round
