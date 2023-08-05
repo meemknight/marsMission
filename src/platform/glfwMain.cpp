@@ -12,7 +12,6 @@
 #include "gameLayer.h"
 #include <fstream>
 #include <chrono>
-#include <raudio.h>
 
 #define REMOVE_IMGUI 0
 
@@ -25,6 +24,7 @@
 
 #ifdef _WIN32
 #include <Windows.h>
+#include <raudio.h>
 #endif
 
 #undef min
@@ -368,8 +368,9 @@ int main()
 #pragma endregion
 
 #pragma region audio
+#ifdef _WIN32
 	InitAudioDevice();
-
+#endif
 	//Music m = LoadMusicStream(RESOURCES_PATH "target.ogg");
 	//Music m = {};
 	//UpdateMusicStream(m);
