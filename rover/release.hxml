@@ -1,0 +1,5 @@
+-main Main
+-D release
+-cp source
+-cp cpp
+-cpp export/release/

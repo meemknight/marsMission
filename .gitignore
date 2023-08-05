@@ -4,4 +4,10 @@ build/
 /.vs
 .idea/
 CMakeSettings.json
+CMakeFiles/
+export/debug
+export/release
+.DS_Store
+mygame
+game/
 Makefile

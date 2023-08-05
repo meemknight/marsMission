@@ -1,0 +1,5 @@
+-main Main
+-D debug
+-cp source
+-cp cpp
+-cpp export/debug/
