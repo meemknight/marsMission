@@ -25,7 +25,11 @@ add_subdirectory(thirdparty/FastNoiseSIMD)		#noise
 add_subdirectory(thirdparty/profilerLib)		#profiling, just a simpe library for measuring elapsed time
 add_subdirectory(thirdparty/gl2d)				#2D rendering library
 add_subdirectory(thirdparty/glui)				#ui library, usefull for making game menus
+
+if(WIN32)
 add_subdirectory(thirdparty/raudio)
+endif()
+
 
 # Define MY_SOURCES to be a list of all the source files for my game 
 file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -58,9 +62,14 @@ target_include_directories("${CMAKE_PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURC
 target_include_directories("${CMAKE_PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/platform/")
 
 
-#target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glm glfw 
-#	glad stb_image stb_truetype gl2d raudio imgui safeSave profilerLib enet glui)
 
-#enet not working yet on linux for some reason
+if(WIN32)
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glm glfw 
 	glad stb_image stb_truetype gl2d imgui profilerLib glui raudio fastNoiseSIMD)
+
+else()
+
+target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE glm glfw 
+	glad stb_image stb_truetype gl2d imgui profilerLib glui fastNoiseSIMD)
+
+endif()

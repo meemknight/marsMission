@@ -15,7 +15,9 @@
 #include <filesystem>
 #include <mapGenerator.h>
 #include <thread>
+#ifdef _WIN32 
 #include <raudio.h>
+#endif
 #undef min
 
 int currentFollow = -2;
@@ -29,10 +31,13 @@ gl2d::TextureAtlasPadding spritesAtlas;
 gl2d::FrameBuffer fbo;
 gl2d::Font font;
 
+#ifdef _WIN32 
 Sound killSound;
 Sound susSound;
 Sound meetingSound;
 Sound startSound;
+#endif
+
 
 static int acidStartTime = 150;
 
@@ -179,7 +184,10 @@ void gameStep(float deltaTime)
 		
 			sendNextMessage();
 			gameplayState.firstTime = 0;
+
+		#ifdef _WIN32 
 			PlaySound(startSound);
+		#endif
 		}
 		else
 		{
@@ -683,7 +691,9 @@ void gameStep(float deltaTime)
 					{
 						if (gameplayState.firstTimeAcid)
 						{
+						#ifdef _WIN32 
 							PlaySound(meetingSound);
+						#endif
 							gameplayState.firstTimeAcid = 0;
 						}
 
@@ -749,8 +759,9 @@ void gameStep(float deltaTime)
 				{
 					winState.winMessage += std::to_string(gameplayState.players[i].id) +
 						" died ";
-
+				#ifdef _WIN32 
 					PlaySound(killSound);
+				#endif
 
 					killedAPlayer = true;
 
@@ -798,7 +809,7 @@ bool initGame()
 	//initializing stuff for the renderer
 	gl2d::init();
 
-	
+#ifdef _WIN32 
 	killSound = LoadSound(RESOURCES_PATH "kill.ogg");
 	susSound = LoadSound(RESOURCES_PATH "sus.mp3");
 	meetingSound = LoadSound(RESOURCES_PATH "meeting.ogg");
@@ -807,6 +818,8 @@ bool initGame()
 	SetSoundVolume(susSound, 0.2);
 	SetSoundVolume(startSound, 0.2);
 	SetSoundVolume(meetingSound, 0.2);
+#endif
+
 
 	font.createFromFile(RESOURCES_PATH "roboto_black.ttf");
 
@@ -1389,7 +1402,9 @@ bool gameLogic(float deltaTime)
 					{
 						winState.winMessage += 
 						 	std::to_string(gameplayState.players[0].id) + " Won\n";
+					#ifdef _WIN32 
 						PlaySound(susSound);
+					#endif
 
 					}
 					gameplayState = {};
