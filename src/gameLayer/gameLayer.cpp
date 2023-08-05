@@ -57,10 +57,10 @@ struct GameplayState
 
 	bool closeGame = 0;
 	
-	bool evictUnresponsivePlayers = 1;
+	bool evictUnresponsivePlayers = 0;
 	float currentWaitingTime = 5;
 	bool closeGameWhenWinning = 0;
-	bool pause = 1;
+	bool pause = 0;
 
 
 }gameplayState;
