@@ -13,4 +13,7 @@ extern class AStar {
 
     @:native("rover::AStar::storeCoolRock")
     public static function storeCoolRock(name:String, x:Int, y:Int):Void;
+
+    @:native("rover::AStar::foundCoolRock")
+    public static function foundCoolRock(name:String):Bool;
 }

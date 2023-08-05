@@ -62,7 +62,7 @@ class Main {
     }
 
     public static function execute():Void {
-        map.doPathFinding();
+        map.player.scanArea();
     }
 
     public static function begin(id:Int):Void {
