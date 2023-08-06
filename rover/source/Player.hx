@@ -61,12 +61,10 @@ class Player {
                     continue;
                 }
 
-                if(world.matrix[j][i] != "F") {
-                    var randomDirection = Math.floor(Math.random() * 4);
-                    direction = __directions[randomDirection];
-                }
+                var randomDirection = Math.floor(Math.random() * 4);
+                direction = __directions[randomDirection];
 
-                if(world.matrix[j][i] == "C" || world.matrix[j][i] == "A") {
+                if(world.matrix[j][i] == "X" || world.matrix[j][i] == "A") {
                     switch(MathUtils.clamp(i - x, -1, 1)) {
                         case -1:
                             mine = "m l";
@@ -122,8 +120,6 @@ class Player {
     }
 
     public function command(cmd:String):Void {
-        trace(x + " " + y);
-
         var client:String = __directory + "game/c" + Main.id + "_" + Main.round + ".txt";
 
         File.saveContent(client, cmd + "\n");

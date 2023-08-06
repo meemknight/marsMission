@@ -1,5 +1,6 @@
 -main Main
 -D debug
+-L spinehaxe
 -cp source
 -cp cpp
 -cpp export/debug/

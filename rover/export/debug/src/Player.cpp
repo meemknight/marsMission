@@ -43,8 +43,8 @@ static const ::String _hx_array_data_6c4d5f81_2[] = {
 };
 HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_42_pathMovement,"Player","pathMovement",0x6131a501,"Player.pathMovement","Player.hx",42,0xa27fc9dd)
 HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_47_mapOut,"Player","mapOut",0x23fc309f,"Player.mapOut","Player.hx",47,0xa27fc9dd)
-HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_99_scanArea,"Player","scanArea",0xa1ebbe37,"Player.scanArea","Player.hx",99,0xa27fc9dd)
-HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_124_command,"Player","command",0xab683b5e,"Player.command","Player.hx",124,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_98_scanArea,"Player","scanArea",0xa1ebbe37,"Player.scanArea","Player.hx",98,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_123_command,"Player","command",0xab683b5e,"Player.command","Player.hx",123,0xa27fc9dd)
 HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_12_boot,"Player","boot",0x156e003f,"Player.boot","Player.hx",12,0xa27fc9dd)
 
 void Player_obj::__construct( ::WorldMap world){
@@ -186,77 +186,76 @@ HXDLIN(  59)				if (_hx_tmp) {
 HXLINE(  60)					i1 = (i1 + 1);
 HXLINE(  61)					continue;
             				}
-HXLINE(  64)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("F",46,00,00,00))) {
-HXLINE(  65)					int randomDirection = ::Math_obj::floor((::Math_obj::random() * ( (Float)(4) )));
-HXLINE(  66)					direction = this->_hx___directions->__get(randomDirection);
-            				}
-HXLINE(  69)				bool _hx_tmp3;
-HXDLIN(  69)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("C",43,00,00,00))) {
-HXLINE(  69)					_hx_tmp3 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("A",41,00,00,00));
+HXLINE(  64)				int randomDirection = ::Math_obj::floor((::Math_obj::random() * ( (Float)(4) )));
+HXLINE(  65)				direction = this->_hx___directions->__get(randomDirection);
+HXLINE(  67)				bool _hx_tmp3;
+HXDLIN(  67)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("X",58,00,00,00))) {
+HXLINE(  67)					_hx_tmp3 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("A",41,00,00,00));
             				}
             				else {
-HXLINE(  69)					_hx_tmp3 = true;
+HXLINE(  67)					_hx_tmp3 = true;
             				}
-HXDLIN(  69)				if (_hx_tmp3) {
-HXLINE(  70)					{
-HXLINE(  70)						Float value4 = ( (Float)((i1 - this->x)) );
-HXDLIN(  70)						Float _g;
-HXDLIN(  70)						if ((value4 < -1)) {
-HXLINE(  70)							_g = ( (Float)(-1) );
+HXDLIN(  67)				if (_hx_tmp3) {
+HXLINE(  68)					{
+HXLINE(  68)						Float value4 = ( (Float)((i1 - this->x)) );
+HXDLIN(  68)						Float _g;
+HXDLIN(  68)						if ((value4 < -1)) {
+HXLINE(  68)							_g = ( (Float)(-1) );
             						}
             						else {
-HXLINE(  70)							if ((value4 > 1)) {
-HXLINE(  70)								_g = ( (Float)(1) );
+HXLINE(  68)							if ((value4 > 1)) {
+HXLINE(  68)								_g = ( (Float)(1) );
             							}
             							else {
-HXLINE(  70)								_g = value4;
+HXLINE(  68)								_g = value4;
             							}
             						}
-HXDLIN(  70)						Float _hx_switch_0 = _g;
+HXDLIN(  68)						Float _hx_switch_0 = _g;
             						if (  (_hx_switch_0==( (Float)(-1) )) ){
-HXLINE(  72)							mine = HX_("m l",f9,d1,52,00);
-HXDLIN(  72)							goto _hx_goto_6;
+HXLINE(  70)							mine = HX_("m l",f9,d1,52,00);
+HXDLIN(  70)							goto _hx_goto_6;
             						}
             						if (  (_hx_switch_0==( (Float)(1) )) ){
-HXLINE(  74)							mine = HX_("m r",ff,d1,52,00);
-HXDLIN(  74)							goto _hx_goto_6;
+HXLINE(  72)							mine = HX_("m r",ff,d1,52,00);
+HXDLIN(  72)							goto _hx_goto_6;
             						}
             						_hx_goto_6:;
             					}
-HXLINE(  77)					{
-HXLINE(  77)						Float value5 = ( (Float)((j1 - this->y)) );
-HXDLIN(  77)						Float _g1;
-HXDLIN(  77)						if ((value5 < -1)) {
-HXLINE(  77)							_g1 = ( (Float)(-1) );
+HXLINE(  75)					{
+HXLINE(  75)						Float value5 = ( (Float)((j1 - this->y)) );
+HXDLIN(  75)						Float _g1;
+HXDLIN(  75)						if ((value5 < -1)) {
+HXLINE(  75)							_g1 = ( (Float)(-1) );
             						}
             						else {
-HXLINE(  77)							if ((value5 > 1)) {
-HXLINE(  77)								_g1 = ( (Float)(1) );
+HXLINE(  75)							if ((value5 > 1)) {
+HXLINE(  75)								_g1 = ( (Float)(1) );
             							}
             							else {
-HXLINE(  77)								_g1 = value5;
+HXLINE(  75)								_g1 = value5;
             							}
             						}
-HXDLIN(  77)						Float _hx_switch_1 = _g1;
+HXDLIN(  75)						Float _hx_switch_1 = _g1;
             						if (  (_hx_switch_1==( (Float)(-1) )) ){
-HXLINE(  79)							mine = HX_("m u",02,d2,52,00);
-HXDLIN(  79)							goto _hx_goto_7;
+HXLINE(  77)							mine = HX_("m u",02,d2,52,00);
+HXDLIN(  77)							goto _hx_goto_7;
             						}
             						if (  (_hx_switch_1==( (Float)(1) )) ){
-HXLINE(  81)							mine = HX_("m d",f1,d1,52,00);
-HXDLIN(  81)							goto _hx_goto_7;
+HXLINE(  79)							mine = HX_("m d",f1,d1,52,00);
+HXDLIN(  79)							goto _hx_goto_7;
             						}
             						_hx_goto_7:;
             					}
-HXLINE(  84)					this->command(mine);
-HXLINE(  85)					return;
+HXLINE(  82)					this->command(mine);
+HXLINE(  83)					this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()[i1] = HX_(".",2e,00,00,00);
+HXLINE(  84)					return;
             				}
-HXLINE(  88)				i1 = (i1 + 1);
+HXLINE(  87)				i1 = (i1 + 1);
             			}
-HXLINE(  91)			j1 = (j1 + 1);
+HXLINE(  90)			j1 = (j1 + 1);
             		}
-HXLINE(  94)		if ((direction != HX_("",00,00,00,00))) {
-HXLINE(  95)			this->command(direction);
+HXLINE(  93)		if ((direction != HX_("",00,00,00,00))) {
+HXLINE(  94)			this->command(direction);
             		}
             	}
 
@@ -264,92 +263,92 @@ HXLINE(  95)			this->command(direction);
 HX_DEFINE_DYNAMIC_FUNC0(Player_obj,mapOut,(void))
 
 void Player_obj::scanArea(){
-            	HX_GC_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_99_scanArea)
-HXLINE( 100)		Float value = ( (Float)((this->y - this->sight)) );
-HXDLIN( 100)		Float max = ( (Float)(this->world->height) );
-HXDLIN( 100)		Float j;
-HXDLIN( 100)		if ((value < 1)) {
-HXLINE( 100)			j = ( (Float)(1) );
+            	HX_GC_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_98_scanArea)
+HXLINE(  99)		Float value = ( (Float)((this->y - this->sight)) );
+HXDLIN(  99)		Float max = ( (Float)(this->world->height) );
+HXDLIN(  99)		Float j;
+HXDLIN(  99)		if ((value < 1)) {
+HXLINE(  99)			j = ( (Float)(1) );
             		}
             		else {
-HXLINE( 100)			if ((value > max)) {
-HXLINE( 100)				j = max;
+HXLINE(  99)			if ((value > max)) {
+HXLINE(  99)				j = max;
             			}
             			else {
-HXLINE( 100)				j = value;
+HXLINE(  99)				j = value;
             			}
             		}
-HXDLIN( 100)		int j1 = ::Std_obj::_hx_int(j);
-HXLINE( 101)		Float value1 = ( (Float)((this->y + this->sight)) );
-HXDLIN( 101)		Float max1 = ( (Float)(this->world->height) );
-HXDLIN( 101)		Float jl;
-HXDLIN( 101)		if ((value1 < 1)) {
-HXLINE( 101)			jl = ( (Float)(1) );
+HXDLIN(  99)		int j1 = ::Std_obj::_hx_int(j);
+HXLINE( 100)		Float value1 = ( (Float)((this->y + this->sight)) );
+HXDLIN( 100)		Float max1 = ( (Float)(this->world->height) );
+HXDLIN( 100)		Float jl;
+HXDLIN( 100)		if ((value1 < 1)) {
+HXLINE( 100)			jl = ( (Float)(1) );
             		}
             		else {
-HXLINE( 101)			if ((value1 > max1)) {
-HXLINE( 101)				jl = max1;
+HXLINE( 100)			if ((value1 > max1)) {
+HXLINE( 100)				jl = max1;
             			}
             			else {
-HXLINE( 101)				jl = value1;
+HXLINE( 100)				jl = value1;
             			}
             		}
-HXDLIN( 101)		int jl1 = ::Std_obj::_hx_int(jl);
-HXLINE( 103)		while((j1 <= jl1)){
-HXLINE( 104)			Float value2 = ( (Float)((this->x - this->sight)) );
-HXDLIN( 104)			Float max2 = ( (Float)(this->world->width) );
-HXDLIN( 104)			Float i;
-HXDLIN( 104)			if ((value2 < 0)) {
-HXLINE( 104)				i = ( (Float)(0) );
+HXDLIN( 100)		int jl1 = ::Std_obj::_hx_int(jl);
+HXLINE( 102)		while((j1 <= jl1)){
+HXLINE( 103)			Float value2 = ( (Float)((this->x - this->sight)) );
+HXDLIN( 103)			Float max2 = ( (Float)(this->world->width) );
+HXDLIN( 103)			Float i;
+HXDLIN( 103)			if ((value2 < 0)) {
+HXLINE( 103)				i = ( (Float)(0) );
             			}
             			else {
-HXLINE( 104)				if ((value2 > max2)) {
-HXLINE( 104)					i = max2;
+HXLINE( 103)				if ((value2 > max2)) {
+HXLINE( 103)					i = max2;
             				}
             				else {
-HXLINE( 104)					i = value2;
+HXLINE( 103)					i = value2;
             				}
             			}
-HXDLIN( 104)			int i1 = ::Std_obj::_hx_int(i);
-HXLINE( 105)			Float value3 = ( (Float)((this->x + this->sight)) );
-HXDLIN( 105)			Float max3 = ( (Float)(this->world->width) );
-HXDLIN( 105)			Float il;
-HXDLIN( 105)			if ((value3 < 0)) {
-HXLINE( 105)				il = ( (Float)(0) );
+HXDLIN( 103)			int i1 = ::Std_obj::_hx_int(i);
+HXLINE( 104)			Float value3 = ( (Float)((this->x + this->sight)) );
+HXDLIN( 104)			Float max3 = ( (Float)(this->world->width) );
+HXDLIN( 104)			Float il;
+HXDLIN( 104)			if ((value3 < 0)) {
+HXLINE( 104)				il = ( (Float)(0) );
             			}
             			else {
-HXLINE( 105)				if ((value3 > max3)) {
-HXLINE( 105)					il = max3;
+HXLINE( 104)				if ((value3 > max3)) {
+HXLINE( 104)					il = max3;
             				}
             				else {
-HXLINE( 105)					il = value3;
+HXLINE( 104)					il = value3;
             				}
             			}
-HXDLIN( 105)			int il1 = ::Std_obj::_hx_int(il);
-HXLINE( 107)			while((i1 <= il1)){
-HXLINE( 108)				bool _hx_tmp;
-HXDLIN( 108)				bool _hx_tmp1;
-HXDLIN( 108)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("C",43,00,00,00))) {
-HXLINE( 108)					_hx_tmp1 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("D",44,00,00,00));
+HXDLIN( 104)			int il1 = ::Std_obj::_hx_int(il);
+HXLINE( 106)			while((i1 <= il1)){
+HXLINE( 107)				bool _hx_tmp;
+HXDLIN( 107)				bool _hx_tmp1;
+HXDLIN( 107)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("C",43,00,00,00))) {
+HXLINE( 107)					_hx_tmp1 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("D",44,00,00,00));
             				}
             				else {
-HXLINE( 108)					_hx_tmp1 = true;
+HXLINE( 107)					_hx_tmp1 = true;
             				}
-HXDLIN( 108)				if (!(_hx_tmp1)) {
-HXLINE( 108)					_hx_tmp = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("F",46,00,00,00));
+HXDLIN( 107)				if (!(_hx_tmp1)) {
+HXLINE( 107)					_hx_tmp = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("F",46,00,00,00));
             				}
             				else {
-HXLINE( 108)					_hx_tmp = true;
+HXLINE( 107)					_hx_tmp = true;
             				}
-HXDLIN( 108)				if (_hx_tmp) {
-HXLINE( 111)					 ::algorithm::Node node =  ::algorithm::Node_obj::__alloc( HX_CTX ,i1,j1);
-HXLINE( 112)					node->priority = ::Player_obj::priorities->get_int(this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1));
-HXLINE( 113)					node->_hx_char = this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1);
-HXLINE( 114)					this->_hx___rockQueue->add(node);
+HXDLIN( 107)				if (_hx_tmp) {
+HXLINE( 110)					 ::algorithm::Node node =  ::algorithm::Node_obj::__alloc( HX_CTX ,i1,j1);
+HXLINE( 111)					node->priority = ::Player_obj::priorities->get_int(this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1));
+HXLINE( 112)					node->_hx_char = this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1);
+HXLINE( 113)					this->_hx___rockQueue->add(node);
             				}
-HXLINE( 117)				i1 = (i1 + 1);
+HXLINE( 116)				i1 = (i1 + 1);
             			}
-HXLINE( 120)			j1 = (j1 + 1);
+HXLINE( 119)			j1 = (j1 + 1);
             		}
             	}
 
@@ -357,10 +356,10 @@ HXLINE( 120)			j1 = (j1 + 1);
 HX_DEFINE_DYNAMIC_FUNC0(Player_obj,scanArea,(void))
 
 void Player_obj::command(::String cmd){
-            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_124_command)
-HXLINE( 125)		::haxe::Log_obj::trace(((this->x + HX_(" ",20,00,00,00)) + this->y),::hx::SourceInfo(HX_("source/Player.hx",69,3c,9f,51),125,HX_("Player",81,5f,4d,6c),HX_("command",4b,71,6d,81)));
-HXLINE( 127)		::String client = (((((this->_hx___directory + HX_("game/c",c6,7d,f9,50)) + ::Main_obj::id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
-HXLINE( 129)		::sys::io::File_obj::saveContent(client,(cmd + HX_("\n",0a,00,00,00)));
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_123_command)
+HXLINE( 124)		::haxe::Log_obj::trace(((this->x + HX_(" ",20,00,00,00)) + this->y),::hx::SourceInfo(HX_("source/Player.hx",69,3c,9f,51),124,HX_("Player",81,5f,4d,6c),HX_("command",4b,71,6d,81)));
+HXLINE( 126)		::String client = (((((this->_hx___directory + HX_("game/c",c6,7d,f9,50)) + ::Main_obj::id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
+HXLINE( 128)		::sys::io::File_obj::saveContent(client,(cmd + HX_("\n",0a,00,00,00)));
             	}
 
 

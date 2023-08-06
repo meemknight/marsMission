@@ -42,5 +42,9 @@ class WorldMap {
 
         player.x = Std.parseInt(lines[height + 1].split(" ")[0]);
         player.y = Std.parseInt(lines[height + 1].split(" ")[1]) + 1;
+
+        for(i in 1...(height + 1)) {
+            matrix[i] = lines[i].split(" ");
+        }
     }
 }
