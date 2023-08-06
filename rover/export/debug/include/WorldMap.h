@@ -46,9 +46,11 @@ class HXCPP_CLASS_ATTRIBUTES WorldMap_obj : public ::hx::Object
 		int width;
 		int height;
 		::String content;
+		::Array< ::Dynamic> matrix;
 		 ::Player player;
-		void doPathFinding();
-		::Dynamic doPathFinding_dyn();
+		int length;
+		void refresh();
+		::Dynamic refresh_dyn();
 
 };
 

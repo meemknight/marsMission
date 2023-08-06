@@ -7,6 +7,9 @@
 #ifndef INCLUDED_Main
 #include <Main.h>
 #endif
+#ifndef INCLUDED_Player
+#include <Player.h>
+#endif
 #ifndef INCLUDED_Std
 #include <Std.h>
 #endif
@@ -25,11 +28,14 @@
 #ifndef INCLUDED_sys_FileSystem
 #include <sys/FileSystem.h>
 #endif
+#ifndef INCLUDED_sys_io_File
+#include <sys/io/File.h>
+#endif
 
 HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_14_main,"Main","main",0xed0e206e,"Main.main","Main.hx",14,0x087e5c05)
 HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_47_loop,"Main","loop",0xec6f8e99,"Main.loop","Main.hx",47,0x087e5c05)
-HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_63_execute,"Main","execute",0x303e7120,"Main.execute","Main.hx",63,0x087e5c05)
-HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_66_begin,"Main","begin",0x2c893054,"Main.begin","Main.hx",66,0x087e5c05)
+HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_71_execute,"Main","execute",0x303e7120,"Main.execute","Main.hx",71,0x087e5c05)
+HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_74_begin,"Main","begin",0x2c893054,"Main.begin","Main.hx",74,0x087e5c05)
 HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_10_boot,"Main","boot",0xe5d36c67,"Main.boot","Main.hx",10,0x087e5c05)
 HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_11_boot,"Main","boot",0xe5d36c67,"Main.boot","Main.hx",11,0x087e5c05)
 
@@ -76,8 +82,14 @@ HXLINE(  51)			::String event = (((((directory + HX_("game/s",d6,7d,f9,50)) + id
 HXLINE(  53)			if (!(::sys::FileSystem_obj::exists(event))) {
 HXLINE(  54)				continue;
             			}
-HXLINE(  57)			::Main_obj::round++;
-HXLINE(  58)			::Main_obj::execute();
+HXLINE(  57)			::String content = ::sys::io::File_obj::getContent(event);
+HXLINE(  58)			::Array< ::String > lines = content.split(HX_("\n",0a,00,00,00));
+HXLINE(  60)			if ((lines->length < ::Main_obj::map->length)) {
+HXLINE(  61)				continue;
+            			}
+HXLINE(  64)			::Main_obj::round++;
+HXLINE(  65)			::Main_obj::execute();
+HXLINE(  66)			::Main_obj::map->refresh();
             		}
             	}
 
@@ -85,30 +97,30 @@ HXLINE(  58)			::Main_obj::execute();
 STATIC_HX_DEFINE_DYNAMIC_FUNC1(Main_obj,loop,(void))
 
 void Main_obj::execute(){
-            	HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_63_execute)
-HXDLIN(  63)		::Main_obj::map->doPathFinding();
+            	HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_71_execute)
+HXDLIN(  71)		::Main_obj::map->player->pathMovement();
             	}
 
 
 STATIC_HX_DEFINE_DYNAMIC_FUNC0(Main_obj,execute,(void))
 
 void Main_obj::begin(int id){
-            	HX_GC_STACKFRAME(&_hx_pos_e47a9afac0942eb9_66_begin)
-HXLINE(  67)		::String directory = HX_("../../../",8f,8c,ef,d0);
-HXLINE(  68)		::String serverFileName = (((((directory + HX_("game/s",d6,7d,f9,50)) + id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
-HXLINE(  70)		while(true){
-HXLINE(  71)			::String temp = (((((directory + HX_("game/s",d6,7d,f9,50)) + id) + HX_("_",5f,00,00,00)) + (::Main_obj::round + 1)) + HX_(".txt",02,3f,c0,1e));
-HXLINE(  73)			if (!(::sys::FileSystem_obj::exists(temp))) {
-HXLINE(  74)				goto _hx_goto_4;
+            	HX_GC_STACKFRAME(&_hx_pos_e47a9afac0942eb9_74_begin)
+HXLINE(  75)		::String directory = HX_("../../../",8f,8c,ef,d0);
+HXLINE(  76)		::String serverFileName = (((((directory + HX_("game/s",d6,7d,f9,50)) + id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
+HXLINE(  78)		while(true){
+HXLINE(  79)			::String temp = (((((directory + HX_("game/s",d6,7d,f9,50)) + id) + HX_("_",5f,00,00,00)) + (::Main_obj::round + 1)) + HX_(".txt",02,3f,c0,1e));
+HXLINE(  81)			if (!(::sys::FileSystem_obj::exists(temp))) {
+HXLINE(  82)				goto _hx_goto_4;
             			}
-HXLINE(  77)			::Main_obj::round++;
-HXLINE(  78)			serverFileName = temp;
+HXLINE(  85)			::Main_obj::round++;
+HXLINE(  86)			serverFileName = temp;
             		}
             		_hx_goto_4:;
-HXLINE(  81)		if (!(::sys::FileSystem_obj::exists(serverFileName))) {
-HXLINE(  82)			::Log_obj::warning(((HX_("Directory",4d,d2,17,b2) + serverFileName) + HX_(" does not exist.",eb,90,4a,9f)));
+HXLINE(  89)		if (!(::sys::FileSystem_obj::exists(serverFileName))) {
+HXLINE(  90)			::Log_obj::warning(((HX_("Directory",4d,d2,17,b2) + serverFileName) + HX_(" does not exist.",eb,90,4a,9f)));
             		}
-HXLINE(  85)		::Main_obj::map =  ::WorldMap_obj::__alloc( HX_CTX ,serverFileName);
+HXLINE(  93)		::Main_obj::map =  ::WorldMap_obj::__alloc( HX_CTX ,serverFileName);
             	}
 
 

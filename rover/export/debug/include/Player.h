@@ -7,6 +7,10 @@
 #endif
 
 HX_DECLARE_CLASS0(Player)
+HX_DECLARE_CLASS0(WorldMap)
+HX_DECLARE_CLASS1(algorithm,PriorityQueue)
+HX_DECLARE_CLASS1(haxe,IMap)
+HX_DECLARE_CLASS2(haxe,ds,StringMap)
 
 
 
@@ -20,13 +24,13 @@ class HXCPP_CLASS_ATTRIBUTES Player_obj : public ::hx::Object
 	public:
 		enum { _hx_ClassId = 0x33e526a5 };
 
-		void __construct();
+		void __construct( ::WorldMap world);
 		inline void *operator new(size_t inSize, bool inContainer=true,const char *inName="Player")
 			{ return ::hx::Object::operator new(inSize,inContainer,inName); }
 		inline void *operator new(size_t inSize, int extra)
 			{ return ::hx::Object::operator new(inSize+extra,true,"Player"); }
-		static ::hx::ObjectPtr< Player_obj > __new();
-		static ::hx::ObjectPtr< Player_obj > __alloc(::hx::Ctx *_hx_ctx);
+		static ::hx::ObjectPtr< Player_obj > __new( ::WorldMap world);
+		static ::hx::ObjectPtr< Player_obj > __alloc(::hx::Ctx *_hx_ctx, ::WorldMap world);
 		static void * _hx_vtable;
 		static Dynamic __CreateEmpty();
 		static Dynamic __Create(::hx::DynamicArray inArgs);
@@ -34,7 +38,9 @@ class HXCPP_CLASS_ATTRIBUTES Player_obj : public ::hx::Object
 
 		HX_DO_RTTI_ALL;
 		::hx::Val __Field(const ::String &inString, ::hx::PropertyAccess inCallProp);
+		static bool __GetStatic(const ::String &inString, Dynamic &outValue, ::hx::PropertyAccess inCallProp);
 		::hx::Val __SetField(const ::String &inString,const ::hx::Val &inValue, ::hx::PropertyAccess inCallProp);
+		static bool __SetStatic(const ::String &inString, Dynamic &ioValue, ::hx::PropertyAccess inCallProp);
 		void __GetFields(Array< ::String> &outFields);
 		static void __register();
 		void __Mark(HX_MARK_PARAMS);
@@ -42,9 +48,26 @@ class HXCPP_CLASS_ATTRIBUTES Player_obj : public ::hx::Object
 		bool _hx_isInstanceOf(int inClassId);
 		::String __ToString() const { return HX_("Player",81,5f,4d,6c); }
 
+		static void __boot();
+		static  ::haxe::ds::StringMap priorities;
 		int x;
 		int y;
+		int sight;
+		int level;
+		 ::WorldMap world;
+		::String facing;
 		::String _hx___directory;
+		::Array< ::String > _hx___directions;
+		 ::algorithm::PriorityQueue _hx___rockQueue;
+		void pathMovement();
+		::Dynamic pathMovement_dyn();
+
+		void mapOut();
+		::Dynamic mapOut_dyn();
+
+		void scanArea();
+		::Dynamic scanArea_dyn();
+
 		void command(::String cmd);
 		::Dynamic command_dyn();
 

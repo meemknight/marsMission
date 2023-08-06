@@ -24,6 +24,9 @@
    <depend name="include/haxe/io/Path.h"/>
    <depend name="include/sys/FileSystem.h"/>
   </file>
+  <file name="src/spinehaxe/MathUtils.cpp" >
+   <depend name="include/spinehaxe/MathUtils.h"/>
+  </file>
   <file name="src/haxe/iterators/ArrayIterator.cpp" >
    <depend name="include/haxe/iterators/ArrayIterator.h"/>
   </file>
@@ -77,6 +80,10 @@
    <depend name="include/haxe/Exception.h"/>
    <depend name="include/haxe/exceptions/PosException.h"/>
   </file>
+  <file name="src/haxe/ds/StringMap.cpp" >
+   <depend name="include/haxe/IMap.h"/>
+   <depend name="include/haxe/ds/StringMap.h"/>
+  </file>
   <file name="src/haxe/ValueException.cpp" >
    <depend name="include/Std.h"/>
    <depend name="include/haxe/Exception.h"/>
@@ -93,7 +100,17 @@
    <depend name="include/haxe/Exception.h"/>
    <depend name="include/haxe/NativeStackTrace.h"/>
   </file>
+  <file name="src/haxe/IMap.cpp" >
+   <depend name="include/haxe/IMap.h"/>
+  </file>
+  <file name="src/algorithm/PriorityQueue.cpp" >
+   <depend name="include/algorithm/PriorityQueue.h"/>
+  </file>
+  <file name="src/algorithm/Node.cpp" >
+   <depend name="include/algorithm/Node.h"/>
+  </file>
   <file name="src/WorldMap.cpp" >
+   <depend name="include/Main.h"/>
    <depend name="include/Player.h"/>
    <depend name="include/Std.h"/>
    <depend name="include/WorldMap.h"/>
@@ -110,17 +127,26 @@
   <file name="src/Player.cpp" >
    <depend name="include/Main.h"/>
    <depend name="include/Player.h"/>
+   <depend name="include/Std.h"/>
+   <depend name="include/WorldMap.h"/>
+   <depend name="include/algorithm/Node.h"/>
+   <depend name="include/algorithm/PriorityQueue.h"/>
+   <depend name="include/haxe/IMap.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/haxe/ds/StringMap.h"/>
    <depend name="include/sys/io/File.h"/>
   </file>
   <file name="src/Main.cpp" >
    <depend name="include/Log.h"/>
    <depend name="include/Main.h"/>
+   <depend name="include/Player.h"/>
    <depend name="include/Std.h"/>
    <depend name="include/Sys.h"/>
    <depend name="include/WorldMap.h"/>
    <depend name="include/haxe/Log.h"/>
    <depend name="include/haxe/io/Input.h"/>
    <depend name="include/sys/FileSystem.h"/>
+   <depend name="include/sys/io/File.h"/>
   </file>
   <file name="src/Log.cpp" >
    <depend name="include/Log.h"/>
@@ -128,7 +154,9 @@
   <file name="src/__boot__.cpp" >
    <depend name="include/haxe/io/Error.h"/>
    <depend name="include/haxe/io/Encoding.h"/>
+   <depend name="include/spinehaxe/MathUtils.h"/>
    <depend name="include/haxe/Log.h"/>
+   <depend name="include/Player.h"/>
    <depend name="include/Main.h"/>
   </file>
   <file name="src/__files__.cpp" if='HXCPP_DEBUGGER'>
@@ -155,7 +183,6 @@
 </files>
 <set name="HAXE_OUTPUT" value="Main" />
 <include name="${HXCPP}/build-tool/BuildCommon.xml"/>
-<include name="../../Include.xml.tpl" />
 <include name="${HXCPP}/src/hx/libs/std/Build.xml"/>
 <include name="${HXCPP}/src/hx/libs/std/Build.xml"/>
 <include name="${HXCPP}/src/hx/libs/std/Build.xml"/>

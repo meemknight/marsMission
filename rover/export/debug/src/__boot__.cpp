@@ -7,8 +7,14 @@
 #ifndef INCLUDED_haxe_io_Encoding
 #include <haxe/io/Encoding.h>
 #endif
+#ifndef INCLUDED_spinehaxe_MathUtils
+#include <spinehaxe/MathUtils.h>
+#endif
 #ifndef INCLUDED_haxe_Log
 #include <haxe/Log.h>
+#endif
+#ifndef INCLUDED_Player
+#include <Player.h>
 #endif
 #ifndef INCLUDED_Main
 #include <Main.h>
@@ -52,6 +58,9 @@
 #ifndef INCLUDED_haxe_exceptions_PosException
 #include <haxe/exceptions/PosException.h>
 #endif
+#ifndef INCLUDED_haxe_ds_StringMap
+#include <haxe/ds/StringMap.h>
+#endif
 #ifndef INCLUDED_haxe_ValueException
 #include <haxe/ValueException.h>
 #endif
@@ -61,6 +70,15 @@
 #ifndef INCLUDED_haxe_Exception
 #include <haxe/Exception.h>
 #endif
+#ifndef INCLUDED_haxe_IMap
+#include <haxe/IMap.h>
+#endif
+#ifndef INCLUDED_algorithm_PriorityQueue
+#include <algorithm/PriorityQueue.h>
+#endif
+#ifndef INCLUDED_algorithm_Node
+#include <algorithm/Node.h>
+#endif
 #ifndef INCLUDED_WorldMap
 #include <WorldMap.h>
 #endif
@@ -69,9 +87,6 @@
 #endif
 #ifndef INCLUDED_Std
 #include <Std.h>
-#endif
-#ifndef INCLUDED_Player
-#include <Player.h>
 #endif
 #ifndef INCLUDED_Log
 #include <Log.h>
@@ -85,7 +100,9 @@ __files__boot();
 ::hx::RegisterResources( ::hx::GetResources() );
 ::haxe::io::Error_obj::__register();
 ::haxe::io::Encoding_obj::__register();
+::spinehaxe::MathUtils_obj::__register();
 ::haxe::Log_obj::__register();
+::Player_obj::__register();
 ::Main_obj::__register();
 ::sys::io::FileOutput_obj::__register();
 ::sys::io::FileInput_obj::__register();
@@ -100,17 +117,22 @@ __files__boot();
 ::haxe::io::Bytes_obj::__register();
 ::haxe::exceptions::NotImplementedException_obj::__register();
 ::haxe::exceptions::PosException_obj::__register();
+::haxe::ds::StringMap_obj::__register();
 ::haxe::ValueException_obj::__register();
 ::haxe::NativeStackTrace_obj::__register();
 ::haxe::Exception_obj::__register();
+::haxe::IMap_obj::__register();
+::algorithm::PriorityQueue_obj::__register();
+::algorithm::Node_obj::__register();
 ::WorldMap_obj::__register();
 ::Sys_obj::__register();
 ::Std_obj::__register();
-::Player_obj::__register();
 ::Log_obj::__register();
 ::haxe::io::Error_obj::__boot();
 ::haxe::io::Encoding_obj::__boot();
 ::haxe::Log_obj::__boot();
 ::Main_obj::__boot();
+::Player_obj::__boot();
+::spinehaxe::MathUtils_obj::__boot();
 }
 

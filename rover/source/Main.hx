@@ -12,8 +12,6 @@ class Main {
     public static var map(default, null):WorldMap;
 
     public static function main():Void {
-        AStar.init();
-
         trace("enter id: ");
         id = Std.parseInt(Sys.stdin().readLine());
 
@@ -56,13 +54,21 @@ class Main {
                 continue;
             }
 
+            var content = File.getContent(event);
+            var lines = content.split("\n");
+
+            if(lines.length < map.length) {
+                continue;
+            }
+
             round++;
             execute();
+            map.refresh();
         }
     }
 
     public static function execute():Void {
-        map.player.scanArea();
+        map.player.pathMovement();
     }
 
     public static function begin(id:Int):Void {

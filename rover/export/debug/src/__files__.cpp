@@ -9,6 +9,7 @@ const char *__hxcpp_all_files[] = {
 "/usr/local/lib/haxe/std/cpp/_std/haxe/Exception.hx",
 "/usr/local/lib/haxe/std/cpp/_std/haxe/Log.hx",
 "/usr/local/lib/haxe/std/cpp/_std/haxe/NativeStackTrace.hx",
+"/usr/local/lib/haxe/std/cpp/_std/haxe/ds/StringMap.hx",
 "/usr/local/lib/haxe/std/cpp/_std/sys/FileSystem.hx",
 "/usr/local/lib/haxe/std/cpp/_std/sys/io/File.hx",
 "/usr/local/lib/haxe/std/cpp/_std/sys/io/FileInput.hx",
@@ -28,6 +29,9 @@ const char *__hxcpp_all_files[] = {
 "Main.hx",
 "Player.hx",
 "WorldMap.hx",
+"algorithm/Node.hx",
+"algorithm/PriorityQueue.hx",
+"spinehaxe/MathUtils.hx",
 #endif
  0 };
 
@@ -38,6 +42,7 @@ const char *__hxcpp_all_files_fullpath[] = {
 "/usr/local/lib/haxe/std/cpp/_std/haxe/Exception.hx",
 "/usr/local/lib/haxe/std/cpp/_std/haxe/Log.hx",
 "/usr/local/lib/haxe/std/cpp/_std/haxe/NativeStackTrace.hx",
+"/usr/local/lib/haxe/std/cpp/_std/haxe/ds/StringMap.hx",
 "/usr/local/lib/haxe/std/cpp/_std/sys/FileSystem.hx",
 "/usr/local/lib/haxe/std/cpp/_std/sys/io/File.hx",
 "/usr/local/lib/haxe/std/cpp/_std/sys/io/FileInput.hx",
@@ -57,6 +62,9 @@ const char *__hxcpp_all_files_fullpath[] = {
 "/Users/diegofonseca/Desktop/GitHub Repositories 2/marsMission/rover/source/Main.hx",
 "/Users/diegofonseca/Desktop/GitHub Repositories 2/marsMission/rover/source/Player.hx",
 "/Users/diegofonseca/Desktop/GitHub Repositories 2/marsMission/rover/source/WorldMap.hx",
+"/Users/diegofonseca/Desktop/GitHub Repositories 2/marsMission/rover/source/algorithm/Node.hx",
+"/Users/diegofonseca/Desktop/GitHub Repositories 2/marsMission/rover/source/algorithm/PriorityQueue.hx",
+"/Users/diegofonseca/Haxe/spinehaxe/3,5,0/spinehaxe/MathUtils.hx",
 #endif
  0 };
 
@@ -68,10 +76,13 @@ const char *__hxcpp_all_classes[] = {
 "Std",
 "Sys",
 "WorldMap",
+"algorithm.Node",
+"algorithm.PriorityQueue",
 "haxe.Exception",
 "haxe.Log",
 "haxe.NativeStackTrace",
 "haxe.ValueException",
+"haxe.ds.StringMap",
 "haxe.exceptions.PosException",
 "haxe.exceptions.NotImplementedException",
 "haxe.io.Bytes",
@@ -81,6 +92,7 @@ const char *__hxcpp_all_classes[] = {
 "haxe.io.Output",
 "haxe.io.Path",
 "haxe.iterators.ArrayIterator",
+"spinehaxe.MathUtils",
 "sys.FileSystem",
 "sys.io.File",
 "sys.io.FileInput",
