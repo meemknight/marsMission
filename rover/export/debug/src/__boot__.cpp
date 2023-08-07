@@ -58,8 +58,17 @@
 #ifndef INCLUDED_haxe_exceptions_PosException
 #include <haxe/exceptions/PosException.h>
 #endif
-#ifndef INCLUDED_haxe_ds_StringMap
-#include <haxe/ds/StringMap.h>
+#ifndef INCLUDED_haxe_ds__GenericStack_GenericStackIterator_algorithm_Node
+#include <haxe/ds/_GenericStack/GenericStackIterator_algorithm_Node.h>
+#endif
+#ifndef INCLUDED_haxe_ds__GenericStack_GenericStackIterator
+#include <haxe/ds/_GenericStack/GenericStackIterator.h>
+#endif
+#ifndef INCLUDED_haxe_ds_GenericCell
+#include <haxe/ds/GenericCell.h>
+#endif
+#ifndef INCLUDED_haxe_ds_GenericCell_algorithm_Node
+#include <haxe/ds/GenericCell_algorithm_Node.h>
 #endif
 #ifndef INCLUDED_haxe_ValueException
 #include <haxe/ValueException.h>
@@ -70,14 +79,17 @@
 #ifndef INCLUDED_haxe_Exception
 #include <haxe/Exception.h>
 #endif
-#ifndef INCLUDED_haxe_IMap
-#include <haxe/IMap.h>
-#endif
 #ifndef INCLUDED_algorithm_PriorityQueue
 #include <algorithm/PriorityQueue.h>
 #endif
+#ifndef INCLUDED_haxe_ds_GenericStack_algorithm_Node
+#include <haxe/ds/GenericStack_algorithm_Node.h>
+#endif
 #ifndef INCLUDED_algorithm_Node
 #include <algorithm/Node.h>
+#endif
+#ifndef INCLUDED_algorithm_AI
+#include <algorithm/AI.h>
 #endif
 #ifndef INCLUDED_WorldMap
 #include <WorldMap.h>
@@ -117,13 +129,17 @@ __files__boot();
 ::haxe::io::Bytes_obj::__register();
 ::haxe::exceptions::NotImplementedException_obj::__register();
 ::haxe::exceptions::PosException_obj::__register();
-::haxe::ds::StringMap_obj::__register();
+::haxe::ds::_GenericStack::GenericStackIterator_algorithm_Node_obj::__register();
+::haxe::ds::_GenericStack::GenericStackIterator_obj::__register();
+::haxe::ds::GenericCell_obj::__register();
+::haxe::ds::GenericCell_algorithm_Node_obj::__register();
 ::haxe::ValueException_obj::__register();
 ::haxe::NativeStackTrace_obj::__register();
 ::haxe::Exception_obj::__register();
-::haxe::IMap_obj::__register();
 ::algorithm::PriorityQueue_obj::__register();
+::haxe::ds::GenericStack_algorithm_Node_obj::__register();
 ::algorithm::Node_obj::__register();
+::algorithm::AI_obj::__register();
 ::WorldMap_obj::__register();
 ::Sys_obj::__register();
 ::Std_obj::__register();

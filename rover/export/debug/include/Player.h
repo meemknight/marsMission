@@ -8,9 +8,9 @@
 
 HX_DECLARE_CLASS0(Player)
 HX_DECLARE_CLASS0(WorldMap)
+HX_DECLARE_CLASS1(algorithm,Node)
 HX_DECLARE_CLASS1(algorithm,PriorityQueue)
-HX_DECLARE_CLASS1(haxe,IMap)
-HX_DECLARE_CLASS2(haxe,ds,StringMap)
+HX_DECLARE_CLASS2(haxe,ds,GenericStack_algorithm_Node)
 
 
 
@@ -49,16 +49,19 @@ class HXCPP_CLASS_ATTRIBUTES Player_obj : public ::hx::Object
 		::String __ToString() const { return HX_("Player",81,5f,4d,6c); }
 
 		static void __boot();
-		static  ::haxe::ds::StringMap priorities;
+		static bool battery;
+		static int level;
+		static int sight;
 		int x;
 		int y;
-		int sight;
-		int level;
 		 ::WorldMap world;
 		::String facing;
 		::String _hx___directory;
 		::Array< ::String > _hx___directions;
 		 ::algorithm::PriorityQueue _hx___rockQueue;
+		 ::algorithm::Node _hx___playerNode;
+		::Array< ::Dynamic> _hx___nodes;
+		int _hx___index;
 		void pathMovement();
 		::Dynamic pathMovement_dyn();
 
@@ -70,6 +73,9 @@ class HXCPP_CLASS_ATTRIBUTES Player_obj : public ::hx::Object
 
 		void command(::String cmd);
 		::Dynamic command_dyn();
+
+		void update();
+		::Dynamic update_dyn();
 
 };
 

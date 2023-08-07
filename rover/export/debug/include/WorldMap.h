@@ -47,8 +47,11 @@ class HXCPP_CLASS_ATTRIBUTES WorldMap_obj : public ::hx::Object
 		int height;
 		::String content;
 		::Array< ::Dynamic> matrix;
+		 ::Dynamic base;
 		 ::Player player;
 		int length;
+		int iron;
+		int osmium;
 		void refresh();
 		::Dynamic refresh_dyn();
 

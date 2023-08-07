@@ -23,47 +23,42 @@
 #ifndef INCLUDED_algorithm_PriorityQueue
 #include <algorithm/PriorityQueue.h>
 #endif
-#ifndef INCLUDED_haxe_IMap
-#include <haxe/IMap.h>
+#ifndef INCLUDED_haxe_ds_GenericCell_algorithm_Node
+#include <haxe/ds/GenericCell_algorithm_Node.h>
 #endif
-#ifndef INCLUDED_haxe_Log
-#include <haxe/Log.h>
-#endif
-#ifndef INCLUDED_haxe_ds_StringMap
-#include <haxe/ds/StringMap.h>
+#ifndef INCLUDED_haxe_ds_GenericStack_algorithm_Node
+#include <haxe/ds/GenericStack_algorithm_Node.h>
 #endif
 #ifndef INCLUDED_sys_io_File
 #include <sys/io/File.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_38_new,"Player","new",0x8d5554f3,"Player.new","Player.hx",38,0xa27fc9dd)
-HX_DEFINE_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_11_new,"Player","new",0x8d5554f3,"Player.new","Player.hx",11,0xa27fc9dd)
-static const ::String _hx_array_data_6c4d5f81_2[] = {
+HX_DEFINE_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_13_new,"Player","new",0x8d5554f3,"Player.new","Player.hx",13,0xa27fc9dd)
+static const ::String _hx_array_data_6c4d5f81_1[] = {
 	HX_("u",75,00,00,00),HX_("d",64,00,00,00),HX_("l",6c,00,00,00),HX_("r",72,00,00,00),
 };
-HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_42_pathMovement,"Player","pathMovement",0x6131a501,"Player.pathMovement","Player.hx",42,0xa27fc9dd)
-HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_47_mapOut,"Player","mapOut",0x23fc309f,"Player.mapOut","Player.hx",47,0xa27fc9dd)
-HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_98_scanArea,"Player","scanArea",0xa1ebbe37,"Player.scanArea","Player.hx",98,0xa27fc9dd)
-HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_123_command,"Player","command",0xab683b5e,"Player.command","Player.hx",123,0xa27fc9dd)
-HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_12_boot,"Player","boot",0x156e003f,"Player.boot","Player.hx",12,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_43_pathMovement,"Player","pathMovement",0x6131a501,"Player.pathMovement","Player.hx",43,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_77_mapOut,"Player","mapOut",0x23fc309f,"Player.mapOut","Player.hx",77,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_131_scanArea,"Player","scanArea",0xa1ebbe37,"Player.scanArea","Player.hx",131,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_155_command,"Player","command",0xab683b5e,"Player.command","Player.hx",155,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_161_update,"Player","update",0xf1f8df56,"Player.update","Player.hx",161,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_27_boot,"Player","boot",0x156e003f,"Player.boot","Player.hx",27,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_28_boot,"Player","boot",0x156e003f,"Player.boot","Player.hx",28,0xa27fc9dd)
+HX_LOCAL_STACK_FRAME(_hx_pos_9d6b32c958ffa4d3_29_boot,"Player","boot",0x156e003f,"Player.boot","Player.hx",29,0xa27fc9dd)
 
 void Player_obj::__construct( ::WorldMap world){
-            		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_0) HXARGC(2)
-            		int _hx_run( ::algorithm::Node a, ::algorithm::Node b){
-            			HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_38_new)
-HXLINE(  38)			return (b->priority - a->priority);
-            		}
-            		HX_END_LOCAL_FUNC2(return)
-
-            	HX_GC_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_11_new)
-HXLINE(  26)		this->_hx___directions = ::Array_obj< ::String >::fromData( _hx_array_data_6c4d5f81_2,4);
-HXLINE(  25)		this->_hx___directory = HX_("../../../",8f,8c,ef,d0);
-HXLINE(  30)		this->x = 0;
-HXLINE(  31)		this->y = 0;
-HXLINE(  32)		this->level = 1;
-HXLINE(  33)		this->sight = 2;
-HXLINE(  35)		this->world = world;
-HXLINE(  37)		this->_hx___rockQueue =  ::algorithm::PriorityQueue_obj::__alloc( HX_CTX , ::Dynamic(new _hx_Closure_0()));
+            	HX_GC_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_13_new)
+HXLINE(  25)		this->_hx___index = 0;
+HXLINE(  24)		this->_hx___nodes = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE(  21)		this->_hx___directions = ::Array_obj< ::String >::fromData( _hx_array_data_6c4d5f81_1,4);
+HXLINE(  20)		this->_hx___directory = HX_("../../../",8f,8c,ef,d0);
+HXLINE(  32)		this->x = 0;
+HXLINE(  33)		this->y = 0;
+HXLINE(  34)		::Player_obj::level = 1;
+HXLINE(  35)		::Player_obj::sight = 2;
+HXLINE(  37)		this->world = world;
+HXLINE(  39)		this->_hx___rockQueue =  ::algorithm::PriorityQueue_obj::__alloc( HX_CTX );
+HXLINE(  40)		this->_hx___playerNode =  ::algorithm::Node_obj::__alloc( HX_CTX ,this->x,this->y);
             	}
 
 Dynamic Player_obj::__CreateEmpty() { return new Player_obj; }
@@ -82,180 +77,189 @@ bool Player_obj::_hx_isInstanceOf(int inClassId) {
 }
 
 void Player_obj::pathMovement(){
-            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_42_pathMovement)
-HXLINE(  43)		this->scanArea();
-HXLINE(  44)		this->mapOut();
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_43_pathMovement)
+HXLINE(  44)		this->scanArea();
+HXLINE(  45)		this->mapOut();
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Player_obj,pathMovement,(void))
 
 void Player_obj::mapOut(){
-            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_47_mapOut)
-HXLINE(  48)		Float value = ( (Float)((this->y - this->level)) );
-HXDLIN(  48)		Float max = ( (Float)(this->world->height) );
-HXDLIN(  48)		Float j;
-HXDLIN(  48)		if ((value < 1)) {
-HXLINE(  48)			j = ( (Float)(1) );
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_77_mapOut)
+HXLINE(  78)		Float value = ( (Float)((this->y - ::Player_obj::level)) );
+HXDLIN(  78)		Float max = ( (Float)(this->world->height) );
+HXDLIN(  78)		Float j;
+HXDLIN(  78)		if ((value < 1)) {
+HXLINE(  78)			j = ( (Float)(1) );
             		}
             		else {
-HXLINE(  48)			if ((value > max)) {
-HXLINE(  48)				j = max;
+HXLINE(  78)			if ((value > max)) {
+HXLINE(  78)				j = max;
             			}
             			else {
-HXLINE(  48)				j = value;
+HXLINE(  78)				j = value;
             			}
             		}
-HXDLIN(  48)		int j1 = ::Std_obj::_hx_int(j);
-HXLINE(  49)		Float value1 = ( (Float)((this->y + this->level)) );
-HXDLIN(  49)		Float max1 = ( (Float)(this->world->height) );
-HXDLIN(  49)		Float jl;
-HXDLIN(  49)		if ((value1 < 1)) {
-HXLINE(  49)			jl = ( (Float)(1) );
+HXDLIN(  78)		int j1 = ::Std_obj::_hx_int(j);
+HXLINE(  79)		Float value1 = ( (Float)((this->y + ::Player_obj::level)) );
+HXDLIN(  79)		Float max1 = ( (Float)(this->world->height) );
+HXDLIN(  79)		Float jl;
+HXDLIN(  79)		if ((value1 < 1)) {
+HXLINE(  79)			jl = ( (Float)(1) );
             		}
             		else {
-HXLINE(  49)			if ((value1 > max1)) {
-HXLINE(  49)				jl = max1;
+HXLINE(  79)			if ((value1 > max1)) {
+HXLINE(  79)				jl = max1;
             			}
             			else {
-HXLINE(  49)				jl = value1;
+HXLINE(  79)				jl = value1;
             			}
             		}
-HXDLIN(  49)		int jl1 = ::Std_obj::_hx_int(jl);
-HXLINE(  51)		::String direction = HX_("",00,00,00,00);
-HXLINE(  52)		::String mine = HX_("",00,00,00,00);
-HXLINE(  54)		while((j1 <= jl1)){
-HXLINE(  55)			Float value2 = ( (Float)((this->x - this->level)) );
-HXDLIN(  55)			Float max2 = ( (Float)(this->world->width) );
-HXDLIN(  55)			Float i;
-HXDLIN(  55)			if ((value2 < 0)) {
-HXLINE(  55)				i = ( (Float)(0) );
+HXDLIN(  79)		int jl1 = ::Std_obj::_hx_int(jl);
+HXLINE(  81)		::String direction = HX_("",00,00,00,00);
+HXLINE(  82)		::String mine = HX_("",00,00,00,00);
+HXLINE(  84)		while((j1 <= jl1)){
+HXLINE(  85)			Float value2 = ( (Float)((this->x - ::Player_obj::level)) );
+HXDLIN(  85)			Float max2 = ( (Float)(this->world->width) );
+HXDLIN(  85)			Float i;
+HXDLIN(  85)			if ((value2 < 0)) {
+HXLINE(  85)				i = ( (Float)(0) );
             			}
             			else {
-HXLINE(  55)				if ((value2 > max2)) {
-HXLINE(  55)					i = max2;
+HXLINE(  85)				if ((value2 > max2)) {
+HXLINE(  85)					i = max2;
             				}
             				else {
-HXLINE(  55)					i = value2;
+HXLINE(  85)					i = value2;
             				}
             			}
-HXDLIN(  55)			int i1 = ::Std_obj::_hx_int(i);
-HXLINE(  56)			Float value3 = ( (Float)((this->x + this->level)) );
-HXDLIN(  56)			Float max3 = ( (Float)(this->world->width) );
-HXDLIN(  56)			Float il;
-HXDLIN(  56)			if ((value3 < 0)) {
-HXLINE(  56)				il = ( (Float)(0) );
+HXDLIN(  85)			int i1 = ::Std_obj::_hx_int(i);
+HXLINE(  86)			Float value3 = ( (Float)((this->x + ::Player_obj::level)) );
+HXDLIN(  86)			Float max3 = ( (Float)(this->world->width) );
+HXDLIN(  86)			Float il;
+HXDLIN(  86)			if ((value3 < 0)) {
+HXLINE(  86)				il = ( (Float)(0) );
             			}
             			else {
-HXLINE(  56)				if ((value3 > max3)) {
-HXLINE(  56)					il = max3;
+HXLINE(  86)				if ((value3 > max3)) {
+HXLINE(  86)					il = max3;
             				}
             				else {
-HXLINE(  56)					il = value3;
+HXLINE(  86)					il = value3;
             				}
             			}
-HXDLIN(  56)			int il1 = ::Std_obj::_hx_int(il);
-HXLINE(  58)			while((i1 <= il1)){
-HXLINE(  59)				bool _hx_tmp;
-HXDLIN(  59)				bool _hx_tmp1;
-HXDLIN(  59)				bool _hx_tmp2;
-HXDLIN(  59)				if ((i1 != this->x)) {
-HXLINE(  59)					_hx_tmp2 = (j1 != this->y);
+HXDLIN(  86)			int il1 = ::Std_obj::_hx_int(il);
+HXLINE(  88)			while((i1 <= il1)){
+HXLINE(  89)				bool _hx_tmp;
+HXDLIN(  89)				bool _hx_tmp1;
+HXDLIN(  89)				bool _hx_tmp2;
+HXDLIN(  89)				if ((i1 != this->x)) {
+HXLINE(  89)					_hx_tmp2 = (j1 != this->y);
             				}
             				else {
-HXLINE(  59)					_hx_tmp2 = false;
+HXLINE(  89)					_hx_tmp2 = false;
             				}
-HXDLIN(  59)				if (!(_hx_tmp2)) {
-HXLINE(  59)					if ((i1 == this->x)) {
-HXLINE(  59)						_hx_tmp1 = (j1 == this->y);
+HXDLIN(  89)				if (!(_hx_tmp2)) {
+HXLINE(  89)					if ((i1 == this->x)) {
+HXLINE(  89)						_hx_tmp1 = (j1 == this->y);
             					}
             					else {
-HXLINE(  59)						_hx_tmp1 = false;
+HXLINE(  89)						_hx_tmp1 = false;
             					}
             				}
             				else {
-HXLINE(  59)					_hx_tmp1 = true;
+HXLINE(  89)					_hx_tmp1 = true;
             				}
-HXDLIN(  59)				if (!(_hx_tmp1)) {
-HXLINE(  59)					_hx_tmp = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("B",42,00,00,00));
-            				}
-            				else {
-HXLINE(  59)					_hx_tmp = true;
-            				}
-HXDLIN(  59)				if (_hx_tmp) {
-HXLINE(  60)					i1 = (i1 + 1);
-HXLINE(  61)					continue;
-            				}
-HXLINE(  64)				int randomDirection = ::Math_obj::floor((::Math_obj::random() * ( (Float)(4) )));
-HXLINE(  65)				direction = this->_hx___directions->__get(randomDirection);
-HXLINE(  67)				bool _hx_tmp3;
-HXDLIN(  67)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("X",58,00,00,00))) {
-HXLINE(  67)					_hx_tmp3 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("A",41,00,00,00));
+HXDLIN(  89)				if (!(_hx_tmp1)) {
+HXLINE(  89)					_hx_tmp = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("B",42,00,00,00));
             				}
             				else {
-HXLINE(  67)					_hx_tmp3 = true;
+HXLINE(  89)					_hx_tmp = true;
             				}
-HXDLIN(  67)				if (_hx_tmp3) {
-HXLINE(  68)					{
-HXLINE(  68)						Float value4 = ( (Float)((i1 - this->x)) );
-HXDLIN(  68)						Float _g;
-HXDLIN(  68)						if ((value4 < -1)) {
-HXLINE(  68)							_g = ( (Float)(-1) );
+HXDLIN(  89)				if (_hx_tmp) {
+HXLINE(  90)					i1 = (i1 + 1);
+HXLINE(  91)					this->_hx___index++;
+HXLINE(  92)					continue;
+            				}
+HXLINE(  95)				if ((::Math_obj::floor((::Math_obj::random() * ( (Float)(3) ))) == 0)) {
+HXLINE(  96)					this->_hx___index++;
+            				}
+HXLINE(  99)				direction = this->_hx___directions->__get(::hx::Mod(this->_hx___index,4));
+HXLINE( 101)				bool _hx_tmp3;
+HXDLIN( 101)				bool _hx_tmp4;
+HXDLIN( 101)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("X",58,00,00,00))) {
+HXLINE( 101)					_hx_tmp4 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("C",43,00,00,00));
+            				}
+            				else {
+HXLINE( 101)					_hx_tmp4 = true;
+            				}
+HXDLIN( 101)				if (!(_hx_tmp4)) {
+HXLINE( 101)					_hx_tmp3 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("D",44,00,00,00));
+            				}
+            				else {
+HXLINE( 101)					_hx_tmp3 = true;
+            				}
+HXDLIN( 101)				if (_hx_tmp3) {
+HXLINE( 102)					{
+HXLINE( 102)						Float value4 = ( (Float)((i1 - this->x)) );
+HXDLIN( 102)						Float _g;
+HXDLIN( 102)						if ((value4 < -1)) {
+HXLINE( 102)							_g = ( (Float)(-1) );
             						}
             						else {
-HXLINE(  68)							if ((value4 > 1)) {
-HXLINE(  68)								_g = ( (Float)(1) );
+HXLINE( 102)							if ((value4 > 1)) {
+HXLINE( 102)								_g = ( (Float)(1) );
             							}
             							else {
-HXLINE(  68)								_g = value4;
+HXLINE( 102)								_g = value4;
             							}
             						}
-HXDLIN(  68)						Float _hx_switch_0 = _g;
+HXDLIN( 102)						Float _hx_switch_0 = _g;
             						if (  (_hx_switch_0==( (Float)(-1) )) ){
-HXLINE(  70)							mine = HX_("m l",f9,d1,52,00);
-HXDLIN(  70)							goto _hx_goto_6;
+HXLINE( 104)							mine = HX_("m l",f9,d1,52,00);
+HXDLIN( 104)							goto _hx_goto_5;
             						}
             						if (  (_hx_switch_0==( (Float)(1) )) ){
-HXLINE(  72)							mine = HX_("m r",ff,d1,52,00);
-HXDLIN(  72)							goto _hx_goto_6;
+HXLINE( 106)							mine = HX_("m r",ff,d1,52,00);
+HXDLIN( 106)							goto _hx_goto_5;
+            						}
+            						_hx_goto_5:;
+            					}
+HXLINE( 109)					{
+HXLINE( 109)						Float value5 = ( (Float)((j1 - this->y)) );
+HXDLIN( 109)						Float _g1;
+HXDLIN( 109)						if ((value5 < -1)) {
+HXLINE( 109)							_g1 = ( (Float)(-1) );
+            						}
+            						else {
+HXLINE( 109)							if ((value5 > 1)) {
+HXLINE( 109)								_g1 = ( (Float)(1) );
+            							}
+            							else {
+HXLINE( 109)								_g1 = value5;
+            							}
+            						}
+HXDLIN( 109)						Float _hx_switch_1 = _g1;
+            						if (  (_hx_switch_1==( (Float)(-1) )) ){
+HXLINE( 111)							mine = HX_("m u",02,d2,52,00);
+HXDLIN( 111)							goto _hx_goto_6;
+            						}
+            						if (  (_hx_switch_1==( (Float)(1) )) ){
+HXLINE( 113)							mine = HX_("m d",f1,d1,52,00);
+HXDLIN( 113)							goto _hx_goto_6;
             						}
             						_hx_goto_6:;
             					}
-HXLINE(  75)					{
-HXLINE(  75)						Float value5 = ( (Float)((j1 - this->y)) );
-HXDLIN(  75)						Float _g1;
-HXDLIN(  75)						if ((value5 < -1)) {
-HXLINE(  75)							_g1 = ( (Float)(-1) );
-            						}
-            						else {
-HXLINE(  75)							if ((value5 > 1)) {
-HXLINE(  75)								_g1 = ( (Float)(1) );
-            							}
-            							else {
-HXLINE(  75)								_g1 = value5;
-            							}
-            						}
-HXDLIN(  75)						Float _hx_switch_1 = _g1;
-            						if (  (_hx_switch_1==( (Float)(-1) )) ){
-HXLINE(  77)							mine = HX_("m u",02,d2,52,00);
-HXDLIN(  77)							goto _hx_goto_7;
-            						}
-            						if (  (_hx_switch_1==( (Float)(1) )) ){
-HXLINE(  79)							mine = HX_("m d",f1,d1,52,00);
-HXDLIN(  79)							goto _hx_goto_7;
-            						}
-            						_hx_goto_7:;
-            					}
-HXLINE(  82)					this->command(mine);
-HXLINE(  83)					this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()[i1] = HX_(".",2e,00,00,00);
-HXLINE(  84)					return;
+HXLINE( 116)					this->command(mine);
+HXLINE( 117)					return;
             				}
-HXLINE(  87)				i1 = (i1 + 1);
+HXLINE( 120)				i1 = (i1 + 1);
             			}
-HXLINE(  90)			j1 = (j1 + 1);
+HXLINE( 123)			j1 = (j1 + 1);
             		}
-HXLINE(  93)		if ((direction != HX_("",00,00,00,00))) {
-HXLINE(  94)			this->command(direction);
+HXLINE( 126)		if ((direction != HX_("",00,00,00,00))) {
+HXLINE( 127)			this->command(direction);
             		}
             	}
 
@@ -263,92 +267,94 @@ HXLINE(  94)			this->command(direction);
 HX_DEFINE_DYNAMIC_FUNC0(Player_obj,mapOut,(void))
 
 void Player_obj::scanArea(){
-            	HX_GC_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_98_scanArea)
-HXLINE(  99)		Float value = ( (Float)((this->y - this->sight)) );
-HXDLIN(  99)		Float max = ( (Float)(this->world->height) );
-HXDLIN(  99)		Float j;
-HXDLIN(  99)		if ((value < 1)) {
-HXLINE(  99)			j = ( (Float)(1) );
+            	HX_GC_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_131_scanArea)
+HXLINE( 132)		Float value = ( (Float)((this->y - ::Player_obj::sight)) );
+HXDLIN( 132)		Float max = ( (Float)(this->world->height) );
+HXDLIN( 132)		Float j;
+HXDLIN( 132)		if ((value < 1)) {
+HXLINE( 132)			j = ( (Float)(1) );
             		}
             		else {
-HXLINE(  99)			if ((value > max)) {
-HXLINE(  99)				j = max;
+HXLINE( 132)			if ((value > max)) {
+HXLINE( 132)				j = max;
             			}
             			else {
-HXLINE(  99)				j = value;
+HXLINE( 132)				j = value;
             			}
             		}
-HXDLIN(  99)		int j1 = ::Std_obj::_hx_int(j);
-HXLINE( 100)		Float value1 = ( (Float)((this->y + this->sight)) );
-HXDLIN( 100)		Float max1 = ( (Float)(this->world->height) );
-HXDLIN( 100)		Float jl;
-HXDLIN( 100)		if ((value1 < 1)) {
-HXLINE( 100)			jl = ( (Float)(1) );
+HXDLIN( 132)		int j1 = ::Std_obj::_hx_int(j);
+HXLINE( 133)		Float value1 = ( (Float)((this->y + ::Player_obj::sight)) );
+HXDLIN( 133)		Float max1 = ( (Float)(this->world->height) );
+HXDLIN( 133)		Float jl;
+HXDLIN( 133)		if ((value1 < 1)) {
+HXLINE( 133)			jl = ( (Float)(1) );
             		}
             		else {
-HXLINE( 100)			if ((value1 > max1)) {
-HXLINE( 100)				jl = max1;
+HXLINE( 133)			if ((value1 > max1)) {
+HXLINE( 133)				jl = max1;
             			}
             			else {
-HXLINE( 100)				jl = value1;
+HXLINE( 133)				jl = value1;
             			}
             		}
-HXDLIN( 100)		int jl1 = ::Std_obj::_hx_int(jl);
-HXLINE( 102)		while((j1 <= jl1)){
-HXLINE( 103)			Float value2 = ( (Float)((this->x - this->sight)) );
-HXDLIN( 103)			Float max2 = ( (Float)(this->world->width) );
-HXDLIN( 103)			Float i;
-HXDLIN( 103)			if ((value2 < 0)) {
-HXLINE( 103)				i = ( (Float)(0) );
+HXDLIN( 133)		int jl1 = ::Std_obj::_hx_int(jl);
+HXLINE( 135)		while((j1 <= jl1)){
+HXLINE( 136)			Float value2 = ( (Float)((this->x - ::Player_obj::sight)) );
+HXDLIN( 136)			Float max2 = ( (Float)(this->world->width) );
+HXDLIN( 136)			Float i;
+HXDLIN( 136)			if ((value2 < 0)) {
+HXLINE( 136)				i = ( (Float)(0) );
             			}
             			else {
-HXLINE( 103)				if ((value2 > max2)) {
-HXLINE( 103)					i = max2;
+HXLINE( 136)				if ((value2 > max2)) {
+HXLINE( 136)					i = max2;
             				}
             				else {
-HXLINE( 103)					i = value2;
+HXLINE( 136)					i = value2;
             				}
             			}
-HXDLIN( 103)			int i1 = ::Std_obj::_hx_int(i);
-HXLINE( 104)			Float value3 = ( (Float)((this->x + this->sight)) );
-HXDLIN( 104)			Float max3 = ( (Float)(this->world->width) );
-HXDLIN( 104)			Float il;
-HXDLIN( 104)			if ((value3 < 0)) {
-HXLINE( 104)				il = ( (Float)(0) );
+HXDLIN( 136)			int i1 = ::Std_obj::_hx_int(i);
+HXLINE( 137)			Float value3 = ( (Float)((this->x + ::Player_obj::sight)) );
+HXDLIN( 137)			Float max3 = ( (Float)(this->world->width) );
+HXDLIN( 137)			Float il;
+HXDLIN( 137)			if ((value3 < 0)) {
+HXLINE( 137)				il = ( (Float)(0) );
             			}
             			else {
-HXLINE( 104)				if ((value3 > max3)) {
-HXLINE( 104)					il = max3;
+HXLINE( 137)				if ((value3 > max3)) {
+HXLINE( 137)					il = max3;
             				}
             				else {
-HXLINE( 104)					il = value3;
+HXLINE( 137)					il = value3;
             				}
             			}
-HXDLIN( 104)			int il1 = ::Std_obj::_hx_int(il);
-HXLINE( 106)			while((i1 <= il1)){
-HXLINE( 107)				bool _hx_tmp;
-HXDLIN( 107)				bool _hx_tmp1;
-HXDLIN( 107)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("C",43,00,00,00))) {
-HXLINE( 107)					_hx_tmp1 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("D",44,00,00,00));
+HXDLIN( 137)			int il1 = ::Std_obj::_hx_int(il);
+HXLINE( 139)			while((i1 <= il1)){
+HXLINE( 140)				bool _hx_tmp;
+HXDLIN( 140)				bool _hx_tmp1;
+HXDLIN( 140)				if ((this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("C",43,00,00,00))) {
+HXLINE( 140)					_hx_tmp1 = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("D",44,00,00,00));
             				}
             				else {
-HXLINE( 107)					_hx_tmp1 = true;
+HXLINE( 140)					_hx_tmp1 = true;
             				}
-HXDLIN( 107)				if (!(_hx_tmp1)) {
-HXLINE( 107)					_hx_tmp = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) != HX_("F",46,00,00,00));
+HXDLIN( 140)				if (!(_hx_tmp1)) {
+HXLINE( 140)					_hx_tmp = (this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1) == HX_("F",46,00,00,00));
             				}
             				else {
-HXLINE( 107)					_hx_tmp = true;
+HXLINE( 140)					_hx_tmp = true;
             				}
-HXDLIN( 107)				if (_hx_tmp) {
-HXLINE( 110)					 ::algorithm::Node node =  ::algorithm::Node_obj::__alloc( HX_CTX ,i1,j1);
-HXLINE( 111)					node->priority = ::Player_obj::priorities->get_int(this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1));
-HXLINE( 112)					node->_hx_char = this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1);
-HXLINE( 113)					this->_hx___rockQueue->add(node);
+HXDLIN( 140)				if (_hx_tmp) {
+HXLINE( 143)					 ::algorithm::Node node =  ::algorithm::Node_obj::__alloc( HX_CTX ,i1,j1);
+HXLINE( 144)					node->_hx_char = this->world->matrix->__get(j1).StaticCast< ::Array< ::String > >()->__get(i1);
+HXLINE( 145)					{
+HXLINE( 145)						 ::algorithm::PriorityQueue _this = this->_hx___rockQueue;
+HXDLIN( 145)						_this->head =  ::haxe::ds::GenericCell_algorithm_Node_obj::__alloc( HX_CTX ,node,_this->head);
+            					}
             				}
-HXLINE( 116)				i1 = (i1 + 1);
+HXLINE( 148)				i1 = (i1 + 1);
             			}
-HXLINE( 119)			j1 = (j1 + 1);
+HXLINE( 151)			j1 = (j1 + 1);
             		}
             	}
 
@@ -356,16 +362,28 @@ HXLINE( 119)			j1 = (j1 + 1);
 HX_DEFINE_DYNAMIC_FUNC0(Player_obj,scanArea,(void))
 
 void Player_obj::command(::String cmd){
-            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_123_command)
-HXLINE( 124)		::haxe::Log_obj::trace(((this->x + HX_(" ",20,00,00,00)) + this->y),::hx::SourceInfo(HX_("source/Player.hx",69,3c,9f,51),124,HX_("Player",81,5f,4d,6c),HX_("command",4b,71,6d,81)));
-HXLINE( 126)		::String client = (((((this->_hx___directory + HX_("game/c",c6,7d,f9,50)) + ::Main_obj::id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
-HXLINE( 128)		::sys::io::File_obj::saveContent(client,(cmd + HX_("\n",0a,00,00,00)));
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_155_command)
+HXLINE( 156)		::String client = (((((this->_hx___directory + HX_("game/c",c6,7d,f9,50)) + ::Main_obj::id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
+HXLINE( 158)		::sys::io::File_obj::saveContent(client,(cmd + HX_("\n",0a,00,00,00)));
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC1(Player_obj,command,(void))
 
- ::haxe::ds::StringMap Player_obj::priorities;
+void Player_obj::update(){
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_161_update)
+HXLINE( 162)		this->_hx___playerNode->x = this->x;
+HXLINE( 163)		this->_hx___playerNode->y = this->y;
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC0(Player_obj,update,(void))
+
+bool Player_obj::battery;
+
+int Player_obj::level;
+
+int Player_obj::sight;
 
 
 ::hx::ObjectPtr< Player_obj > Player_obj::__new( ::WorldMap world) {
@@ -390,13 +408,14 @@ void Player_obj::__Mark(HX_MARK_PARAMS)
 	HX_MARK_BEGIN_CLASS(Player);
 	HX_MARK_MEMBER_NAME(x,"x");
 	HX_MARK_MEMBER_NAME(y,"y");
-	HX_MARK_MEMBER_NAME(sight,"sight");
-	HX_MARK_MEMBER_NAME(level,"level");
 	HX_MARK_MEMBER_NAME(world,"world");
 	HX_MARK_MEMBER_NAME(facing,"facing");
 	HX_MARK_MEMBER_NAME(_hx___directory,"__directory");
 	HX_MARK_MEMBER_NAME(_hx___directions,"__directions");
 	HX_MARK_MEMBER_NAME(_hx___rockQueue,"__rockQueue");
+	HX_MARK_MEMBER_NAME(_hx___playerNode,"__playerNode");
+	HX_MARK_MEMBER_NAME(_hx___nodes,"__nodes");
+	HX_MARK_MEMBER_NAME(_hx___index,"__index");
 	HX_MARK_END_CLASS();
 }
 
@@ -404,13 +423,14 @@ void Player_obj::__Visit(HX_VISIT_PARAMS)
 {
 	HX_VISIT_MEMBER_NAME(x,"x");
 	HX_VISIT_MEMBER_NAME(y,"y");
-	HX_VISIT_MEMBER_NAME(sight,"sight");
-	HX_VISIT_MEMBER_NAME(level,"level");
 	HX_VISIT_MEMBER_NAME(world,"world");
 	HX_VISIT_MEMBER_NAME(facing,"facing");
 	HX_VISIT_MEMBER_NAME(_hx___directory,"__directory");
 	HX_VISIT_MEMBER_NAME(_hx___directions,"__directions");
 	HX_VISIT_MEMBER_NAME(_hx___rockQueue,"__rockQueue");
+	HX_VISIT_MEMBER_NAME(_hx___playerNode,"__playerNode");
+	HX_VISIT_MEMBER_NAME(_hx___nodes,"__nodes");
+	HX_VISIT_MEMBER_NAME(_hx___index,"__index");
 }
 
 ::hx::Val Player_obj::__Field(const ::String &inName,::hx::PropertyAccess inCallProp)
@@ -421,15 +441,16 @@ void Player_obj::__Visit(HX_VISIT_PARAMS)
 		if (HX_FIELD_EQ(inName,"y") ) { return ::hx::Val( y ); }
 		break;
 	case 5:
-		if (HX_FIELD_EQ(inName,"sight") ) { return ::hx::Val( sight ); }
-		if (HX_FIELD_EQ(inName,"level") ) { return ::hx::Val( level ); }
 		if (HX_FIELD_EQ(inName,"world") ) { return ::hx::Val( world ); }
 		break;
 	case 6:
 		if (HX_FIELD_EQ(inName,"facing") ) { return ::hx::Val( facing ); }
 		if (HX_FIELD_EQ(inName,"mapOut") ) { return ::hx::Val( mapOut_dyn() ); }
+		if (HX_FIELD_EQ(inName,"update") ) { return ::hx::Val( update_dyn() ); }
 		break;
 	case 7:
+		if (HX_FIELD_EQ(inName,"__nodes") ) { return ::hx::Val( _hx___nodes ); }
+		if (HX_FIELD_EQ(inName,"__index") ) { return ::hx::Val( _hx___index ); }
 		if (HX_FIELD_EQ(inName,"command") ) { return ::hx::Val( command_dyn() ); }
 		break;
 	case 8:
@@ -441,6 +462,7 @@ void Player_obj::__Visit(HX_VISIT_PARAMS)
 		break;
 	case 12:
 		if (HX_FIELD_EQ(inName,"__directions") ) { return ::hx::Val( _hx___directions ); }
+		if (HX_FIELD_EQ(inName,"__playerNode") ) { return ::hx::Val( _hx___playerNode ); }
 		if (HX_FIELD_EQ(inName,"pathMovement") ) { return ::hx::Val( pathMovement_dyn() ); }
 	}
 	return super::__Field(inName,inCallProp);
@@ -449,8 +471,12 @@ void Player_obj::__Visit(HX_VISIT_PARAMS)
 bool Player_obj::__GetStatic(const ::String &inName, Dynamic &outValue, ::hx::PropertyAccess inCallProp)
 {
 	switch(inName.length) {
-	case 10:
-		if (HX_FIELD_EQ(inName,"priorities") ) { outValue = ( priorities ); return true; }
+	case 5:
+		if (HX_FIELD_EQ(inName,"level") ) { outValue = ( level ); return true; }
+		if (HX_FIELD_EQ(inName,"sight") ) { outValue = ( sight ); return true; }
+		break;
+	case 7:
+		if (HX_FIELD_EQ(inName,"battery") ) { outValue = ( battery ); return true; }
 	}
 	return false;
 }
@@ -463,12 +489,14 @@ bool Player_obj::__GetStatic(const ::String &inName, Dynamic &outValue, ::hx::Pr
 		if (HX_FIELD_EQ(inName,"y") ) { y=inValue.Cast< int >(); return inValue; }
 		break;
 	case 5:
-		if (HX_FIELD_EQ(inName,"sight") ) { sight=inValue.Cast< int >(); return inValue; }
-		if (HX_FIELD_EQ(inName,"level") ) { level=inValue.Cast< int >(); return inValue; }
 		if (HX_FIELD_EQ(inName,"world") ) { world=inValue.Cast<  ::WorldMap >(); return inValue; }
 		break;
 	case 6:
 		if (HX_FIELD_EQ(inName,"facing") ) { facing=inValue.Cast< ::String >(); return inValue; }
+		break;
+	case 7:
+		if (HX_FIELD_EQ(inName,"__nodes") ) { _hx___nodes=inValue.Cast< ::Array< ::Dynamic> >(); return inValue; }
+		if (HX_FIELD_EQ(inName,"__index") ) { _hx___index=inValue.Cast< int >(); return inValue; }
 		break;
 	case 11:
 		if (HX_FIELD_EQ(inName,"__directory") ) { _hx___directory=inValue.Cast< ::String >(); return inValue; }
@@ -476,6 +504,7 @@ bool Player_obj::__GetStatic(const ::String &inName, Dynamic &outValue, ::hx::Pr
 		break;
 	case 12:
 		if (HX_FIELD_EQ(inName,"__directions") ) { _hx___directions=inValue.Cast< ::Array< ::String > >(); return inValue; }
+		if (HX_FIELD_EQ(inName,"__playerNode") ) { _hx___playerNode=inValue.Cast<  ::algorithm::Node >(); return inValue; }
 	}
 	return super::__SetField(inName,inValue,inCallProp);
 }
@@ -483,8 +512,12 @@ bool Player_obj::__GetStatic(const ::String &inName, Dynamic &outValue, ::hx::Pr
 bool Player_obj::__SetStatic(const ::String &inName,Dynamic &ioValue,::hx::PropertyAccess inCallProp)
 {
 	switch(inName.length) {
-	case 10:
-		if (HX_FIELD_EQ(inName,"priorities") ) { priorities=ioValue.Cast<  ::haxe::ds::StringMap >(); return true; }
+	case 5:
+		if (HX_FIELD_EQ(inName,"level") ) { level=ioValue.Cast< int >(); return true; }
+		if (HX_FIELD_EQ(inName,"sight") ) { sight=ioValue.Cast< int >(); return true; }
+		break;
+	case 7:
+		if (HX_FIELD_EQ(inName,"battery") ) { battery=ioValue.Cast< bool >(); return true; }
 	}
 	return false;
 }
@@ -493,13 +526,14 @@ void Player_obj::__GetFields(Array< ::String> &outFields)
 {
 	outFields->push(HX_("x",78,00,00,00));
 	outFields->push(HX_("y",79,00,00,00));
-	outFields->push(HX_("sight",5d,a0,ca,7c));
-	outFields->push(HX_("level",84,15,63,72));
 	outFields->push(HX_("world",52,96,64,ce));
 	outFields->push(HX_("facing",1a,3f,05,e4));
 	outFields->push(HX_("__directory",4d,3b,71,3e));
 	outFields->push(HX_("__directions",74,10,a9,60));
 	outFields->push(HX_("__rockQueue",8c,0c,a1,b8));
+	outFields->push(HX_("__playerNode",23,61,5f,e4));
+	outFields->push(HX_("__nodes",11,11,1d,0a));
+	outFields->push(HX_("__index",f2,f3,72,28));
 	super::__GetFields(outFields);
 };
 
@@ -507,17 +541,20 @@ void Player_obj::__GetFields(Array< ::String> &outFields)
 static ::hx::StorageInfo Player_obj_sMemberStorageInfo[] = {
 	{::hx::fsInt,(int)offsetof(Player_obj,x),HX_("x",78,00,00,00)},
 	{::hx::fsInt,(int)offsetof(Player_obj,y),HX_("y",79,00,00,00)},
-	{::hx::fsInt,(int)offsetof(Player_obj,sight),HX_("sight",5d,a0,ca,7c)},
-	{::hx::fsInt,(int)offsetof(Player_obj,level),HX_("level",84,15,63,72)},
 	{::hx::fsObject /*  ::WorldMap */ ,(int)offsetof(Player_obj,world),HX_("world",52,96,64,ce)},
 	{::hx::fsString,(int)offsetof(Player_obj,facing),HX_("facing",1a,3f,05,e4)},
 	{::hx::fsString,(int)offsetof(Player_obj,_hx___directory),HX_("__directory",4d,3b,71,3e)},
 	{::hx::fsObject /* ::Array< ::String > */ ,(int)offsetof(Player_obj,_hx___directions),HX_("__directions",74,10,a9,60)},
 	{::hx::fsObject /*  ::algorithm::PriorityQueue */ ,(int)offsetof(Player_obj,_hx___rockQueue),HX_("__rockQueue",8c,0c,a1,b8)},
+	{::hx::fsObject /*  ::algorithm::Node */ ,(int)offsetof(Player_obj,_hx___playerNode),HX_("__playerNode",23,61,5f,e4)},
+	{::hx::fsObject /* ::Array< ::Dynamic> */ ,(int)offsetof(Player_obj,_hx___nodes),HX_("__nodes",11,11,1d,0a)},
+	{::hx::fsInt,(int)offsetof(Player_obj,_hx___index),HX_("__index",f2,f3,72,28)},
 	{ ::hx::fsUnknown, 0, null()}
 };
 static ::hx::StaticInfo Player_obj_sStaticStorageInfo[] = {
-	{::hx::fsObject /*  ::haxe::ds::StringMap */ ,(void *) &Player_obj::priorities,HX_("priorities",c2,50,53,e4)},
+	{::hx::fsBool,(void *) &Player_obj::battery,HX_("battery",cd,87,4a,cb)},
+	{::hx::fsInt,(void *) &Player_obj::level,HX_("level",84,15,63,72)},
+	{::hx::fsInt,(void *) &Player_obj::sight,HX_("sight",5d,a0,ca,7c)},
 	{ ::hx::fsUnknown, 0, null()}
 };
 #endif
@@ -525,26 +562,32 @@ static ::hx::StaticInfo Player_obj_sStaticStorageInfo[] = {
 static ::String Player_obj_sMemberFields[] = {
 	HX_("x",78,00,00,00),
 	HX_("y",79,00,00,00),
-	HX_("sight",5d,a0,ca,7c),
-	HX_("level",84,15,63,72),
 	HX_("world",52,96,64,ce),
 	HX_("facing",1a,3f,05,e4),
 	HX_("__directory",4d,3b,71,3e),
 	HX_("__directions",74,10,a9,60),
 	HX_("__rockQueue",8c,0c,a1,b8),
+	HX_("__playerNode",23,61,5f,e4),
+	HX_("__nodes",11,11,1d,0a),
+	HX_("__index",f2,f3,72,28),
 	HX_("pathMovement",f4,d3,c0,45),
 	HX_("mapOut",52,d7,08,b9),
 	HX_("scanArea",aa,b7,75,10),
 	HX_("command",4b,71,6d,81),
+	HX_("update",09,86,05,87),
 	::String(null()) };
 
 static void Player_obj_sMarkStatics(HX_MARK_PARAMS) {
-	HX_MARK_MEMBER_NAME(Player_obj::priorities,"priorities");
+	HX_MARK_MEMBER_NAME(Player_obj::battery,"battery");
+	HX_MARK_MEMBER_NAME(Player_obj::level,"level");
+	HX_MARK_MEMBER_NAME(Player_obj::sight,"sight");
 };
 
 #ifdef HXCPP_VISIT_ALLOCS
 static void Player_obj_sVisitStatics(HX_VISIT_PARAMS) {
-	HX_VISIT_MEMBER_NAME(Player_obj::priorities,"priorities");
+	HX_VISIT_MEMBER_NAME(Player_obj::battery,"battery");
+	HX_VISIT_MEMBER_NAME(Player_obj::level,"level");
+	HX_VISIT_MEMBER_NAME(Player_obj::sight,"sight");
 };
 
 #endif
@@ -552,7 +595,9 @@ static void Player_obj_sVisitStatics(HX_VISIT_PARAMS) {
 ::hx::Class Player_obj::__mClass;
 
 static ::String Player_obj_sStaticFields[] = {
-	HX_("priorities",c2,50,53,e4),
+	HX_("battery",cd,87,4a,cb),
+	HX_("level",84,15,63,72),
+	HX_("sight",5d,a0,ca,7c),
 	::String(null())
 };
 
@@ -586,18 +631,16 @@ void Player_obj::__register()
 void Player_obj::__boot()
 {
 {
-            		HX_BEGIN_LOCAL_FUNC_S0(::hx::LocalFunc,_hx_Closure_0) HXARGC(0)
-            		 ::haxe::ds::StringMap _hx_run(){
-            			HX_GC_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_12_boot)
-HXDLIN(  12)			 ::haxe::ds::StringMap _g =  ::haxe::ds::StringMap_obj::__alloc( HX_CTX );
-HXDLIN(  12)			_g->set(HX_("C",43,00,00,00),1);
-HXDLIN(  12)			_g->set(HX_("D",44,00,00,00),2);
-HXDLIN(  12)			return _g;
-            		}
-            		HX_END_LOCAL_FUNC0(return)
-
-            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_12_boot)
-HXDLIN(  12)		priorities = ( ( ::haxe::ds::StringMap)( ::Dynamic(new _hx_Closure_0())()) );
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_27_boot)
+HXDLIN(  27)		battery = false;
+            	}
+{
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_28_boot)
+HXDLIN(  28)		level = 1;
+            	}
+{
+            	HX_STACKFRAME(&_hx_pos_9d6b32c958ffa4d3_29_boot)
+HXDLIN(  29)		sight = 2;
             	}
 }
 

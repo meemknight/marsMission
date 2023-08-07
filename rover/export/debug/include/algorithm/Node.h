@@ -6,7 +6,7 @@
 #include <hxcpp.h>
 #endif
 
-HX_DECLARE_STACK_FRAME(_hx_pos_830657d472c1488f_15_new)
+HX_DECLARE_STACK_FRAME(_hx_pos_830657d472c1488f_13_new)
 HX_DECLARE_CLASS1(algorithm,Node)
 
 namespace algorithm{
@@ -38,10 +38,13 @@ class HXCPP_CLASS_ATTRIBUTES Node_obj : public ::hx::Object
 			Node_obj *__this = (Node_obj*)(::hx::Ctx::alloc(_hx_ctx, sizeof(Node_obj), true, "algorithm.Node"));
 			*(void **)__this = Node_obj::_hx_vtable;
 {
-            	HX_STACKFRAME(&_hx_pos_830657d472c1488f_15_new)
-HXLINE(  16)		( ( ::algorithm::Node)(__this) )->x = x;
-HXLINE(  17)		( ( ::algorithm::Node)(__this) )->y = y;
-HXLINE(  18)		( ( ::algorithm::Node)(__this) )->g = 0;
+            	HX_STACKFRAME(&_hx_pos_830657d472c1488f_13_new)
+HXLINE(  14)		( ( ::algorithm::Node)(__this) )->x = x;
+HXLINE(  15)		( ( ::algorithm::Node)(__this) )->y = y;
+HXLINE(  16)		( ( ::algorithm::Node)(__this) )->g = 0;
+HXLINE(  17)		( ( ::algorithm::Node)(__this) )->h = 0;
+HXLINE(  18)		( ( ::algorithm::Node)(__this) )->f = 0;
+HXLINE(  19)		( ( ::algorithm::Node)(__this) )->direction = HX_("",00,00,00,00);
             	}
 		
 			return __this;
@@ -64,15 +67,12 @@ HXLINE(  18)		( ( ::algorithm::Node)(__this) )->g = 0;
 
 		int g;
 		int h;
-		::String _hx_char;
-		int priority;
+		int f;
 		int x;
 		int y;
 		 ::algorithm::Node parent;
 		::String direction;
-		int f(int h);
-		::Dynamic f_dyn();
-
+		::String _hx_char;
 };
 
 } // end namespace algorithm

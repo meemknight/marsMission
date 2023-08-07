@@ -6,46 +6,33 @@
 #include <hxcpp.h>
 #endif
 
-HX_DECLARE_STACK_FRAME(_hx_pos_5e954be312f7dcde_11_new)
+#ifndef INCLUDED_haxe_ds_GenericStack_algorithm_Node
+#include <haxe/ds/GenericStack_algorithm_Node.h>
+#endif
+HX_DECLARE_CLASS1(algorithm,Node)
 HX_DECLARE_CLASS1(algorithm,PriorityQueue)
+HX_DECLARE_CLASS2(haxe,ds,GenericStack_algorithm_Node)
 
 namespace algorithm{
 
 
-class HXCPP_CLASS_ATTRIBUTES PriorityQueue_obj : public ::hx::Object
+class HXCPP_CLASS_ATTRIBUTES PriorityQueue_obj : public  ::haxe::ds::GenericStack_algorithm_Node_obj
 {
 	public:
-		typedef ::hx::Object super;
+		typedef  ::haxe::ds::GenericStack_algorithm_Node_obj super;
 		typedef PriorityQueue_obj OBJ_;
 		PriorityQueue_obj();
 
 	public:
 		enum { _hx_ClassId = 0x49aa37de };
 
-		void __construct( ::Dynamic compare);
+		void __construct();
 		inline void *operator new(size_t inSize, bool inContainer=true,const char *inName="algorithm.PriorityQueue")
 			{ return ::hx::Object::operator new(inSize,inContainer,inName); }
 		inline void *operator new(size_t inSize, int extra)
 			{ return ::hx::Object::operator new(inSize+extra,true,"algorithm.PriorityQueue"); }
-
-		inline static ::hx::ObjectPtr< PriorityQueue_obj > __new( ::Dynamic compare) {
-			::hx::ObjectPtr< PriorityQueue_obj > __this = new PriorityQueue_obj();
-			__this->__construct(compare);
-			return __this;
-		}
-
-		inline static ::hx::ObjectPtr< PriorityQueue_obj > __alloc(::hx::Ctx *_hx_ctx, ::Dynamic compare) {
-			PriorityQueue_obj *__this = (PriorityQueue_obj*)(::hx::Ctx::alloc(_hx_ctx, sizeof(PriorityQueue_obj), true, "algorithm.PriorityQueue"));
-			*(void **)__this = PriorityQueue_obj::_hx_vtable;
-{
-            	HX_STACKFRAME(&_hx_pos_5e954be312f7dcde_11_new)
-HXLINE(  12)		( ( ::algorithm::PriorityQueue)(__this) )->data = ::cpp::VirtualArray_obj::__new(0);
-HXLINE(  13)		( ( ::algorithm::PriorityQueue)(__this) )->compare = compare;
-            	}
-		
-			return __this;
-		}
-
+		static ::hx::ObjectPtr< PriorityQueue_obj > __new();
+		static ::hx::ObjectPtr< PriorityQueue_obj > __alloc(::hx::Ctx *_hx_ctx);
 		static void * _hx_vtable;
 		static Dynamic __CreateEmpty();
 		static Dynamic __Create(::hx::DynamicArray inArgs);
@@ -53,31 +40,21 @@ HXLINE(  13)		( ( ::algorithm::PriorityQueue)(__this) )->compare = compare;
 
 		HX_DO_RTTI_ALL;
 		::hx::Val __Field(const ::String &inString, ::hx::PropertyAccess inCallProp);
-		::hx::Val __SetField(const ::String &inString,const ::hx::Val &inValue, ::hx::PropertyAccess inCallProp);
-		void __GetFields(Array< ::String> &outFields);
 		static void __register();
-		void __Mark(HX_MARK_PARAMS);
-		void __Visit(HX_VISIT_PARAMS);
 		bool _hx_isInstanceOf(int inClassId);
 		::String __ToString() const { return HX_("PriorityQueue",6d,07,1c,de); }
 
-		::cpp::VirtualArray data;
-		 ::Dynamic compare;
-		Dynamic compare_dyn() { return compare;}
-		void add( ::Dynamic item);
-		::Dynamic add_dyn();
+		void addByF( ::algorithm::Node item);
+		::Dynamic addByF_dyn();
 
-		 ::Dynamic pop();
-		::Dynamic pop_dyn();
-
-		 ::Dynamic peek();
-		::Dynamic peek_dyn();
-
-		bool isEmpty();
-		::Dynamic isEmpty_dyn();
-
-		bool contains( ::Dynamic item);
+		bool contains( ::algorithm::Node n);
 		::Dynamic contains_dyn();
+
+		 ::algorithm::Node popN();
+		::Dynamic popN_dyn();
+
+		void clear();
+		::Dynamic clear_dyn();
 
 };
 

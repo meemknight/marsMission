@@ -18,31 +18,38 @@
 #endif
 
 HX_DEFINE_STACK_FRAME(_hx_pos_7a93e64a639decc4_6_new,"WorldMap","new",0x1564557c,"WorldMap.new","WorldMap.hx",6,0x688fed74)
-HX_LOCAL_STACK_FRAME(_hx_pos_7a93e64a639decc4_36_refresh,"WorldMap","refresh",0x34901cf7,"WorldMap.refresh","WorldMap.hx",36,0x688fed74)
+HX_LOCAL_STACK_FRAME(_hx_pos_7a93e64a639decc4_43_refresh,"WorldMap","refresh",0x34901cf7,"WorldMap.refresh","WorldMap.hx",43,0x688fed74)
 
 void WorldMap_obj::__construct(::String serverFile){
             	HX_GC_STACKFRAME(&_hx_pos_7a93e64a639decc4_6_new)
-HXLINE(  12)		this->length = 0;
-HXLINE(  15)		this->content = ::sys::io::File_obj::getContent(serverFile);
-HXLINE(  16)		::Array< ::String > lines = this->content.split(HX_("\n",0a,00,00,00));
-HXLINE(  17)		this->length = lines->length;
-HXLINE(  19)		this->width = ( (int)(::Std_obj::parseInt(lines->__get(0).split(HX_(" ",20,00,00,00))->__get(0))) );
-HXLINE(  20)		this->height = ( (int)(::Std_obj::parseInt(lines->__get(0).split(HX_(" ",20,00,00,00))->__get(1))) );
-HXLINE(  22)		this->matrix = ::Array_obj< ::Dynamic>::__new(0);
-HXLINE(  27)		this->player =  ::Player_obj::__alloc( HX_CTX ,::hx::ObjectPtr<OBJ_>(this));
-HXLINE(  28)		::String _hx_tmp = lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(0);
-HXDLIN(  28)		this->player->x = ( (int)(::Std_obj::parseInt(_hx_tmp)) );
-HXLINE(  29)		 ::Dynamic _hx_tmp1 = ::Std_obj::parseInt(lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(1));
-HXDLIN(  29)		this->player->y = (_hx_tmp1 + 1);
-HXLINE(  31)		{
-HXLINE(  31)			int _g = 1;
-HXDLIN(  31)			int _g1 = (this->height + 1);
-HXDLIN(  31)			while((_g < _g1)){
-HXLINE(  31)				_g = (_g + 1);
-HXDLIN(  31)				int i = (_g - 1);
-HXLINE(  32)				this->matrix[i] = lines->__get(i).split(HX_(" ",20,00,00,00));
+HXLINE(  15)		this->osmium = 0;
+HXLINE(  14)		this->iron = 0;
+HXLINE(  13)		this->length = 0;
+HXLINE(  18)		this->content = ::sys::io::File_obj::getContent(serverFile);
+HXLINE(  19)		::Array< ::String > lines = this->content.split(HX_("\n",0a,00,00,00));
+HXLINE(  20)		this->length = lines->length;
+HXLINE(  22)		this->width = ( (int)(::Std_obj::parseInt(lines->__get(0).split(HX_(" ",20,00,00,00))->__get(0))) );
+HXLINE(  23)		this->height = ( (int)(::Std_obj::parseInt(lines->__get(0).split(HX_(" ",20,00,00,00))->__get(1))) );
+HXLINE(  25)		this->matrix = ::Array_obj< ::Dynamic>::__new(0);
+HXLINE(  30)		this->player =  ::Player_obj::__alloc( HX_CTX ,::hx::ObjectPtr<OBJ_>(this));
+HXLINE(  31)		::String _hx_tmp = lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(0);
+HXDLIN(  31)		this->player->x = ( (int)(::Std_obj::parseInt(_hx_tmp)) );
+HXLINE(  32)		 ::Dynamic _hx_tmp1 = ::Std_obj::parseInt(lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(1));
+HXDLIN(  32)		this->player->y = (_hx_tmp1 + 1);
+HXLINE(  34)		{
+HXLINE(  34)			int _g = 1;
+HXDLIN(  34)			int _g1 = (this->height + 1);
+HXDLIN(  34)			while((_g < _g1)){
+HXLINE(  34)				_g = (_g + 1);
+HXDLIN(  34)				int i = (_g - 1);
+HXLINE(  35)				this->matrix[i] = lines->__get(i).split(HX_(" ",20,00,00,00));
             			}
             		}
+HXLINE(  38)		this->base =  ::Dynamic(::hx::Anon_obj::Create(2)
+            			->setFixed(0,HX_("x",78,00,00,00),this->player->x)
+            			->setFixed(1,HX_("y",79,00,00,00),this->player->y));
+HXLINE(  39)		this->iron = ( (int)(::Std_obj::parseInt(lines->__get((lines->length - 1)).split(HX_(" ",20,00,00,00))->__get(1))) );
+HXLINE(  40)		this->osmium = ( (int)(::Std_obj::parseInt(lines->__get((lines->length - 1)).split(HX_(" ",20,00,00,00))->__get(2))) );
             	}
 
 Dynamic WorldMap_obj::__CreateEmpty() { return new WorldMap_obj; }
@@ -61,15 +68,27 @@ bool WorldMap_obj::_hx_isInstanceOf(int inClassId) {
 }
 
 void WorldMap_obj::refresh(){
-            	HX_STACKFRAME(&_hx_pos_7a93e64a639decc4_36_refresh)
-HXLINE(  37)		::String directory = HX_("../../../",8f,8c,ef,d0);
-HXLINE(  38)		::String serverFileName = (((((directory + HX_("game/s",d6,7d,f9,50)) + ::Main_obj::id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
-HXLINE(  40)		this->content = ::sys::io::File_obj::getContent(serverFileName);
-HXLINE(  41)		::Array< ::String > lines = this->content.split(HX_("\n",0a,00,00,00));
-HXLINE(  43)		::String _hx_tmp = lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(0);
-HXDLIN(  43)		this->player->x = ( (int)(::Std_obj::parseInt(_hx_tmp)) );
-HXLINE(  44)		 ::Dynamic _hx_tmp1 = ::Std_obj::parseInt(lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(1));
-HXDLIN(  44)		this->player->y = (_hx_tmp1 + 1);
+            	HX_STACKFRAME(&_hx_pos_7a93e64a639decc4_43_refresh)
+HXLINE(  44)		::String directory = HX_("../../../",8f,8c,ef,d0);
+HXLINE(  45)		::String serverFileName = (((((directory + HX_("game/s",d6,7d,f9,50)) + ::Main_obj::id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
+HXLINE(  47)		this->content = ::sys::io::File_obj::getContent(serverFileName);
+HXLINE(  48)		::Array< ::String > lines = this->content.split(HX_("\n",0a,00,00,00));
+HXLINE(  50)		::String _hx_tmp = lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(0);
+HXDLIN(  50)		this->player->x = ( (int)(::Std_obj::parseInt(_hx_tmp)) );
+HXLINE(  51)		 ::Dynamic _hx_tmp1 = ::Std_obj::parseInt(lines->__get((this->height + 1)).split(HX_(" ",20,00,00,00))->__get(1));
+HXDLIN(  51)		this->player->y = (_hx_tmp1 + 1);
+HXLINE(  53)		this->player->update();
+HXLINE(  55)		{
+HXLINE(  55)			int _g = 1;
+HXDLIN(  55)			int _g1 = (this->height + 1);
+HXDLIN(  55)			while((_g < _g1)){
+HXLINE(  55)				_g = (_g + 1);
+HXDLIN(  55)				int i = (_g - 1);
+HXLINE(  56)				this->matrix[i] = lines->__get(i).split(HX_(" ",20,00,00,00));
+            			}
+            		}
+HXLINE(  59)		this->iron = ( (int)(::Std_obj::parseInt(lines->__get((lines->length - 1)).split(HX_(" ",20,00,00,00))->__get(1))) );
+HXLINE(  60)		this->osmium = ( (int)(::Std_obj::parseInt(lines->__get((lines->length - 1)).split(HX_(" ",20,00,00,00))->__get(2))) );
             	}
 
 
@@ -100,8 +119,11 @@ void WorldMap_obj::__Mark(HX_MARK_PARAMS)
 	HX_MARK_MEMBER_NAME(height,"height");
 	HX_MARK_MEMBER_NAME(content,"content");
 	HX_MARK_MEMBER_NAME(matrix,"matrix");
+	HX_MARK_MEMBER_NAME(base,"base");
 	HX_MARK_MEMBER_NAME(player,"player");
 	HX_MARK_MEMBER_NAME(length,"length");
+	HX_MARK_MEMBER_NAME(iron,"iron");
+	HX_MARK_MEMBER_NAME(osmium,"osmium");
 	HX_MARK_END_CLASS();
 }
 
@@ -111,13 +133,20 @@ void WorldMap_obj::__Visit(HX_VISIT_PARAMS)
 	HX_VISIT_MEMBER_NAME(height,"height");
 	HX_VISIT_MEMBER_NAME(content,"content");
 	HX_VISIT_MEMBER_NAME(matrix,"matrix");
+	HX_VISIT_MEMBER_NAME(base,"base");
 	HX_VISIT_MEMBER_NAME(player,"player");
 	HX_VISIT_MEMBER_NAME(length,"length");
+	HX_VISIT_MEMBER_NAME(iron,"iron");
+	HX_VISIT_MEMBER_NAME(osmium,"osmium");
 }
 
 ::hx::Val WorldMap_obj::__Field(const ::String &inName,::hx::PropertyAccess inCallProp)
 {
 	switch(inName.length) {
+	case 4:
+		if (HX_FIELD_EQ(inName,"base") ) { return ::hx::Val( base ); }
+		if (HX_FIELD_EQ(inName,"iron") ) { return ::hx::Val( iron ); }
+		break;
 	case 5:
 		if (HX_FIELD_EQ(inName,"width") ) { return ::hx::Val( width ); }
 		break;
@@ -126,6 +155,7 @@ void WorldMap_obj::__Visit(HX_VISIT_PARAMS)
 		if (HX_FIELD_EQ(inName,"matrix") ) { return ::hx::Val( matrix ); }
 		if (HX_FIELD_EQ(inName,"player") ) { return ::hx::Val( player ); }
 		if (HX_FIELD_EQ(inName,"length") ) { return ::hx::Val( length ); }
+		if (HX_FIELD_EQ(inName,"osmium") ) { return ::hx::Val( osmium ); }
 		break;
 	case 7:
 		if (HX_FIELD_EQ(inName,"content") ) { return ::hx::Val( content ); }
@@ -137,6 +167,10 @@ void WorldMap_obj::__Visit(HX_VISIT_PARAMS)
 ::hx::Val WorldMap_obj::__SetField(const ::String &inName,const ::hx::Val &inValue,::hx::PropertyAccess inCallProp)
 {
 	switch(inName.length) {
+	case 4:
+		if (HX_FIELD_EQ(inName,"base") ) { base=inValue.Cast<  ::Dynamic >(); return inValue; }
+		if (HX_FIELD_EQ(inName,"iron") ) { iron=inValue.Cast< int >(); return inValue; }
+		break;
 	case 5:
 		if (HX_FIELD_EQ(inName,"width") ) { width=inValue.Cast< int >(); return inValue; }
 		break;
@@ -145,6 +179,7 @@ void WorldMap_obj::__Visit(HX_VISIT_PARAMS)
 		if (HX_FIELD_EQ(inName,"matrix") ) { matrix=inValue.Cast< ::Array< ::Dynamic> >(); return inValue; }
 		if (HX_FIELD_EQ(inName,"player") ) { player=inValue.Cast<  ::Player >(); return inValue; }
 		if (HX_FIELD_EQ(inName,"length") ) { length=inValue.Cast< int >(); return inValue; }
+		if (HX_FIELD_EQ(inName,"osmium") ) { osmium=inValue.Cast< int >(); return inValue; }
 		break;
 	case 7:
 		if (HX_FIELD_EQ(inName,"content") ) { content=inValue.Cast< ::String >(); return inValue; }
@@ -158,8 +193,11 @@ void WorldMap_obj::__GetFields(Array< ::String> &outFields)
 	outFields->push(HX_("height",e7,07,4c,02));
 	outFields->push(HX_("content",39,8d,77,19));
 	outFields->push(HX_("matrix",41,36,c8,bb));
+	outFields->push(HX_("base",11,e8,10,41));
 	outFields->push(HX_("player",61,eb,b8,37));
 	outFields->push(HX_("length",e6,94,07,9f));
+	outFields->push(HX_("iron",48,49,be,45));
+	outFields->push(HX_("osmium",d8,17,0e,e1));
 	super::__GetFields(outFields);
 };
 
@@ -169,8 +207,11 @@ static ::hx::StorageInfo WorldMap_obj_sMemberStorageInfo[] = {
 	{::hx::fsInt,(int)offsetof(WorldMap_obj,height),HX_("height",e7,07,4c,02)},
 	{::hx::fsString,(int)offsetof(WorldMap_obj,content),HX_("content",39,8d,77,19)},
 	{::hx::fsObject /* ::Array< ::Dynamic> */ ,(int)offsetof(WorldMap_obj,matrix),HX_("matrix",41,36,c8,bb)},
+	{::hx::fsObject /*  ::Dynamic */ ,(int)offsetof(WorldMap_obj,base),HX_("base",11,e8,10,41)},
 	{::hx::fsObject /*  ::Player */ ,(int)offsetof(WorldMap_obj,player),HX_("player",61,eb,b8,37)},
 	{::hx::fsInt,(int)offsetof(WorldMap_obj,length),HX_("length",e6,94,07,9f)},
+	{::hx::fsInt,(int)offsetof(WorldMap_obj,iron),HX_("iron",48,49,be,45)},
+	{::hx::fsInt,(int)offsetof(WorldMap_obj,osmium),HX_("osmium",d8,17,0e,e1)},
 	{ ::hx::fsUnknown, 0, null()}
 };
 static ::hx::StaticInfo *WorldMap_obj_sStaticStorageInfo = 0;
@@ -181,8 +222,11 @@ static ::String WorldMap_obj_sMemberFields[] = {
 	HX_("height",e7,07,4c,02),
 	HX_("content",39,8d,77,19),
 	HX_("matrix",41,36,c8,bb),
+	HX_("base",11,e8,10,41),
 	HX_("player",61,eb,b8,37),
 	HX_("length",e6,94,07,9f),
+	HX_("iron",48,49,be,45),
+	HX_("osmium",d8,17,0e,e1),
 	HX_("refresh",db,d9,20,ed),
 	::String(null()) };
 

@@ -5,15 +5,17 @@
 #include <algorithm/Node.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_830657d472c1488f_15_new,"algorithm.Node","new",0xe4983bf3,"algorithm.Node.new","algorithm/Node.hx",15,0xc08934fc)
-HX_LOCAL_STACK_FRAME(_hx_pos_830657d472c1488f_22_f,"algorithm.Node","f",0x0af05139,"algorithm.Node.f","algorithm/Node.hx",22,0xc08934fc)
+HX_DEFINE_STACK_FRAME(_hx_pos_830657d472c1488f_13_new,"algorithm.Node","new",0xe4983bf3,"algorithm.Node.new","algorithm/Node.hx",13,0xc08934fc)
 namespace algorithm{
 
 void Node_obj::__construct(int x,int y){
-            	HX_STACKFRAME(&_hx_pos_830657d472c1488f_15_new)
-HXLINE(  16)		this->x = x;
-HXLINE(  17)		this->y = y;
-HXLINE(  18)		this->g = 0;
+            	HX_STACKFRAME(&_hx_pos_830657d472c1488f_13_new)
+HXLINE(  14)		this->x = x;
+HXLINE(  15)		this->y = y;
+HXLINE(  16)		this->g = 0;
+HXLINE(  17)		this->h = 0;
+HXLINE(  18)		this->f = 0;
+HXLINE(  19)		this->direction = HX_("",00,00,00,00);
             	}
 
 Dynamic Node_obj::__CreateEmpty() { return new Node_obj; }
@@ -31,14 +33,6 @@ bool Node_obj::_hx_isInstanceOf(int inClassId) {
 	return inClassId==(int)0x00000001 || inClassId==(int)0x121cc525;
 }
 
-int Node_obj::f(int h){
-            	HX_STACKFRAME(&_hx_pos_830657d472c1488f_22_f)
-HXDLIN(  22)		return (this->g + h);
-            	}
-
-
-HX_DEFINE_DYNAMIC_FUNC1(Node_obj,f,return )
-
 
 Node_obj::Node_obj()
 {
@@ -49,12 +43,12 @@ void Node_obj::__Mark(HX_MARK_PARAMS)
 	HX_MARK_BEGIN_CLASS(Node);
 	HX_MARK_MEMBER_NAME(g,"g");
 	HX_MARK_MEMBER_NAME(h,"h");
-	HX_MARK_MEMBER_NAME(_hx_char,"char");
-	HX_MARK_MEMBER_NAME(priority,"priority");
+	HX_MARK_MEMBER_NAME(f,"f");
 	HX_MARK_MEMBER_NAME(x,"x");
 	HX_MARK_MEMBER_NAME(y,"y");
 	HX_MARK_MEMBER_NAME(parent,"parent");
 	HX_MARK_MEMBER_NAME(direction,"direction");
+	HX_MARK_MEMBER_NAME(_hx_char,"char");
 	HX_MARK_END_CLASS();
 }
 
@@ -62,12 +56,12 @@ void Node_obj::__Visit(HX_VISIT_PARAMS)
 {
 	HX_VISIT_MEMBER_NAME(g,"g");
 	HX_VISIT_MEMBER_NAME(h,"h");
-	HX_VISIT_MEMBER_NAME(_hx_char,"char");
-	HX_VISIT_MEMBER_NAME(priority,"priority");
+	HX_VISIT_MEMBER_NAME(f,"f");
 	HX_VISIT_MEMBER_NAME(x,"x");
 	HX_VISIT_MEMBER_NAME(y,"y");
 	HX_VISIT_MEMBER_NAME(parent,"parent");
 	HX_VISIT_MEMBER_NAME(direction,"direction");
+	HX_VISIT_MEMBER_NAME(_hx_char,"char");
 }
 
 ::hx::Val Node_obj::__Field(const ::String &inName,::hx::PropertyAccess inCallProp)
@@ -76,18 +70,15 @@ void Node_obj::__Visit(HX_VISIT_PARAMS)
 	case 1:
 		if (HX_FIELD_EQ(inName,"g") ) { return ::hx::Val( g ); }
 		if (HX_FIELD_EQ(inName,"h") ) { return ::hx::Val( h ); }
+		if (HX_FIELD_EQ(inName,"f") ) { return ::hx::Val( f ); }
 		if (HX_FIELD_EQ(inName,"x") ) { return ::hx::Val( x ); }
 		if (HX_FIELD_EQ(inName,"y") ) { return ::hx::Val( y ); }
-		if (HX_FIELD_EQ(inName,"f") ) { return ::hx::Val( f_dyn() ); }
 		break;
 	case 4:
 		if (HX_FIELD_EQ(inName,"char") ) { return ::hx::Val( _hx_char ); }
 		break;
 	case 6:
 		if (HX_FIELD_EQ(inName,"parent") ) { return ::hx::Val( parent ); }
-		break;
-	case 8:
-		if (HX_FIELD_EQ(inName,"priority") ) { return ::hx::Val( priority ); }
 		break;
 	case 9:
 		if (HX_FIELD_EQ(inName,"direction") ) { return ::hx::Val( direction ); }
@@ -101,6 +92,7 @@ void Node_obj::__Visit(HX_VISIT_PARAMS)
 	case 1:
 		if (HX_FIELD_EQ(inName,"g") ) { g=inValue.Cast< int >(); return inValue; }
 		if (HX_FIELD_EQ(inName,"h") ) { h=inValue.Cast< int >(); return inValue; }
+		if (HX_FIELD_EQ(inName,"f") ) { f=inValue.Cast< int >(); return inValue; }
 		if (HX_FIELD_EQ(inName,"x") ) { x=inValue.Cast< int >(); return inValue; }
 		if (HX_FIELD_EQ(inName,"y") ) { y=inValue.Cast< int >(); return inValue; }
 		break;
@@ -109,9 +101,6 @@ void Node_obj::__Visit(HX_VISIT_PARAMS)
 		break;
 	case 6:
 		if (HX_FIELD_EQ(inName,"parent") ) { parent=inValue.Cast<  ::algorithm::Node >(); return inValue; }
-		break;
-	case 8:
-		if (HX_FIELD_EQ(inName,"priority") ) { priority=inValue.Cast< int >(); return inValue; }
 		break;
 	case 9:
 		if (HX_FIELD_EQ(inName,"direction") ) { direction=inValue.Cast< ::String >(); return inValue; }
@@ -123,12 +112,12 @@ void Node_obj::__GetFields(Array< ::String> &outFields)
 {
 	outFields->push(HX_("g",67,00,00,00));
 	outFields->push(HX_("h",68,00,00,00));
-	outFields->push(HX_("char",d6,5e,bf,41));
-	outFields->push(HX_("priority",64,7b,3e,bb));
+	outFields->push(HX_("f",66,00,00,00));
 	outFields->push(HX_("x",78,00,00,00));
 	outFields->push(HX_("y",79,00,00,00));
 	outFields->push(HX_("parent",2a,05,7e,ed));
 	outFields->push(HX_("direction",3f,62,40,10));
+	outFields->push(HX_("char",d6,5e,bf,41));
 	super::__GetFields(outFields);
 };
 
@@ -136,12 +125,12 @@ void Node_obj::__GetFields(Array< ::String> &outFields)
 static ::hx::StorageInfo Node_obj_sMemberStorageInfo[] = {
 	{::hx::fsInt,(int)offsetof(Node_obj,g),HX_("g",67,00,00,00)},
 	{::hx::fsInt,(int)offsetof(Node_obj,h),HX_("h",68,00,00,00)},
-	{::hx::fsString,(int)offsetof(Node_obj,_hx_char),HX_("char",d6,5e,bf,41)},
-	{::hx::fsInt,(int)offsetof(Node_obj,priority),HX_("priority",64,7b,3e,bb)},
+	{::hx::fsInt,(int)offsetof(Node_obj,f),HX_("f",66,00,00,00)},
 	{::hx::fsInt,(int)offsetof(Node_obj,x),HX_("x",78,00,00,00)},
 	{::hx::fsInt,(int)offsetof(Node_obj,y),HX_("y",79,00,00,00)},
 	{::hx::fsObject /*  ::algorithm::Node */ ,(int)offsetof(Node_obj,parent),HX_("parent",2a,05,7e,ed)},
 	{::hx::fsString,(int)offsetof(Node_obj,direction),HX_("direction",3f,62,40,10)},
+	{::hx::fsString,(int)offsetof(Node_obj,_hx_char),HX_("char",d6,5e,bf,41)},
 	{ ::hx::fsUnknown, 0, null()}
 };
 static ::hx::StaticInfo *Node_obj_sStaticStorageInfo = 0;
@@ -150,13 +139,12 @@ static ::hx::StaticInfo *Node_obj_sStaticStorageInfo = 0;
 static ::String Node_obj_sMemberFields[] = {
 	HX_("g",67,00,00,00),
 	HX_("h",68,00,00,00),
-	HX_("char",d6,5e,bf,41),
-	HX_("priority",64,7b,3e,bb),
+	HX_("f",66,00,00,00),
 	HX_("x",78,00,00,00),
 	HX_("y",79,00,00,00),
 	HX_("parent",2a,05,7e,ed),
 	HX_("direction",3f,62,40,10),
-	HX_("f",66,00,00,00),
+	HX_("char",d6,5e,bf,41),
 	::String(null()) };
 
 ::hx::Class Node_obj::__mClass;
