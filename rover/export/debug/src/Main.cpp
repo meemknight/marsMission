@@ -108,19 +108,18 @@ void Main_obj::begin(int id){
             	HX_GC_STACKFRAME(&_hx_pos_e47a9afac0942eb9_74_begin)
 HXLINE(  75)		::String directory = HX_("../../../",8f,8c,ef,d0);
 HXLINE(  76)		::String serverFileName = (((((directory + HX_("game/s",d6,7d,f9,50)) + id) + HX_("_",5f,00,00,00)) + ::Main_obj::round) + HX_(".txt",02,3f,c0,1e));
-HXLINE(  78)		while(true){
-HXLINE(  79)			::String temp = (((((directory + HX_("game/s",d6,7d,f9,50)) + id) + HX_("_",5f,00,00,00)) + (::Main_obj::round + 1)) + HX_(".txt",02,3f,c0,1e));
-HXLINE(  81)			if (!(::sys::FileSystem_obj::exists(temp))) {
-HXLINE(  82)				goto _hx_goto_4;
-            			}
-HXLINE(  85)			::Main_obj::round++;
-HXLINE(  86)			serverFileName = temp;
+HXLINE(  78)		if (!(::sys::FileSystem_obj::exists((directory + HX_("game/",fd,7f,b6,8e))))) {
+HXLINE(  79)			::Log_obj::warning((directory + HX_("game/",fd,7f,b6,8e)));
             		}
-            		_hx_goto_4:;
-HXLINE(  89)		if (!(::sys::FileSystem_obj::exists(serverFileName))) {
-HXLINE(  90)			::Log_obj::warning(((HX_("Directory",4d,d2,17,b2) + serverFileName) + HX_(" does not exist.",eb,90,4a,9f)));
+HXLINE(  82)		while(!(::sys::FileSystem_obj::exists(serverFileName))){
+HXLINE(  87)			::haxe::Log_obj::trace(HX_("Hi",21,3f,00,00),::hx::SourceInfo(HX_("source/Main.hx",91,d3,a7,40),87,HX_("Main",59,64,2f,33),HX_("begin",29,ea,55,b0)));
             		}
-HXLINE(  93)		::Main_obj::map =  ::WorldMap_obj::__alloc( HX_CTX ,serverFileName);
+HXLINE(  90)		if (!(::sys::FileSystem_obj::exists(serverFileName))) {
+HXLINE(  91)			::Log_obj::warning(((HX_("Directory",4d,d2,17,b2) + serverFileName) + HX_(" does not exist.",eb,90,4a,9f)));
+            		}
+HXLINE(  94)		::Main_obj::map =  ::WorldMap_obj::__alloc( HX_CTX ,serverFileName);
+HXLINE(  95)		::haxe::Log_obj::trace(HX_("Hello",f2,a2,ee,b7),::hx::SourceInfo(HX_("source/Main.hx",91,d3,a7,40),95,HX_("Main",59,64,2f,33),HX_("begin",29,ea,55,b0)));
+HXLINE(  96)		::Main_obj::execute();
             	}
 
 

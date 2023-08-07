@@ -5,8 +5,9 @@ build/
 .idea/
 CMakeSettings.json
 CMakeFiles/
-export/debug
-export/release
+export/
+export/
+.VSCodeCounter
 .DS_Store
 mygame
 game/

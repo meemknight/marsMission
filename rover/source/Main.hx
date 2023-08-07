@@ -75,15 +75,14 @@ class Main {
         var directory:String = "../../../";
         var serverFileName:String = directory + "game/s" + id + "_" + round + ".txt";
 
-        while(true) {
-            var temp = directory + "game/s" + id + "_" + (round + 1) + ".txt";
+        if(!FileSystem.exists(directory + "game/")) {
+            Log.warning(directory + "game/");
+        }
 
-            if(!FileSystem.exists(temp)) {
+        while(true) {
+            if(FileSystem.exists(serverFileName)) {
                 break;
             }
-
-            round++;
-            serverFileName = temp;
         }
 
         if(!FileSystem.exists(serverFileName)) {
@@ -91,5 +90,7 @@ class Main {
         }
 
         map = new WorldMap(serverFileName);
+        trace("Hello");
+        execute();
     }
 }
