@@ -1,4 +1,6 @@
 @echo off
-haxe debug.hxml %*
+haxe debug.hxml -D windows
 cd export/debug
-./Main
+Main.exe
+
+pause

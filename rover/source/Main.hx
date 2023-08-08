@@ -1,5 +1,6 @@
 package;
 
+import haxe.macro.Expr.Catch;
 import haxe.Timer;
 import haxe.macro.Expr.QuoteStatus;
 import sys.FileSystem;
@@ -13,40 +14,18 @@ class Main {
     public static var map(default, null):WorldMap;
 
     public static function main():Void {
-        seeMyGame();
+        #if (!windows && (mac || linux))
+        seeMyGame(); // Unix based OS only
+        #end
 
         trace("enter id: ");
         id = Std.parseInt(Sys.stdin().readLine());
 
         Timer.delay(function() {
             begin(id);
-            execute();
-            loop(id);
+            //execute();
+            //loop(id);
         }, 5);
-
-        /*
-        while(true) {
-            // Timer.delay(function() {
-                var serverFileName:String = directory + "game/s" + id + "_" + round + ".txt";
-
-                if(!FileSystem.exists(directory)) {
-                    Log.warning("Directory" + directory + " does not exist.");
-                    break;
-                }
-
-                if(FileSystem.exists(serverFileName)) {
-                    var input = File.getContent(serverFileName);
-
-                    var ourFileName:String = directory + "game/c" + id + "_" + round + ".txt";
-                    File.saveContent(ourFileName, "m u\n");
-
-                    round++;
-                }else {
-                    break;
-                }
-            // }, 5);
-        }
-        */
     }
 
     public static function loop(id:Int):Void {
@@ -78,38 +57,44 @@ class Main {
 
     public static function begin(id:Int):Void {
         var directory:String = "../../../";
-        var serverFileName:String = directory + "game/s" + id + "_" + round + ".txt";
 
-        if(!FileSystem.exists(directory + "game/")) {
-            Log.warning(directory + "game/");
-        }
+        var serverFileName:String = directory + "game/s" + id + "_" + round + ".txt";
+        var createdMap = false;
 
         while(true) {
-            var temp = directory + "game/s" + id + "_" + (round + 1) + ".txt";
+            serverFileName = directory + "game/s" + id + "_" + round + ".txt";
 
-            if(!FileSystem.exists(temp)) {
+            if(!FileSystem.exists(directory)) {
+                Log.warning("Directory" + directory + " does not exist.");
                 break;
             }
 
-            round++;
-            serverFileName = temp;
-        }
+            if(FileSystem.exists(serverFileName)) {
+                var content = File.getContent(serverFileName);
+                var lines = content.split("\n");
 
-        if(!FileSystem.exists(serverFileName)) {
-            Log.warning("Directory" + serverFileName + " does not exist.");
-        }
+                if(!createdMap) {
+                    map = new WorldMap(serverFileName);
+                    createdMap = true;
+                }
 
-        map = new WorldMap(serverFileName);
+                if(lines.length < map.length) {
+                    continue;
+                }
+
+                execute();
+                map.refresh();
+
+                round++;
+            }
+        }
     }
 
     public static function seeMyGame():Void {
         var cmd = "";
         var args = [];
 
-        #if windows
-        cmd = "tasklist | findstr";
-        args = ["/I", '/C: "mygame"', '/C:"feeshygame"'];
-        #elseif linux
+        #if linux
         cmd = "pgrep";
         args = ["mygame", "feeshygame"];
         #else
