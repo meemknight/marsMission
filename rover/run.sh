@@ -1,4 +1,4 @@
 #!/bin/sh
-haxe debug.hxml
+haxe debug.hxml "$@"
 cd export/debug
 ./Main
