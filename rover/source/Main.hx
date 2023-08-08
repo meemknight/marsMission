@@ -22,7 +22,7 @@ class Main {
             begin(id);
             execute();
             loop(id);
-        }, 5000);
+        }, 5);
 
         /*
         while(true) {

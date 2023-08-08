@@ -50,11 +50,11 @@ class WorldMap {
         player.x = Std.parseInt(lines[height + 1].split(" ")[0]);
         player.y = Std.parseInt(lines[height + 1].split(" ")[1]) + 1;
 
-        player.update();
-
         for(i in 1...(height + 1)) {
             matrix[i] = lines[i].split(" ");
         }
+
+        player.update();
 
         iron = Std.parseInt(lines[lines.length - 1].split(" ")[1]);
         osmium = Std.parseInt(lines[lines.length - 1].split(" ")[2]);

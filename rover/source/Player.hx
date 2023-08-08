@@ -1,14 +1,13 @@
 package;
 
-import haxe.display.Display.Package;
-import sys.io.File;
+import algorithm.AI;
+import algorithm.Node;
 import info.Instructions;
 import spinehaxe.MathUtils;
-import algorithm.PriorityQueue;
-import algorithm.Node;
-import algorithm.AI;
+import sys.io.File;
 
 using StringTools;
+
 
 class Player {
     public var x:Int;
@@ -19,9 +18,9 @@ class Player {
 
     @:noCompletion private var __directory:String = "../../../";
     @:noCompletion private var __directions:Array<String> = [UP, DOWN, LEFT, RIGHT];
-    @:noCompletion private var __rockQueue:PriorityQueue;
+    @:noCompletion private var __rockQueue:Array<Node>;
+    @:noCompletion private var __currentRock:Node;
     @:noCompletion private var __playerNode:Node;
-    @:noCompletion private var __nodes:Array<Node> = [];
     @:noCompletion private var __index:Int = 0;
 
     public static var battery:Bool = false;
@@ -36,42 +35,34 @@ class Player {
 
         this.world = world;
 
-        __rockQueue = new PriorityQueue();
+        __rockQueue = [];
         __playerNode = new Node(x, y);
     }
 
     public function pathMovement():Void {
         scanArea();
-        mapOut();
 
-        /*
-        if(!__rockQueue.isEmpty() && __nodes.length == 0) {
-            var rockTarget = __rockQueue.pop();
-            __nodes = AI.findPath(level, new Node(x, y), rockTarget, world);
-            
-            if (__nodes != null && (__nodes[__nodes.length - 1].x == rockTarget.x && __nodes[__nodes.length - 1].y == rockTarget.y)) {
-                trace("Found a path to a rock at position: (" + rockTarget.x + ", " + rockTarget.y + ")");
-            } else {
-                Log.warning("Couldn't find a path to the rock.");
-            }
-        }
-
-        if(__nodes.length == 0) {
+        if(__rockQueue.length == 0) {
             mapOut();
-            return;
+        } else {
+            goToOre();
+        }
+    }
+
+    private function goToOre():Void {
+        if(__currentRock == null) {
+            AI.clear();
+            __currentRock = __rockQueue.pop();
         }
 
-        var n = __nodes.shift();
+        update();
+        var n = AI.findPath(level, __playerNode, __currentRock, world);
+        __playerNode = n;
+        command(n.direction + " m " + n.direction);
 
-        if(n.char == 'X' || n.char == 'A') {
-            command(n.direction + " m " + n.direction);
-            return;
+        if((__playerNode.x == __currentRock.x && __playerNode.y == __currentRock.y)) {
+            __currentRock = null;
         }
-
-        if (n != null) {
-            command(n.direction);
-        }
-        */
     }
 
     private function mapOut():Void {
@@ -138,11 +129,11 @@ class Player {
 
             while(i <= il) {
                 if(world.matrix[j][i] == 'C'
-                || world.matrix[j][i] == 'D'
-                || world.matrix[j][i] == 'F') {
+                || world.matrix[j][i] == 'D') {
                     var node:Node = new Node(i, j);
                     node.char = world.matrix[j][i];
-                    __rockQueue.add(node);
+                    node.h = AI.heuristic(__playerNode, node);
+                    __rockQueue.push(node);
                 }
 
                 i++;

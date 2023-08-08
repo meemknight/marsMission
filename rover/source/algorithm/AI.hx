@@ -4,54 +4,55 @@ import spinehaxe.MathUtils;
 import info.Instructions;
 
 class AI {
-    private static var visitedNodes:Array<Node>;
+    private static var visitedNodes:Array<Node> = [];
     
     public static function findPath(cost:Int, start:Node, end:Node, world:WorldMap):Node {
-        var openList = new PriorityQueue();
+        var openList:Array<Node> = [];
         var current:Node = null;
-        visitedNodes = [];
+        
+        var n = neighbors(start, cost, world);
 
-        for(n in neighbors(start, cost, world)) {
-            if(sharePosList(n, visitedNodes) || n.char != ".") {
+        for(i in 0...n.length) {
+            var node = n[i];
+
+            if(node == null) {
                 continue;
             }
 
-            n.h = heuristic(n, end);
-            n.g = start.g + cost;
-            openList.addByF(n);
+            if(sharePosList(node, visitedNodes) || node.char == "B") {
+                continue;
+            }
+
+            node.h = heuristic(node, end);
+            node.g = start.g + cost;
+            node.f = node.g + node.h;
+            openList.push(node);
         }
 
+        openList.sort(function(a:Node, b:Node):Int {
+            return b.f - a.f;
+        });
         current = openList.pop();
+        retracePath(start, current);
         visitedNodes.push(current);
+
         return current;
     }
 
-    private static function retracePath(node:Node):Array<Node> { // Using a LinkedList to get accurate path.
-        var path:Array<Node> = [];
-
-        while(node.parent != null) {
-            var direction = "";
-
-            switch(MathUtils.clamp(node.y - node.parent.y, -1, 1)) {
-                case 1:
-                    direction = DOWN;
-                case -1:
-                    direction = UP;
-            }
-
-            switch(MathUtils.clamp(node.x - node.parent.x, -1, 1)) {
-                case 1:
-                    direction = RIGHT;
-                case -1:
-                    direction = LEFT;
-            }
-
-            node.parent.direction = direction;
-            path.insert(0, node);
-            node = node.parent;
+    private static function retracePath(start:Node, node:Node):Void {
+        switch(MathUtils.clamp(start.y - node.y, -1, 1)) {
+            case -1:
+                node.direction = DOWN;
+            case 1:
+                node.direction = UP;
         }
 
-        return path;
+        switch(MathUtils.clamp(start.x - node.x, -1, 1)) {
+            case -1:
+                node.direction = RIGHT;
+            case 1:
+                node.direction = LEFT;
+        }
     }
 
     private static function neighbors(current:Node, cost:Int, world:WorldMap):Array<Node> {
@@ -71,7 +72,7 @@ class AI {
                 }
 
                 var node = new Node(i, j);
-                node.char = world.matrix[i][j];
+                node.char = world.matrix[j][i];
                 n.push(node);
                 
                 i++;
@@ -83,12 +84,18 @@ class AI {
         return n;
     }
 
-    private static function heuristic(start:Node, end:Node):Int {
+    public static function heuristic(start:Node, end:Node):Int {
         return Std.int(Math.abs(start.x - end.x) + Math.abs(start.y - end.y));
     }
 
+    public static function clear():Void {
+        visitedNodes = [];
+    }
+
     private static function sharePosList(target:Node, list:Array<Node>):Bool {
-        for(node in list) {
+        for(i in 0...list.length) {
+            var node = list[i];
+
             if(node.x == target.x && node.y == target.y) {
                 return true;
             }
