@@ -30,8 +30,9 @@ class AI {
         }
 
         openList.sort(function(a:Node, b:Node):Int {
-            return b.f - a.f;
+            return b.h - a.h;
         });
+        trace(openList[0].h);
         current = openList.pop();
         retracePath(start, current);
         visitedNodes.push(current);
