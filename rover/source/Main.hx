@@ -1,5 +1,6 @@
 package;
 
+import haxe.Timer;
 import haxe.macro.Expr.QuoteStatus;
 import sys.FileSystem;
 import sys.io.File;
@@ -12,12 +13,16 @@ class Main {
     public static var map(default, null):WorldMap;
 
     public static function main():Void {
+        seeMyGame();
+
         trace("enter id: ");
         id = Std.parseInt(Sys.stdin().readLine());
 
-        begin(id);
-        execute();
-        loop(id);
+        Timer.delay(function() {
+            begin(id);
+            execute();
+            loop(id);
+        }, 5000);
 
         /*
         while(true) {
@@ -80,9 +85,14 @@ class Main {
         }
 
         while(true) {
-            if(FileSystem.exists(serverFileName)) {
+            var temp = directory + "game/s" + id + "_" + (round + 1) + ".txt";
+
+            if(!FileSystem.exists(temp)) {
                 break;
             }
+
+            round++;
+            serverFileName = temp;
         }
 
         if(!FileSystem.exists(serverFileName)) {
@@ -90,7 +100,35 @@ class Main {
         }
 
         map = new WorldMap(serverFileName);
-        trace("Hello");
-        execute();
+    }
+
+    public static function seeMyGame():Void {
+        var cmd = "";
+        var args = [];
+
+        #if windows
+        cmd = "tasklist | findstr";
+        args = ["/I", '/C: "mygame"', '/C:"feeshygame"'];
+        #elseif linux
+        cmd = "pgrep";
+        args = ["mygame", "feeshygame"];
+        #else
+        cmd = "pgrep";
+        args = ["mygame", "feeshygame"];
+        #end
+
+        var process = new sys.io.Process(cmd, args);
+        var output = process.stdout.readAll().toString();
+
+        if(output.length == 0) {
+            Log.warning("Could not find application! Please make sure the executable is named 'mygame' or 'feeshygame'! Or that it is running!");
+        }
+
+        while(output.length == 0) {
+            process = new sys.io.Process(cmd, args);
+            output = process.stdout.readAll().toString();
+        }
+
+        trace("Successfully found application!");
     }
 }
