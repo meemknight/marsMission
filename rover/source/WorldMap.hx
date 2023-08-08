@@ -1,5 +1,6 @@
 package;
 
+import shop.Shop;
 import cpp.NativeArray;
 import sys.io.File;
 
@@ -8,6 +9,7 @@ class WorldMap {
     public var height(default, null):Int;
     public var content(default, null):String;
     public var matrix(default, null):Array<Array<String>>;
+    public var shop(default, null):Shop;
     public var base(default, null):Vec2;
     public var player(default, null):Player;
     public var length(default, null):Int = 0;

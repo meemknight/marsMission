@@ -8,6 +8,8 @@ import sys.io.File;
 
 import info.Instructions;
 
+@:buildXml('<include name="../../Include.xml.tpl" />')
+@:cppInclude("rover.h")
 class Main {
     public static var id(default, null):Int = 0;
     public static var round(default, null):Int = 0;
@@ -21,34 +23,7 @@ class Main {
         trace("enter id: ");
         id = Std.parseInt(Sys.stdin().readLine());
 
-        Timer.delay(function() {
-            begin(id);
-            //execute();
-            //loop(id);
-        }, 5);
-    }
-
-    public static function loop(id:Int):Void {
-        var directory:String = "../../../";
-
-        while(true) {
-            var event = directory + "game/s" + id + "_" + (round + 1) + ".txt";
-
-            if(!FileSystem.exists(event)) {
-                continue;
-            }
-
-            var content = File.getContent(event);
-            var lines = content.split("\n");
-
-            if(lines.length < map.length) {
-                continue;
-            }
-
-            round++;
-            execute();
-            map.refresh();
-        }
+        begin(id);
     }
 
     public static function execute():Void {
@@ -62,6 +37,8 @@ class Main {
         var createdMap = false;
 
         while(true) {
+            untyped __cpp__('std::this_thread::sleep_for(std::chrono::milliseconds(5));');
+
             serverFileName = directory + "game/s" + id + "_" + round + ".txt";
 
             if(!FileSystem.exists(directory)) {
@@ -78,7 +55,7 @@ class Main {
                     createdMap = true;
                 }
 
-                if(lines.length < map.length) {
+                if(lines.length < map.length) { // Safety guard just incase the sleep doesn't work.
                     continue;
                 }
 

@@ -1,5 +1,7 @@
 package shop;
 
+import haxe.display.Display.Package;
+
 class Shop {
     private var queue:ShopQueue;
 
@@ -34,5 +36,20 @@ class Shop {
 
         queue.push(dig2);
         queue.push(dig3);
+    }
+
+    public function checkToBuy(iron:Int, osmium:Int):Market {
+        var cheapest:Market = queue.first();
+
+        if(cheapest == null) {
+            trace("All items have been bought.");
+            return null;
+        }
+
+        if(cheapest.iron > iron || cheapest.osmium > osmium) {
+            return null;
+        }
+        
+        return queue.pop();
     }
 }

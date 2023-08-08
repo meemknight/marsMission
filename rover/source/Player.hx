@@ -2,12 +2,12 @@ package;
 
 import algorithm.AI;
 import algorithm.Node;
+import shop.Market;
 import info.Instructions;
 import spinehaxe.MathUtils;
 import sys.io.File;
 
 using StringTools;
-
 
 class Player {
     public var x:Int;
@@ -19,13 +19,18 @@ class Player {
     @:noCompletion private var __directory:String = "../../../";
     @:noCompletion private var __directions:Array<String> = [UP, DOWN, LEFT, RIGHT];
     @:noCompletion private var __rockQueue:Array<Node>;
+    @:noCompletion private var __playerQueue:Array<Node>;
+    @:noCompletion private var __whatIwannaBuy:Market;
     @:noCompletion private var __currentRock:Node;
+    @:noCompletion private var __currentTarget:Node;
     @:noCompletion private var __playerNode:Node;
+    @:noCompletion private var __baseNode:Node;
     @:noCompletion private var __index:Int = 0;
 
     public static var battery:Bool = false;
     public static var level:Int = 1;
     public static var sight:Int = 2;
+    public static var attack:Int = 1;
 
     public function new(world:WorldMap) {
         x = 0;
@@ -37,15 +42,46 @@ class Player {
 
         __rockQueue = [];
         __playerNode = new Node(x, y);
+        __baseNode = new Node(world.base.x, world.base.y);
     }
 
     public function pathMovement():Void {
         scanArea();
 
-        if(__rockQueue.length == 0) {
-            mapOut();
-        } else {
+        __whatIwannaBuy = world.shop.checkToBuy(world.iron, world.osmium);
+
+        if(__rockQueue.length > 0) {
             goToOre();
+        } else if(__playerQueue.length > 0) {
+            fightPlayer();
+        }else {
+            mapOut();
+        }
+    }
+
+    private function backToBase():Void {
+        if((__playerNode.x == __baseNode.x && __playerNode.y == __baseNode.y)) {
+            return;
+        }
+
+        var n = AI.findPath(level, __playerNode, __baseNode, world);
+        __playerNode = n;
+        command(n.direction + " m " + n.direction);
+    }
+
+    private function fightPlayer():Void {
+        if(__currentRock == null) {
+            AI.clear();
+            __currentRock = __rockQueue.pop();
+        }
+
+        update();
+        var n = AI.findPath(attack, __playerNode, __currentTarget, world);
+        __playerNode = n;
+        command(n.direction + " a " + n.direction);
+
+        if((__playerNode.x == __currentTarget.x && __playerNode.y == __currentTarget.y)) {
+            __currentTarget = null;
         }
     }
 
@@ -134,6 +170,13 @@ class Player {
                     node.char = world.matrix[j][i];
                     node.h = AI.heuristic(__playerNode, node);
                     __rockQueue.push(node);
+                }
+
+                if(Std.parseInt(world.matrix[j][i]) != null) {
+                    var node:Node = new Node(i, j);
+                    node.char = world.matrix[j][i];
+                    node.h = AI.heuristic(__playerNode, node);
+                    __playerQueue.push(node);
                 }
 
                 i++;
