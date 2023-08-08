@@ -41,14 +41,22 @@ class Player {
         this.world = world;
 
         __rockQueue = [];
+        __playerQueue = [];
         __playerNode = new Node(x, y);
-        __baseNode = new Node(world.base.x, world.base.y);
+        __baseNode = new Node(x, y);
     }
 
     public function pathMovement():Void {
         scanArea();
 
         __whatIwannaBuy = world.shop.checkToBuy(world.iron, world.osmium);
+
+        /*
+        if(__whatIwannaBuy != null && __playerQueue.length == 0) {
+            trace("hi");
+            // backToBase();
+        }
+        */
 
         if(__rockQueue.length > 0) {
             goToOre();
@@ -172,7 +180,7 @@ class Player {
                     __rockQueue.push(node);
                 }
 
-                if(Std.parseInt(world.matrix[j][i]) != null) {
+                if(Std.parseInt(world.matrix[j][i]) != null && Std.parseInt(world.matrix[j][i]) != Main.id) {
                     var node:Node = new Node(i, j);
                     node.char = world.matrix[j][i];
                     node.h = AI.heuristic(__playerNode, node);

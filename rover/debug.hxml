@@ -1,5 +1,7 @@
 -main Main
 -D debug
+# -D HXCPP_CHECK_POINTER
+# -D HXCPP_STACK_LINE
 -L spinehaxe
 -cp source
 -cp cpp
