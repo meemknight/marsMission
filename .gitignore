@@ -9,5 +9,5 @@ rover/export/
 .VSCodeCounter
 .DS_Store
 mygame
-game/
+game/*
 Makefile
