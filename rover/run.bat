@@ -1,4 +1,4 @@
 @echo off
-haxe debug.hxml "$@"
+haxe debug.hxml %*
 cd export/debug
 ./Main
