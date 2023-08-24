@@ -57,10 +57,10 @@ struct GameplayState
 
 	bool closeGame = 0;
 	
-	bool evictUnresponsivePlayers = 0;
+	bool evictUnresponsivePlayers = 1;
 	float currentWaitingTime = 5;
 	bool closeGameWhenWinning = 0;
-	bool pause = 0;
+	bool pause = 1;
 
 
 }gameplayState;
@@ -1037,7 +1037,7 @@ ImVec4 colors[] = {
 		ImVec4{0,0,1,1},
 		ImVec4{1,1,0,1},
 		ImVec4{0,1,0,1},
-		ImVec4{1,1,1,1},
+		ImVec4{131/255.f, 52 / 255.f, 235 / 255.f,1},
 		ImVec4{1,0,0,1},
 		ImVec4{1,0,1,1},
 
