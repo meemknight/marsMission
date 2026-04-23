@@ -39,7 +39,7 @@ Sound startSound;
 #endif
 
 
-static int acidStartTime = 150;
+static int acidStartTime = 200;
 
 
 struct GameplayState
@@ -89,12 +89,17 @@ void gameStep(float deltaTime)
 	{
 		auto sendNextMessage = [&]()
 		{
+			std::string fileNameTemp = "game/" "s" +
+				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].id) + "_" +
+				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].currentRound)
+				+ "temp.txt";
+
 			std::string fileName = "game/" "s" +
 				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].id) + "_" +
 				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].currentRound)
 				+ ".txt";
 
-			std::ofstream f(fileName);
+			std::ofstream f(fileNameTemp);
 
 			if (!f)
 			{
@@ -173,6 +178,9 @@ void gameStep(float deltaTime)
 
 				gameplayState.waitCulldown = culldownTime;
 				f.close();
+
+				std::error_code ec = {};
+				std::filesystem::rename(fileNameTemp, fileName, ec);
 
 				p.scannedThisTurn = false;
 			}
