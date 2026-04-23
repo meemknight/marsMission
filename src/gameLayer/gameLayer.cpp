@@ -39,7 +39,8 @@ Sound startSound;
 #endif
 
 
-static int acidStartTime = 200;
+static int acidStartTime = 300;
+static constexpr float maxRoverResponseWaitTime = 5.f;
 
 
 struct GameplayState
@@ -57,8 +58,9 @@ struct GameplayState
 
 	bool closeGame = 0;
 	
-	bool evictUnresponsivePlayers = 1;
-	float currentWaitingTime = 5;
+	bool automaticallyKickUnrespondingRovers = 0;
+	bool currentRoverIsUnresponsive = 0;
+	float currentWaitingTime = maxRoverResponseWaitTime;
 	bool closeGameWhenWinning = 0;
 	bool pause = 1;
 
@@ -76,6 +78,141 @@ std::string state = "";
 float culldownTime = 0;
 bool followCurrentTurn = 0;
 
+void resetCurrentRoverWaitingState()
+{
+	gameplayState.currentWaitingTime = maxRoverResponseWaitTime;
+	gameplayState.currentRoverIsUnresponsive = 0;
+}
+
+void sendNextMessageToCurrentRover()
+{
+	if (gameplayState.players.empty())
+	{
+		resetCurrentRoverWaitingState();
+		return;
+	}
+
+	std::string fileNameTemp = "game/" "s" +
+		std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].id) + "_" +
+		std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].currentRound)
+		+ "temp.txt";
+
+	std::string fileName = "game/" "s" +
+		std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].id) + "_" +
+		std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].currentRound)
+		+ ".txt";
+
+	std::ofstream f(fileNameTemp);
+
+	if (!f)
+	{
+		panicError = "The server couldn't create a server file: " + fileName;
+	}
+	else
+	{
+		f << gameplayState.map.size.x << ' ' << gameplayState.map.size.y << "\n";
+
+		auto &p = gameplayState.players[gameplayState.waitingForPlayerIndex];
+
+		for (int j = 0; j < gameplayState.map.size.y; j++)
+		{
+			for (int i = 0; i < gameplayState.map.size.x; i++)
+			{
+				char c = gameplayState.map.unsafeGet({i,j});
+
+				if (!calculateView(p.position, {i,j}, p.cameraLevel))
+				{
+					if (p.scannedThisTurn)
+					{
+						int size = 4;
+
+						if (p.cameraLevel == 2) { size = 5; }
+						if (p.cameraLevel == 3) { size = 6; }
+
+						glm::ivec2 scanPos = p.position;
+						if (p.scannedThisTurn == 1) { scanPos += glm::ivec2{0,-1} *size; }
+						if (p.scannedThisTurn == 2) { scanPos += glm::ivec2{0,1} *size; }
+						if (p.scannedThisTurn == 3) { scanPos += glm::ivec2{-1,0} *size; }
+						if (p.scannedThisTurn == 4) { scanPos += glm::ivec2{1,0} *size; }
+
+						if (glm::distance(glm::vec2(scanPos), glm::vec2(i, j))
+							< std::sqrt(2.f) + 0.1)
+						{
+							//good
+						}
+						else
+						{
+							c = '?';
+						}
+					}
+					else
+					{
+						c = '?';
+					}
+				}
+				else
+				{
+					for (auto &p : gameplayState.players)
+					{
+						if (p.position == glm::ivec2{i, j})
+						{
+							c = '0' + p.id;
+						}
+					}
+				}
+
+				f << c << " ";
+			}
+			f << "\n";
+		}
+		
+		f << p.position.x << " ";
+		f << p.position.y << "\n";
+		f << p.life << " ";
+		f << p.drilLevel << " ";
+		f << p.gunLevel << " ";
+		f << p.wheelLevel << " ";
+		f << p.cameraLevel << " ";
+		f << (int)p.hasAntena << " ";
+		f << (int)p.hasBatery << "\n";
+		f << p.stones << " ";
+		f << p.iron << " ";
+		f << p.osmium << " ";
+
+		gameplayState.waitCulldown = culldownTime;
+		f.close();
+
+		std::error_code ec = {};
+		std::filesystem::rename(fileNameTemp, fileName, ec);
+
+		p.scannedThisTurn = false;
+		resetCurrentRoverWaitingState();
+	}
+}
+
+void kickCurrentWaitingRover()
+{
+	if (gameplayState.players.empty())
+	{
+		resetCurrentRoverWaitingState();
+		return;
+	}
+
+	gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
+
+	if (gameplayState.players.size())
+	{
+		gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
+	}
+	else
+	{
+		gameplayState.waitingForPlayerIndex = 0;
+	}
+
+	resetCurrentRoverWaitingState();
+	sendNextMessageToCurrentRover();
+}
+
 void gameStep(float deltaTime)
 {
 	if (gameplayState.pause)return;
@@ -87,110 +224,10 @@ void gameStep(float deltaTime)
 	}
 	else
 	{
-		auto sendNextMessage = [&]()
-		{
-			std::string fileNameTemp = "game/" "s" +
-				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].id) + "_" +
-				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].currentRound)
-				+ "temp.txt";
-
-			std::string fileName = "game/" "s" +
-				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].id) + "_" +
-				std::to_string(gameplayState.players[gameplayState.waitingForPlayerIndex].currentRound)
-				+ ".txt";
-
-			std::ofstream f(fileNameTemp);
-
-			if (!f)
-			{
-				panicError = "The server couldn't create a server file: " + fileName;
-			}
-			else
-			{
-				f << gameplayState.map.size.x << ' ' << gameplayState.map.size.y << "\n";
-
-				auto &p = gameplayState.players[gameplayState.waitingForPlayerIndex];
-
-				for (int j = 0; j < gameplayState.map.size.y; j++)
-				{
-					for (int i = 0; i < gameplayState.map.size.x; i++)
-					{
-						char c = gameplayState.map.unsafeGet({i,j});
-
-						if (!calculateView(p.position, {i,j}, p.cameraLevel))
-						{
-							if (p.scannedThisTurn)
-							{
-								int size = 4;
-
-								if (p.cameraLevel == 2) { size = 5; }
-								if (p.cameraLevel == 3) { size = 6; }
-
-								glm::ivec2 scanPos = p.position;
-								if (p.scannedThisTurn == 1) { scanPos += glm::ivec2{0,-1} *size; }
-								if (p.scannedThisTurn == 2) { scanPos += glm::ivec2{0,1} *size; }
-								if (p.scannedThisTurn == 3) { scanPos += glm::ivec2{-1,0} *size; }
-								if (p.scannedThisTurn == 4) { scanPos += glm::ivec2{1,0} *size; }
-
-								if (glm::distance(glm::vec2(scanPos), glm::vec2(i, j))
-									< std::sqrt(2.f) + 0.1)
-								{
-									//good
-								}
-								else
-								{
-									c = '?';
-								}
-							}
-							else
-							{
-								c = '?';
-							}
-						}
-						else
-						{
-							for (auto &p : gameplayState.players)
-							{
-								if (p.position == glm::ivec2{i, j})
-								{
-									c = '0' + p.id;
-								}
-							}
-						}
-
-						f << c << " ";
-					}
-					f << "\n";
-				}
-				
-				f << p.position.x << " ";
-				f << p.position.y << "\n";
-				f << p.life << " ";
-				f << p.drilLevel << " ";
-				f << p.gunLevel << " ";
-				f << p.wheelLevel << " ";
-				f << p.cameraLevel << " ";
-				f << (int)p.hasAntena << " ";
-				f << (int)p.hasBatery << "\n";
-				f << p.stones << " ";
-				f << p.iron << " ";
-				f << p.osmium << " ";
-
-				gameplayState.waitCulldown = culldownTime;
-				f.close();
-
-				std::error_code ec = {};
-				std::filesystem::rename(fileNameTemp, fileName, ec);
-
-				p.scannedThisTurn = false;
-			}
-		};
-
-
 		if (gameplayState.firstTime)
 		{
 		
-			sendNextMessage();
+			sendNextMessageToCurrentRover();
 			gameplayState.firstTime = 0;
 
 		#ifdef _WIN32 
@@ -220,7 +257,7 @@ void gameStep(float deltaTime)
 					currentFollow = gameplayState.waitingForPlayerIndex;
 				}
 
-				gameplayState.currentWaitingTime = 5.f;
+				resetCurrentRoverWaitingState();
 				//got the input
 
 				auto movePlayer = [&](int index, glm::ivec2 delta)
@@ -727,7 +764,7 @@ void gameStep(float deltaTime)
 					}
 				}
 
-				sendNextMessage();
+				sendNextMessageToCurrentRover();
 
 				for (int i = 0; i < gameplayState.players.size(); i++)
 				{
@@ -741,23 +778,31 @@ void gameStep(float deltaTime)
 				
 
 			}else
-			if (gameplayState.evictUnresponsivePlayers)
 			{
-				gameplayState.currentWaitingTime -= deltaTime;
-				if (gameplayState.currentWaitingTime < 0)
+				if (gameplayState.currentRoverIsUnresponsive)
 				{
-					gameplayState.currentWaitingTime = 5;
-					
+					if (gameplayState.automaticallyKickUnrespondingRovers)
 					{
-						gameplayState.players.erase(gameplayState.players.begin() + gameplayState.waitingForPlayerIndex);
-						if (gameplayState.players.size())
-							gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
-						gameplayState.currentWaitingTime = 5;
-						sendNextMessage();
+						kickCurrentWaitingRover();
 					}
-
 				}
-			};
+				else
+				{
+					gameplayState.currentWaitingTime -= deltaTime;
+					if (gameplayState.currentWaitingTime < 0)
+					{
+						if (gameplayState.automaticallyKickUnrespondingRovers)
+						{
+							kickCurrentWaitingRover();
+						}
+						else
+						{
+							gameplayState.currentWaitingTime = 0;
+							gameplayState.currentRoverIsUnresponsive = 1;
+						}
+					}
+				}
+			}
 
 			//kill players
 			bool killedAPlayer = 0;
@@ -779,9 +824,9 @@ void gameStep(float deltaTime)
 						i--;
 						if (gameplayState.players.size())
 							gameplayState.waitingForPlayerIndex %= gameplayState.players.size();
-						gameplayState.currentWaitingTime = 5;
+						resetCurrentRoverWaitingState();
 
-						sendNextMessage();
+						sendNextMessageToCurrentRover();
 					}
 					else if (gameplayState.waitingForPlayerIndex > i)
 					{
@@ -1076,7 +1121,7 @@ void sideWindow()
 
 	ImGui::Checkbox("simulate fog", &simulateFog);
 
-	ImGui::Checkbox("Evict players after 5 secconds", &gameplayState.evictUnresponsivePlayers);
+	ImGui::Checkbox("Automatically kick unresponding rovers", &gameplayState.automaticallyKickUnrespondingRovers);
 
 	ImGui::Checkbox("Close Game When Someone Won", &gameplayState.closeGameWhenWinning);
 	
@@ -1106,6 +1151,20 @@ void sideWindow()
 
 	ImGui::Checkbox("color controls", &colorControols);
 	ImGui::Checkbox("allow change player stats", &allowChangePlayerStats);
+
+	if (!gameplayState.automaticallyKickUnrespondingRovers &&
+		gameplayState.currentRoverIsUnresponsive &&
+		!gameplayState.players.empty())
+	{
+		ImGui::Separator();
+		ImGui::TextColored({1,0,0,1}, "Rover %d is unresponsive",
+			gameplayState.players[gameplayState.waitingForPlayerIndex].id);
+
+		if (ImGui::Button("Kick unresponsive rover"))
+		{
+			kickCurrentWaitingRover();
+		}
+	}
 
 	ImGui::Separator();
 
@@ -1198,7 +1257,7 @@ void mainMenuScreen()
 
 	static int nrOfPlayers = 1;
 
-	static bool smallMap = 0;
+	static bool smallMap = 1;
 
 	ImGui::SliderInt("Nr of players", &nrOfPlayers, 1, 5);
 
@@ -1221,7 +1280,7 @@ void mainMenuScreen()
 		if (!s)s = time(0);
 		if (smallMap)
 		{
-			gameplayState.map = generate_world({30,30}, s, false);
+			gameplayState.map = generate_world({35,35}, s, false);
 		}
 		else
 		{
