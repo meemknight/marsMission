@@ -278,7 +278,7 @@ struct Map generate_world(glm::ivec2 maze_size, int seed, bool fewerResources)
 	maze_with_bedrock = additive_mask(&maze_with_bedrock, &extraRock, glm::ivec2(0, 0), Air);
 	maze_with_bedrock = additive_mask(&maze_with_holes, &maze_with_bedrock, {}, Air);
 
-	float baseIronTresshold = 0.975;
+	float baseIronTresshold = 0.970;
 	if (fewerResources) { baseIronTresshold = 1; }
 	auto random_iron = layered_simplex_map(s_size, fn, Iron, Air, baseIronTresshold, 0.975, 8, 2, 4, seed + 1);
 	

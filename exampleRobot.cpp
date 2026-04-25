@@ -26,6 +26,9 @@ int main()
 
 			//it is our turn to move
 			//read the file...
+			int mapSizeX, mapSizeY;
+			input >> mapSizeX;
+			input >> mapSizeY;
 
 			input.close();
 
@@ -37,7 +40,7 @@ int main()
 			//..
 			//write your rover commands here
 			// 
-			//response << "M U\n";
+			response << "U M U\n";
 
 
 			//close the file
